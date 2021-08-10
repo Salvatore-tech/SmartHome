@@ -18,6 +18,7 @@ public class Scene implements Serializable{
     @Column(nullable = false)
     private Boolean status;
 
+    //TODO
     @ManyToOne
     private Device id_device;
 
