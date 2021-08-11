@@ -11,7 +11,19 @@ public class Condition implements Serializable {
     private Date activationDate;
     private Double threshold;
 
-    public Condition() { }
+    @ManyToOne
+    @MapsId("deviceId")
+    @JoinColumn(name = "device_id")
+    Device device;
+
+    @ManyToOne
+    @MapsId("sceneId")
+    @JoinColumn(name = "scene_id")
+    Scene scene;
+
+
+    public Condition() {
+    }
 
     public Condition(ConditionId conditionId, Date activationDate, Double threshold) {
         this.conditionId = conditionId;
