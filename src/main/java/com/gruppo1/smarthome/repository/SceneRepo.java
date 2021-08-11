@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface SceneRepo extends CrudRepository<Scene, Long> {
 
+    void deleteSceneById(Long id);
 }
