@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Optional;
+=======
+>>>>>>> origin/master
 
 @RestController
 @RequestMapping("/scene/")
@@ -20,12 +23,17 @@ public class SceneController {
         this.sceneService = sceneService;
     }
 
+<<<<<<< HEAD
     @GetMapping("/allScenes/")
+=======
+    @GetMapping("/all/")
+>>>>>>> origin/master
     public ResponseEntity<List<Scene>> getAllScenes(){
         List<Scene> scenes = sceneService.findAllScene();
         return new ResponseEntity<>(scenes, HttpStatus.OK);
     }
 
+<<<<<<< HEAD
     @GetMapping("/sceneById/")
     public ResponseEntity<Optional<Scene>> getSceneById(Long id){
         Optional<Scene> scene = sceneService.findSceneByID(id);
@@ -45,4 +53,8 @@ public class SceneController {
     }
 
 
+=======
+    //TODO
+    //I don't know what else I have to implement, there is no controller in the sample
+>>>>>>> origin/master
 }
