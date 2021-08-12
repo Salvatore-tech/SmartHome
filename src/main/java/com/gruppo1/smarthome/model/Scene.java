@@ -2,10 +2,11 @@ package com.gruppo1.smarthome.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Scene implements Serializable{
@@ -19,10 +20,9 @@ public class Scene implements Serializable{
     private Boolean status;
 
     //TODO
-    @ManyToOne
-    private Device id_device;
+    @OneToMany(mappedBy = "scene")
+    List<Condition> conditionList;
 
-    //NOTE: I don't know if I have to implement the methods for device (set and get, for the moment)
     public Long getId(){
         return id;
     }
@@ -48,4 +48,6 @@ public class Scene implements Serializable{
     }
 
 
+    public void setSceneCode(String toString) {
+    }
 }
