@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/scene/")
@@ -19,12 +20,29 @@ public class SceneController {
         this.sceneService = sceneService;
     }
 
-    @GetMapping("/all/")
+    @GetMapping("/allScenes/")
     public ResponseEntity<List<Scene>> getAllScenes(){
         List<Scene> scenes = sceneService.findAllScene();
         return new ResponseEntity<>(scenes, HttpStatus.OK);
     }
 
-    //TODO
-    //I don't know what else I have to implement, there is no controller in the sample
+    @GetMapping("/sceneById/")
+    public ResponseEntity<Optional<Scene>> getSceneById(Long id){
+        Optional<Scene> scene = sceneService.findSceneByID(id);
+        return new ResponseEntity<>(scene, HttpStatus.OK);
+    }
+
+    @GetMapping("/updateScene/")
+    public ResponseEntity<Scene> updateScene(Scene scene){
+        Scene updatedScene = sceneService.updateScene(scene);
+        return new ResponseEntity<>(updatedScene, HttpStatus.OK);
+    }
+
+    @GetMapping("/addScene/")
+    public ResponseEntity<Scene> addScene(Scene scene){
+        Scene newScene = sceneService.addScene(scene);
+        return new ResponseEntity<>(newScene, HttpStatus.OK);
+    }
+
+
 }
