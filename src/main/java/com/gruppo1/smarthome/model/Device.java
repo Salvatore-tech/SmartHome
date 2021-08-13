@@ -44,4 +44,7 @@ public class Device implements Serializable {
     public void setStatus(Boolean status){
         this.status= status;
     }
+
+    public void setDeviceCode(String toString) {
+    }
 }
