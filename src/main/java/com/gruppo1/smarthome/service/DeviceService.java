@@ -27,9 +27,16 @@ public class DeviceService {
         return deviceRepo.save(device);
     }
 
+    public List<Device> deleteDevice(Long id){
+        return null;
+    }
+
+    public long countDevices(){
+        return deviceRepo.count();
+    }
+
     public Optional<Device> findDeviceByID(Long id){
         return deviceRepo.findById(id);
     }
-
 
 }

@@ -5,7 +5,6 @@ import com.gruppo1.smarthome.service.DeviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +27,15 @@ public class DeviceController {
         List<Device> devices = deviceService.findAllDevices();
         return new ResponseEntity<>(devices, HttpStatus.OK);
     }
-    //Todo
+
+    public ResponseEntity<List<Device>> deleteDevice(Long id){
+        List<Device> devices = deviceService.deleteDevice(id);
+        return new ResponseEntity(devices, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Device>> countDevices(){
+        long devices = deviceService.countDevices();
+        return new ResponseEntity(devices, HttpStatus.OK);
+    }
+
 }
