@@ -11,7 +11,7 @@ public class Device implements Serializable {
 
     @Id
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -21,11 +21,11 @@ public class Device implements Serializable {
     @ManyToOne
     private Room id_room;
 
-    public Long getId(){
+    public String getId(){
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 
@@ -44,4 +44,5 @@ public class Device implements Serializable {
     public void setStatus(Boolean status){
         this.status= status;
     }
+
 }
