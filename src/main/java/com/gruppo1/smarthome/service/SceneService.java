@@ -21,7 +21,6 @@ public class SceneService {
     }
 
     public Scene addScene(Scene scene) {
-        scene.setSceneCode(UUID.randomUUID().toString());
         return sceneRepo.save(scene);
     }
 
@@ -33,11 +32,11 @@ public class SceneService {
         return sceneRepo.save(scene);
     }
 
-    public Optional<Scene> findSceneByID(Long id){
+    public Optional<Scene> findSceneByID(String id){
         return sceneRepo.findById(id);
     }
 
-    public void deleteScene(Long id){
+    public void deleteScene(String id){
         sceneRepo.deleteSceneById(id);
     }
 }
