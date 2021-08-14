@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface DeviceRepo extends CrudRepository<Device, Long> {
 
+    void deleteDeviceById(String id);
 }

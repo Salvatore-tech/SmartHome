@@ -21,7 +21,7 @@ public class DeviceService {
     }
 
     public Device addDevice(Device device) {
-        device.setDeviceCode(UUID.randomUUID().toString());
+        device.setId(UUID.randomUUID().toString());
         return deviceRepo.save(device);
     }
 
@@ -37,8 +37,8 @@ public class DeviceService {
         return deviceRepo.save(device);
     }
 
-    public List<Device> deleteDevice(Long id){
-        return null;
+    public void deleteDevice(String id){
+        deviceRepo.deleteDeviceById(id);
     }
 
     public long countDevices(){
