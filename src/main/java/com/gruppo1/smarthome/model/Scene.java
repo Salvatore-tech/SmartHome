@@ -13,7 +13,7 @@ public class Scene implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -23,11 +23,11 @@ public class Scene implements Serializable{
     @OneToMany(mappedBy = "scene")
     List<Condition> conditionList;
 
-    public Long getId(){
+    public String getId(){
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
