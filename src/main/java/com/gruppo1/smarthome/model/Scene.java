@@ -47,7 +47,4 @@ public class Scene implements Serializable{
         this.status = status;
     }
 
-
-    public void setSceneCode(String toString) {
-    }
 }
