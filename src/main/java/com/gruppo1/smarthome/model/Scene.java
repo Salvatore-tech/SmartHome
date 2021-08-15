@@ -10,18 +10,21 @@ import java.util.List;
 
 @Entity
 public class Scene implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
+    @Column(name = "scene_id")
     private String id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private Boolean status;
 
     //TODO
     @OneToMany(mappedBy = "scene")
-    private List<Condition> conditionList;
+    private List<Condition> conditions;
 
     public String getId(){
         return id;

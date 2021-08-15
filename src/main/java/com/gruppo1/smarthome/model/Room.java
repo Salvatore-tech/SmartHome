@@ -13,11 +13,12 @@ public class Room implements Serializable {
     @Id
     @Column(name = "room_id")
     private String id;
+
     @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "room")
-    private List<Device> id_device;
+    private List<Device> devices;
 
     public String getId(){
         return id;
