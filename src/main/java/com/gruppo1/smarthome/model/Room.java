@@ -11,12 +11,12 @@ import java.util.List;
 public class Room implements Serializable {
 
     @Id
-    @Column(nullable = false, updatable = false)
+    @Column(name = "room_id")
     private String id;
     @Column(nullable = false)
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "room")
     private List<Device> id_device;
 
     public String getId(){

@@ -1,8 +1,5 @@
 package com.gruppo1.smarthome.model;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 
@@ -19,7 +16,8 @@ public class Device implements Serializable {
 
     //TODO
     @ManyToOne
-    private Room id_room;
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     public String getId(){
         return id;
