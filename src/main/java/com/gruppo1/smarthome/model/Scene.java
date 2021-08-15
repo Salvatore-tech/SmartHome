@@ -21,7 +21,7 @@ public class Scene implements Serializable{
 
     //TODO
     @OneToMany(mappedBy = "scene")
-    List<Condition> conditionList;
+    private List<Condition> conditionList;
 
     public String getId(){
         return id;
