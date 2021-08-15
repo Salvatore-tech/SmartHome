@@ -21,13 +21,13 @@ public class DeviceController {
         this.deviceService = deviceService;
     }
 
-    @GetMapping("/allDevices")
+    @GetMapping("/all")
     public ResponseEntity<List<Device>> getAllDevices(){
         List<Device> devices = deviceService.findAllDevices();
         return new ResponseEntity<>(devices, HttpStatus.OK);
     }
 
-    @PostMapping("/addDevice")
+    @PostMapping("/add")
     public ResponseEntity<Device> addDevice(@RequestBody Device device){
         Device newDevice = deviceService.addDevice(device);
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
@@ -51,7 +51,7 @@ public class DeviceController {
         return new ResponseEntity(updatedDevice, HttpStatus.OK);
     }
 
-    @GetMapping("/countDevice")
+    @GetMapping("/count")
     public ResponseEntity<List<Device>> countDevices(){
         long devices = deviceService.countDevices();
         return new ResponseEntity(devices, HttpStatus.OK);

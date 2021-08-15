@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/room/")
+@RequestMapping("/room")
 public class RoomController {
     private final RoomService roomService;
 
@@ -20,25 +20,25 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping("/allRooms/")
+    @GetMapping("/all")
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.findAllRoom();
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
-    @GetMapping("/roomById/")
+    @GetMapping("/roomById")
     public ResponseEntity<Optional<Room>> getRoomById(Long id){
         Optional<Room> room = roomService.findRoomByID(id);
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
-    @GetMapping("/updateRoom/")
+    @GetMapping("/update")
     public ResponseEntity<Room> updateScene(Room room){
         Room updatedRoom = roomService.updateRoom(room);
         return new ResponseEntity<>(updatedRoom, HttpStatus.OK);
     }
 
-    @GetMapping("/addRoom/")
+    @GetMapping("/add")
     public ResponseEntity<Room> addScene(Room room){
         Room newRoom = roomService.addRoom(room);
         return new ResponseEntity<>(newRoom, HttpStatus.OK);

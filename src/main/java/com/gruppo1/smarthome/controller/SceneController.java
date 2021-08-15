@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/scene/")
+@RequestMapping("/scene")
 public class SceneController {
     private final SceneService sceneService;
 
@@ -19,7 +19,7 @@ public class SceneController {
         this.sceneService = sceneService;
     }
 
-    @GetMapping("/allScenes")
+    @GetMapping("/all")
     public ResponseEntity<List<Scene>> getAllScenes(){
         List<Scene> scenes = sceneService.findAllScene();
         return new ResponseEntity<>(scenes, HttpStatus.OK);
@@ -31,13 +31,13 @@ public class SceneController {
         return new ResponseEntity<>(scene, HttpStatus.OK);
     }
 
-    @PutMapping("/updateScene")
+    @PutMapping("/update")
     public ResponseEntity<Scene> updateScene(@RequestBody Scene scene){
         Scene updatedScene = sceneService.updateScene(scene);
         return new ResponseEntity<>(updatedScene, HttpStatus.OK);
     }
 
-    @PostMapping("/addScene")
+    @PostMapping("/add")
     public ResponseEntity<Scene> addScene(@RequestBody Scene scene){
         Scene newScene = sceneService.addScene(scene);
         return new ResponseEntity<>(newScene, HttpStatus.CREATED);
