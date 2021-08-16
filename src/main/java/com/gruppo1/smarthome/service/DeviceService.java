@@ -29,7 +29,7 @@ public class DeviceService {
         return (List<Device>) deviceRepo.findAll();
     }
 
-    public Optional<Device> findDeviceByID(Long id){
+    public Optional<Device> findDeviceByID(String id){
         return deviceRepo.findById(id);
     }
 
