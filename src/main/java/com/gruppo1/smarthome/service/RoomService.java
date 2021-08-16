@@ -19,19 +19,24 @@ public class RoomService {
         this.roomRepo = roomRepo;
     }
 
+    public List<Room> findAllRoom() {
+        return (List<Room>) roomRepo.findAll();
+    }
+
     public Room addRoom(Room room) {
         return roomRepo.save(room);
     }
 
-    public List<Room> findAllRoom() {
-        return (List<Room>) roomRepo.findAll();
+    public Optional<Room> findRoomByID(String id){
+        return roomRepo.findById(id);
+    }
+
+    public void deleteRoom(String id){
+        roomRepo.deleteRoomById(id);
     }
 
     public Room updateRoom(Room room) {
         return roomRepo.save(room);
     }
 
-    public Optional<Room> findRoomByID(Long id){
-        return roomRepo.findById(id);
-    }
 }
