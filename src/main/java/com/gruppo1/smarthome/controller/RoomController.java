@@ -4,9 +4,7 @@ import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,22 +24,27 @@ public class RoomController {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Room> addRoom(@RequestBody Room room){
+        Room newRoom = roomService.addRoom(room);
+        return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
+    }
+
     @GetMapping("/roomById")
-    public ResponseEntity<Optional<Room>> getRoomById(Long id){
+    public ResponseEntity<Optional<Room>> getRoomById(String id){
         Optional<Room> room = roomService.findRoomByID(id);
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
-    @GetMapping("/update")
-    public ResponseEntity<Room> updateScene(Room room){
+    @DeleteMapping("/deleteRoom/{id}")
+    public ResponseEntity<?> deleteRoom(@PathVariable("id") String id){
+        roomService.deleteRoom(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/updateRoom")
+    public ResponseEntity<Room> updateRoom(@RequestBody Room room){
         Room updatedRoom = roomService.updateRoom(room);
         return new ResponseEntity<>(updatedRoom, HttpStatus.OK);
     }
-
-    @GetMapping("/add")
-    public ResponseEntity<Room> addScene(Room room){
-        Room newRoom = roomService.addRoom(room);
-        return new ResponseEntity<>(newRoom, HttpStatus.OK);
-    }
-
 }
