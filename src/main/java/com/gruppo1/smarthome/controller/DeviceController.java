@@ -34,7 +34,7 @@ public class DeviceController {
     }
 
     @GetMapping("/deviceById")
-    public ResponseEntity<Optional<Device>> getDeviceById(Long id){
+    public ResponseEntity<Optional<Device>> getDeviceById(String id){
         Optional<Device> device = deviceService.findDeviceByID(id);
         return new ResponseEntity<>(device, HttpStatus.OK);
     }
