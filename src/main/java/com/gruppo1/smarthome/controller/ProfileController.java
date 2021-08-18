@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/scene")
+@RequestMapping("/profile")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -21,7 +21,7 @@ public class ProfileController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Profile>> getAllProfile(){
-        List<Profile> scenes = profileService.findAllProfile();
+        List<Profile> profiles = profileService.findAllProfile();
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
