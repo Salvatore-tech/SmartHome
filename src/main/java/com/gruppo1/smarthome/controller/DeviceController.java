@@ -4,12 +4,10 @@ import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.service.DeviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 //http://localhost:8080/smarthome/device
@@ -28,5 +26,35 @@ public class DeviceController {
         List<Device> devices = deviceService.findAllDevices();
         return new ResponseEntity<>(devices, HttpStatus.OK);
     }
-    //Todo
+
+    @PostMapping("/add")
+    public ResponseEntity<Device> addDevice(@RequestBody Device device){
+        Device newDevice = deviceService.addDevice(device);
+        return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/deviceById")
+    public ResponseEntity<Optional<Device>> getDeviceById(String id){
+        Optional<Device> device = deviceService.findDeviceByID(id);
+        return new ResponseEntity<>(device, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteDevice/{id}")
+    public ResponseEntity<?> deleteDevice(@PathVariable("id") String id){
+        deviceService.deleteDevice(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/updateDevice")
+    public ResponseEntity<List<Device>> updateDevice(@RequestBody Device device){
+        Device updatedDevice = deviceService.updateDevice(device);
+        return new ResponseEntity(updatedDevice, HttpStatus.OK);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<List<Device>> countDevices(){
+        long devices = deviceService.countDevices();
+        return new ResponseEntity(devices, HttpStatus.OK);
+    }
+
 }

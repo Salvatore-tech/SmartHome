@@ -8,30 +8,30 @@ import java.util.Objects;
 @Embeddable
 public class ConditionId implements Serializable {
     @Column(name = "device_id")
-    private Long deviceId;
+    private String deviceId;
     @Column(name = "scene_id")
-    private Long sceneId;
+    private String sceneId;
 
     public ConditionId() {}
 
-    public ConditionId(Long idDevice, Long idScene) {
+    public ConditionId(String idDevice, String idScene) {
         this.deviceId = idDevice;
         this.sceneId = idScene;
     }
 
-    public Long getIdDevice() {
+    public String getIdDevice() {
         return deviceId;
     }
 
-    public void setIdDevice(Long idDevice) {
+    public void setIdDevice(String idDevice) {
         this.deviceId = idDevice;
     }
 
-    public Long getIdScene() {
+    public String getIdScene() {
         return sceneId;
     }
 
-    public void setIdScene(Long idScene) {
+    public void setIdScene(String idScene) {
         this.sceneId = idScene;
     }
 

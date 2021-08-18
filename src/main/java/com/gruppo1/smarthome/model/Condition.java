@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Entity
 public class Condition implements Serializable {
+
     @EmbeddedId
     private ConditionId conditionId;
     private Date activationDate;
@@ -14,12 +15,12 @@ public class Condition implements Serializable {
     @ManyToOne
     @MapsId("deviceId")
     @JoinColumn(name = "device_id")
-    Device device;
+    private Device device;
 
     @ManyToOne
     @MapsId("sceneId")
     @JoinColumn(name = "scene_id")
-    Scene scene;
+    private Scene scene;
 
 
     public Condition() {

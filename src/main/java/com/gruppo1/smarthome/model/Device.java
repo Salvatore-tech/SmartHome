@@ -1,8 +1,5 @@
 package com.gruppo1.smarthome.model;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 
@@ -11,21 +8,21 @@ public class Device implements Serializable {
 
     @Id
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private Boolean status;
 
-    //TODO
     @ManyToOne
-    private Room id_room;
+    @JoinColumn(name = "room_id", nullable=false)
+    private Room room;
 
-    public Long getId(){
+    public String getId(){
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(String id){
         this.id = id;
     }
 
@@ -44,4 +41,5 @@ public class Device implements Serializable {
     public void setStatus(Boolean status){
         this.status= status;
     }
+
 }

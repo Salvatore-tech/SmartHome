@@ -10,24 +10,27 @@ import java.util.List;
 
 @Entity
 public class Scene implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-    private Long id;
+    @Column(name = "scene_id")
+    private String id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private Boolean status;
 
     //TODO
     @OneToMany(mappedBy = "scene")
-    List<Condition> conditionList;
+    private List<Condition> conditions;
 
-    public Long getId(){
+    public String getId(){
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,7 +50,4 @@ public class Scene implements Serializable{
         this.status = status;
     }
 
-
-    public void setSceneCode(String toString) {
-    }
 }
