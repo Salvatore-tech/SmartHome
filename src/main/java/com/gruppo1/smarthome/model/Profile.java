@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Email;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 
@@ -9,8 +9,10 @@ import java.io.Serializable;
 public class Profile implements Serializable {
 
 
-    @Email
+    @Id
     @Column(nullable = false, updatable = false)
+    private String id;
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String name;
@@ -20,6 +22,14 @@ public class Profile implements Serializable {
     private String password;
 
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -28,7 +38,7 @@ public class Profile implements Serializable {
         this.email = email;
     }
 
-    public String geteName() {
+    public String getName() {
         return name;
     }
 
