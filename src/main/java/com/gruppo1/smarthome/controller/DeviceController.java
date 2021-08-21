@@ -41,19 +41,19 @@ public class DeviceController {
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
     }
 
-    @GetMapping("/deviceById")
-    public ResponseEntity<Optional<Device>> getDeviceById(String id){
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Optional<Device>> getDeviceById(@PathVariable("id") String id){
         Optional<Device> device = deviceService.findDeviceByID(id);
         return new ResponseEntity<>(device, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteDevice/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDevice(@PathVariable("id") String id){
         deviceService.deleteDevice(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/updateDevice")
+    @PutMapping("/update")
     public ResponseEntity<List<Device>> updateDevice(@RequestBody Device device){
         Device updatedDevice = deviceService.updateDevice(device);
         return new ResponseEntity(updatedDevice, HttpStatus.OK);
@@ -64,5 +64,4 @@ public class DeviceController {
         long devices = deviceService.countDevices();
         return new ResponseEntity(devices, HttpStatus.OK);
     }
-
 }
