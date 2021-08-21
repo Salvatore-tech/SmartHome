@@ -14,6 +14,7 @@ public class SpringFoxConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .useDefaultResponseMessages(false) // Disable default responses added by Swagger
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
