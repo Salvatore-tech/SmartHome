@@ -27,12 +27,16 @@ public class RoomService {
         return roomRepo.save(room);
     }
 
-    public Optional<Room> findRoomByID(String id){
+    public Optional<Room> findRoomByID(String id) {
         return roomRepo.findById(id);
     }
 
-    public void deleteRoom(String id){
-        roomRepo.deleteRoomById(id);
+    public Boolean deleteRoom(String id) {
+        if (roomRepo.findById(id).isPresent()) {
+            roomRepo.deleteRoomById(id);
+            return true;
+        }
+        return false;
     }
 
     public Room updateRoom(Room room) {

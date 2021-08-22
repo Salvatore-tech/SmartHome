@@ -30,19 +30,19 @@ public class RoomController {
         return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
 
-    @GetMapping("/roomById")
-    public ResponseEntity<Optional<Room>> getRoomById(String id){
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Optional<Room>> getRoomById(@PathVariable("id") String id){
         Optional<Room> room = roomService.findRoomByID(id);
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteRoom/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteRoom(@PathVariable("id") String id){
-        roomService.deleteRoom(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return roomService.deleteRoom(id) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/updateRoom")
+    @PutMapping("/update")
     public ResponseEntity<Room> updateRoom(@RequestBody Room room){
         Room updatedRoom = roomService.updateRoom(room);
         return new ResponseEntity<>(updatedRoom, HttpStatus.OK);
