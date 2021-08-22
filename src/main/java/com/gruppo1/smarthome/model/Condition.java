@@ -10,6 +10,7 @@ public class Condition implements Serializable {
     @EmbeddedId
     private ConditionId conditionId;
     private Date activationDate;
+    private String period;
     private Double threshold;
 
     @ManyToOne
@@ -26,10 +27,11 @@ public class Condition implements Serializable {
     public Condition() {
     }
 
-    public Condition(ConditionId conditionId, Date activationDate, Double threshold) {
+    public Condition(ConditionId conditionId, Date activationDate, Double threshold, String period) {
         this.conditionId = conditionId;
         this.activationDate = activationDate;
         this.threshold = threshold;
+        this.period = period;
     }
 
     public ConditionId getConditionId() {
@@ -55,4 +57,8 @@ public class Condition implements Serializable {
     public void setThreshold(Double threshold) {
         this.threshold = threshold;
     }
+
+    public void setPeriod(String period) { this.period = period; }
+
+    public String getPeriod() { return period;}
 }
