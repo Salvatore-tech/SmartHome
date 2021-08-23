@@ -10,7 +10,10 @@ public class Condition implements Serializable {
     @EmbeddedId
     private ConditionId conditionId;
     private Date activationDate;
+    @Column()
+    private String period;
     private Double threshold;
+
 
     @ManyToOne
     @MapsId("deviceId")
