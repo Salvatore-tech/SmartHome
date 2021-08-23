@@ -3,6 +3,7 @@ package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.repository.ConditionRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class ConditionService {
     private final ConditionRepo conditionRepo;
 
+    @Autowired
     public ConditionService(ConditionRepo conditionRepo) {
         this.conditionRepo = conditionRepo;
     }
