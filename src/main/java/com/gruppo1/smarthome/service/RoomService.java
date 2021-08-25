@@ -32,11 +32,9 @@ public class RoomService {
     }
 
     public Boolean deleteRoom(String id) {
-        if (roomRepo.findById(id).isPresent()) {
-            roomRepo.deleteRoomById(id);
-            return true;
-        }
-        return false;
+        //TODO
+        roomRepo.deleteRoomById(id);
+        return true;
     }
 
     public Room updateRoom(Room room) {

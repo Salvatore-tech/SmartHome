@@ -80,6 +80,6 @@ public class DeviceController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity countDevices(){
         long devices = deviceService.countDevices();
-        return new ResponseEntity<>(devices, HttpStatus.OK);
+        return new ResponseEntity(devices, HttpStatus.OK);
     }
 }
