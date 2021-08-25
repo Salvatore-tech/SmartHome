@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 
-//http://localhost:8080/smarthome/device
+// http://localhost:8080/device/all
+// http://localhost:8080/swagger-ui.html#/
 
 @RestController
 @Api(value = "Device", description = "Rest API for Device", tags = {"Device"})
