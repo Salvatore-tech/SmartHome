@@ -14,15 +14,15 @@ public class Device implements Serializable {
     @Column(nullable = false)
     private Boolean status;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", nullable = true)
     private Room room;
 
-    public String getId(){
+    public String getId() {
         return id;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -30,16 +30,23 @@ public class Device implements Serializable {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Boolean getStatus(){
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status){
-        this.status= status;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 }

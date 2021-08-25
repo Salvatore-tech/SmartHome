@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Condition implements Serializable {
+public class Conditions implements Serializable {
 
     @EmbeddedId
     private ConditionId conditionId;
@@ -26,10 +26,10 @@ public class Condition implements Serializable {
     private Scene scene;
 
 
-    public Condition() {
+    public Conditions() {
     }
 
-    public Condition(ConditionId conditionId, Date activationDate, Double threshold) {
+    public Conditions(ConditionId conditionId, Date activationDate, Double threshold) {
         this.conditionId = conditionId;
         this.activationDate = activationDate;
         this.threshold = threshold;
