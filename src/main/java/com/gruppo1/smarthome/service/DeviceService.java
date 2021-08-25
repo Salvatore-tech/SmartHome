@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -21,7 +20,6 @@ public class DeviceService {
     }
 
     public Device addDevice(Device device) {
-        device.setId(UUID.randomUUID().toString());
         return deviceRepo.save(device);
     }
 
