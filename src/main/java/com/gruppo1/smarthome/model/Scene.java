@@ -1,15 +1,11 @@
 package com.gruppo1.smarthome.model;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Scene implements Serializable{
+public class Scene implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +20,7 @@ public class Scene implements Serializable{
 
     //TODO
     @OneToMany(mappedBy = "scene")
-    private List<Condition> conditions;
+    private List<Conditions> conditions;
 
     public String getId(){
         return id;

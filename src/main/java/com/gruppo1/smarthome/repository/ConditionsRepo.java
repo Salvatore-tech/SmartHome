@@ -1,8 +1,9 @@
 package com.gruppo1.smarthome.repository;
-import com.gruppo1.smarthome.model.Condition;
+
 import com.gruppo1.smarthome.model.ConditionId;
+import com.gruppo1.smarthome.model.Conditions;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ConditionRepo extends CrudRepository<Condition, ConditionId> {
+public interface ConditionsRepo extends CrudRepository<Conditions, ConditionId> {
     void deleteById(ConditionId conditionId);
 }
