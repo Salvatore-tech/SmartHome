@@ -1,5 +1,9 @@
 package com.gruppo1.smarthome.model;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,13 +12,12 @@ import java.util.List;
 public class Room implements Serializable {
 
     @Id
-    @Column(name = "id")
     private String id;
 
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "room")
     private List<Device> devices;
 
     public String getId(){

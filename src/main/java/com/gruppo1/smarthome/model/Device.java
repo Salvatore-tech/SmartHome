@@ -14,7 +14,7 @@ public class Device implements Serializable {
     @Column(nullable = false)
     private Boolean status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
     private Room room;
 

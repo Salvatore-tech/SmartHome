@@ -10,7 +10,6 @@ public class Conditions implements Serializable {
     @EmbeddedId
     private ConditionId conditionId;
     private Date activationDate;
-    @Column()
     private String period;
     private Double threshold;
 
