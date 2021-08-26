@@ -25,8 +25,8 @@ public class SceneController {
         return new ResponseEntity<>(scenes, HttpStatus.OK);
     }
 
-    @GetMapping("/sceneById")
-    public ResponseEntity<Optional<Scene>> getSceneById(String id){
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Optional<Scene>> getSceneById(@PathVariable("id") String id){
         Optional<Scene> scene = sceneService.findSceneByID(id);
         return new ResponseEntity<>(scene, HttpStatus.OK);
     }
@@ -48,6 +48,4 @@ public class SceneController {
         sceneService.deleteScene(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
