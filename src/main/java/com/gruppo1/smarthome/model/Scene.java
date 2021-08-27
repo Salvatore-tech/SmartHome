@@ -1,9 +1,6 @@
 package com.gruppo1.smarthome.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,8 +16,7 @@ public class Scene implements Serializable {
     @Column(nullable = false)
     private Boolean status;
 
-    //TODO
-    @OneToMany(mappedBy = "scene")
+    @OneToMany(mappedBy = "scene", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Conditions> conditions;
 
     public String getId(){

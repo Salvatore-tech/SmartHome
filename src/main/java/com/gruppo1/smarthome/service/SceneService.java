@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -24,19 +23,24 @@ public class SceneService {
         return sceneRepo.save(scene);
     }
 
-    public List<Scene> findAllScene(){
+    public List<Scene> findAllScene() {
         return (List<Scene>) sceneRepo.findAll();
     }
 
-    public Scene updateScene(Scene scene){
+    public Scene updateScene(Scene scene) {
         return sceneRepo.save(scene);
     }
 
-    public Optional<Scene> findSceneByID(String id){
+    public Optional<Scene> findSceneByID(String id) {
         return sceneRepo.findById(id);
     }
 
-    public void deleteScene(String id){
-        sceneRepo.deleteSceneById(id);
+    public Boolean deleteScene(String id) {
+        Optional<Scene> scene = sceneRepo.findById(id);
+        if (scene.isPresent()) {
+            sceneRepo.deleteSceneById(id);
+            return true;
+        }
+        return false;
     }
 }

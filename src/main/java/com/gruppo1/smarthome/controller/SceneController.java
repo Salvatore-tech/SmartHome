@@ -45,7 +45,6 @@ public class SceneController {
 
     @DeleteMapping("/deleteScene/{id}")
     public ResponseEntity<?> deleteScene(@PathVariable("id") String id){
-        sceneService.deleteScene(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return sceneService.deleteScene(id) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
