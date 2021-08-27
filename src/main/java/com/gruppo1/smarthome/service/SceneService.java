@@ -28,7 +28,11 @@ public class SceneService {
     }
 
     public Scene updateScene(Scene scene) {
-        return sceneRepo.save(scene);
+        if (sceneRepo.findById(scene.getId()).isPresent()) {
+            sceneRepo.save(scene);
+            return scene;
+        }
+        return null;
     }
 
     public Optional<Scene> findSceneByID(String id) {
