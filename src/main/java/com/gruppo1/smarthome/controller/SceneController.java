@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -51,7 +52,7 @@ public class SceneController {
     //TODO: 500 INTERNAL ERROR
     public ResponseEntity<Scene> updateScene(@RequestBody Scene scene) {
         Scene updatedScene = sceneService.updateScene(scene);
-        return (updatedScene != null) ? new ResponseEntity<>(updatedScene, HttpStatus.OK) : new ResponseEntity<>(updatedScene, HttpStatus.OK);
+        return Objects.nonNull(updatedScene) ? new ResponseEntity<>(updatedScene, HttpStatus.OK) : new ResponseEntity<>(updatedScene, HttpStatus.NOT_FOUND);
 
     }
 

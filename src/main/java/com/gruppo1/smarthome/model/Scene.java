@@ -16,7 +16,7 @@ public class Scene implements Serializable {
     @Column(nullable = false)
     private Boolean status;
 
-    @OneToMany(mappedBy = "scene", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
     private List<Conditions> conditions;
 
     public String getId(){
