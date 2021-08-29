@@ -1,9 +1,6 @@
 package com.gruppo1.smarthome.model;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,10 +8,12 @@ import java.util.List;
 @Entity
 public class Room implements Serializable {
 
+    @JsonIgnore
     @Id
+    @Column(updatable = false)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "room")
