@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
+import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.service.SceneService;
 import io.swagger.annotations.Api;
@@ -30,8 +31,8 @@ public class SceneController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Scene>> getAllScenes() {
-        List<Scene> scenes = sceneService.findAllScene();
-        return new ResponseEntity<>(scenes, HttpStatus.OK);
+        Iterable<Scene> scenes = sceneService.findAllScene();
+        return new ResponseEntity(scenes, HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")
@@ -66,7 +67,7 @@ public class SceneController {
         return new ResponseEntity<>(newScene, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteScene/{id}")
+    @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Delete scene by ID", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
@@ -75,4 +76,25 @@ public class SceneController {
     public ResponseEntity<?> deleteScene(@PathVariable("id") String id) {
         return sceneService.deleteScene(id) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/addDevice/{sceneName}/{deviceName}")
+    public ResponseEntity<Optional<Device>> addDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
+        Optional<Device> device = sceneService.addDevice(sceneName, deviceName);
+        return device.isPresent() ?
+                new ResponseEntity<>(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/removeDevice/{sceneName}/{deviceName}")
+    public ResponseEntity<Optional<Device>> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
+        Optional<Device> device = sceneService.removeDevice(sceneName, deviceName);
+        return device.isPresent() ?
+                new ResponseEntity<>(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/findDevices/{sceneName}")
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName){
+        List<Device> devices = sceneService.findDevices(sceneName);
+        return devices.size() > 0 ?  new ResponseEntity<>(devices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -10,7 +10,7 @@ public class Scene implements Serializable {
     @Id
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -42,5 +42,9 @@ public class Scene implements Serializable {
     public void setStatus(Boolean status){
         this.status = status;
     }
+
+    public void addCondition(Conditions condition){this.conditions.add(condition);}
+
+    public void removeCondition(Conditions condition){this.conditions.remove(condition);}
 
 }

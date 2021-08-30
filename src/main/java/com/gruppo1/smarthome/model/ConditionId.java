@@ -12,27 +12,29 @@ public class ConditionId implements Serializable {
     @Column(name = "scene_id")
     private String sceneId;
 
-    public ConditionId() {}
-
     public ConditionId(String idDevice, String idScene) {
         this.deviceId = idDevice;
         this.sceneId = idScene;
     }
 
-    public String getIdDevice() {
+    public ConditionId() {
+
+    }
+
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setIdDevice(String idDevice) {
-        this.deviceId = idDevice;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
-    public String getIdScene() {
+    public String getSceneId() {
         return sceneId;
     }
 
-    public void setIdScene(String idScene) {
-        this.sceneId = idScene;
+    public void setSceneId(String sceneId) {
+        this.sceneId = sceneId;
     }
 
     @Override

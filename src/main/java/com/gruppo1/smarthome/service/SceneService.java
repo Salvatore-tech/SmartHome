@@ -1,6 +1,9 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.model.Conditions;
+import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
+import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,19 +15,23 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SceneService {
-    private final SceneRepo sceneRepo;
-
     @Autowired
-    public SceneService(SceneRepo sceneRepo) {
+    private final SceneRepo sceneRepo;
+    @Autowired
+    private final DeviceRepo deviceRepo;
+
+    public SceneService(SceneRepo sceneRepo, DeviceRepo deviceRepo) {
         this.sceneRepo = sceneRepo;
+        this.deviceRepo = deviceRepo;
     }
+
 
     public Scene addScene(Scene scene) {
         return sceneRepo.save(scene);
     }
 
-    public List<Scene> findAllScene() {
-        return (List<Scene>) sceneRepo.findAll();
+    public Iterable<Scene> findAllScene() {
+        return sceneRepo.findAll();
     }
 
     public Scene updateScene(Scene scene) {
@@ -47,4 +54,33 @@ public class SceneService {
         }
         return false;
     }
+
+    public Optional<Device> addDevice(String sceneName, String deviceName) {
+        Optional<Scene> scene = sceneRepo.findByName(sceneName);
+        Optional<Device> device = deviceRepo.findByName(deviceName);
+        //TODO: check if already present (duplicate foreign key)
+        if (scene.isPresent() && device.isPresent()) {
+            scene.get().addCondition(new Conditions(device.get(), scene.get()));
+        }
+        //TODO: change return value
+        return device;
+    }
+
+    //Thread starvation/clock leap?
+    public Optional<Device> removeDevice(String sceneName, String deviceName) {
+        Optional<Scene> scene = sceneRepo.findByName(sceneName);
+        Optional<Device> device = deviceRepo.findByName(deviceName);
+        if (scene.isPresent() && device.isPresent()) {
+            scene.get().removeCondition(new Conditions(device.get(), scene.get()));
+        }
+        return device;
+    }
+
+    public List<Device> findDevices(String sceneName) {
+        Optional<Scene> scene = sceneRepo.findByName(sceneName);
+        List<Device> devices = sceneRepo.findAllDevices(scene);
+        return devices;
+    }
+
+
 }

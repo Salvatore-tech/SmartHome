@@ -9,7 +9,7 @@ public class Device implements Serializable {
     @Id
     @Column(nullable = false, updatable = false)
     private String id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false)
     private Boolean status;

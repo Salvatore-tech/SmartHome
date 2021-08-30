@@ -8,7 +8,7 @@ import java.util.Date;
 public class Conditions implements Serializable {
 
     @EmbeddedId
-    private ConditionId conditionId;
+    private ConditionId conditionId = new ConditionId();
     private Date activationDate;
     private String period;
     private Double threshold;
@@ -32,6 +32,11 @@ public class Conditions implements Serializable {
         this.conditionId = conditionId;
         this.activationDate = activationDate;
         this.threshold = threshold;
+    }
+
+    public Conditions(Device device, Scene scene) {
+        this.device = device;
+        this.scene = scene;
     }
 
     public ConditionId getConditionId() {
