@@ -48,7 +48,7 @@ public class RoomController {
     public ResponseEntity<Optional<Room>> getRoomById(@ApiParam(value = "Room ID", required = true)
                                                           @PathVariable("name") String name){
         Optional<Room> room = roomService.findRoomByName(name);
-        return new ResponseEntity<>(room, HttpStatus.OK);
+        return room.isPresent()? new ResponseEntity<>(room, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{name}")
