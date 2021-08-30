@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,11 +21,13 @@ public class RoomService {
         this.roomRepo = roomRepo;
     }
 
-    public List<Room> findAllRoom() {
-        return (List<Room>) roomRepo.findAll();
+    public Iterable<Room> findAllRoom() {
+        return roomRepo.findAll();
     }
 
     public Room addRoom(Room room) {
+        if(roomRepo.findByName(room.getName()).isPresent())
+            return null;
         room.setId(UUID.randomUUID().toString());
         return roomRepo.save(room);
     }
@@ -34,39 +37,42 @@ public class RoomService {
     }
 
     public Boolean deleteRoom(String name) {
-        //TODO
+        List<Device> devices = findDevices(name);
+        if(!Objects.nonNull(devices) || name.equals("Default"))
+            return false;
+        for(Device device: devices){
+            device.setRoom(roomRepo.findByName("Default").get());
+        }
         roomRepo.deleteRoomByName(name);
         return true;
     }
 
     public Room updateRoom(String name, Room room) {
         Optional<Room> oldRoom = roomRepo.findByName(name);
-        if(oldRoom.isPresent()){
-            room.setId(oldRoom.get().getId());
-        }
+        if(!oldRoom.isPresent() || name.equals("Default"))
+            return null;
+        room.setId(oldRoom.get().getId());
         return roomRepo.save(room);
+
+
     }
 
     public Optional<Device> addDevice(String nameDevice, String nameRoom){
-        Optional<Device> device = changeRoom(nameDevice, nameRoom);
-        return device.isPresent() ? device : null;
+        return changeRoom(nameDevice, nameRoom);
     }
 
     public Optional<Device> deleteDevice(String nameDevice){
-        Optional<Device> device = changeRoom(nameDevice, "Default");
-        return device.isPresent() ? device : null;
+        return changeRoom(nameDevice, "Default");
     }
 
-    public Optional<List<Device>> findDevices(String nameRoom){
+    public List<Device> findDevices(String nameRoom){
         Optional<Room> room = roomRepo.findByName(nameRoom);
         return room.isPresent() ? roomRepo.findAllDevices(nameRoom) : null;
     }
 
     private Optional<Device> changeRoom(String nameDevice, String nameRoom){
         Optional<Room> room = roomRepo.findByName(nameRoom);
-        System.out.println(room);
         Optional<Device> device = roomRepo.findDeviceByName(nameDevice);
-        System.out.println(device);
         if(room.isPresent() && device.isPresent()){
             device.get().setRoom(room.get());
             return device;

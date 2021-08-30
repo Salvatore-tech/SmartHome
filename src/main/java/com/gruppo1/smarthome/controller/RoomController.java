@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -26,8 +27,8 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Room>> getAllRooms(){
-        List<Room> rooms = roomService.findAllRoom();
-        return new ResponseEntity<>(rooms, HttpStatus.OK);
+        Iterable<Room> rooms = roomService.findAllRoom();
+        return new ResponseEntity(rooms, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -35,10 +36,12 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Room Added"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 409, message = "Conflict"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Room> addRoom(@RequestBody Room room){
         Room newRoom = roomService.addRoom(room);
-        return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
+        return Objects.nonNull(newRoom) ?
+                new ResponseEntity<>(newRoom, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @GetMapping("/find/{name}")
@@ -69,18 +72,19 @@ public class RoomController {
             @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<Room> updateRoom(@PathVariable("name") String name, @RequestBody Room room){
         Room updatedRoom = roomService.updateRoom(name, room);
-        return new ResponseEntity<>(updatedRoom, HttpStatus.OK);
+        return Objects.nonNull(updatedRoom) ?
+                new ResponseEntity<>(updatedRoom, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/addDevice/{nameRoom}")
+    @PostMapping("/addDevice/{nameRoom}/{nameDevice}")
     @ApiOperation(value = "Add device in a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Device added"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Optional<Device>> addDevice(@PathVariable("nameRoom") String nameRoom, @RequestBody String nameDevice){
+    public ResponseEntity<Optional<Device>> addDevice(@PathVariable("nameRoom") String nameRoom, @PathVariable("nameDevice") String nameDevice){
         Optional<Device> device = roomService.addDevice(nameDevice, nameRoom);
-        return device.isPresent() ?
+        return device != null ?
                 new ResponseEntity<>(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -89,9 +93,10 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return list devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Optional<List<Device>>> findDevices(@PathVariable("nameRoom") String nameRoom){
-        Optional<List<Device>> listDevices = roomService.findDevices(nameRoom);
-        return new ResponseEntity<>(listDevices, HttpStatus.OK);
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("nameRoom") String nameRoom){
+        List<Device> listDevices = roomService.findDevices(nameRoom);
+        return Objects.nonNull(listDevices) ?
+                new ResponseEntity<>(listDevices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping ("/deleteDevice/{nameDevice}")
@@ -103,7 +108,7 @@ public class RoomController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Optional<Device>> deleteDevice(@PathVariable("nameDevice") String nameDevice){
         Optional<Device> device = roomService.deleteDevice(nameDevice);
-        return device.isPresent() ?
+        return device != null ?
                 new ResponseEntity<>(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

@@ -13,10 +13,17 @@ public interface RoomRepo extends CrudRepository<Room, String> {
 
     Optional<Room> findByName(String name);
 
+    /* OLD QUERY
+
     @Query("select d from Device d where d.room.name = :name")
-    Optional<List<Device>> findAllDevices(@Param("name") String name);
+    List<Device> findAllDevices(@Param("name") String name);
+
+     */
 
     @Query("select d from Device d where d.name = :nameDevice")
     Optional<Device> findDeviceByName(@Param("nameDevice") String nameDevice);
+
+    @Query("select r.devices from Room r where r.name = :name")
+    List<Device> findAllDevices(@Param("name") String name);
 
 }
