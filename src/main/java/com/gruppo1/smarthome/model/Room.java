@@ -34,4 +34,9 @@ public class Room implements Serializable {
     public void setName(String name){
         this.name = name;
     }
+
+    public void addDevice(Device device) {this.devices.add(device);}
+
+    public void removeDevice(Device device) { this.devices.remove(device); }
+
 }
