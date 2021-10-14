@@ -5,6 +5,7 @@ import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +27,7 @@ public class RoomService {
     }
 
     public Room addRoom(Room room) {
-        if(roomRepo.findByName(room.getName()).isPresent())
+        if (roomRepo.findByName(room.getName()).isPresent())
             return null;
         room.setId(UUID.randomUUID().toString());
         return roomRepo.save(room);
@@ -38,44 +39,42 @@ public class RoomService {
 
     public Boolean deleteRoom(String name) {
         List<Device> devices = findDevices(name);
-        if(!Objects.nonNull(devices) || name.equals("Default"))
+        if (!Objects.nonNull(devices) || name.equals("Default"))
             return false;
-        for(Device device: devices){
+        for (Device device : devices) {
             device.setRoom(roomRepo.findByName("Default").get());
         }
         roomRepo.deleteRoomByName(name);
         return true;
     }
 
-    public Room updateRoom(String name, Room room) {
+    public Room updateRoom(String name, Room newRoom) {
         Optional<Room> oldRoom = roomRepo.findByName(name);
-        if(!oldRoom.isPresent() || name.equals("Default"))
+        if (!oldRoom.isPresent() || name.equals("Default") || roomRepo.findByName(newRoom.getName()).isPresent()) // TODO: move this check away
             return null;
-        room.setId(oldRoom.get().getId());
-        return roomRepo.save(room);
-
-
+        oldRoom.get().setName(newRoom.getName());
+        return oldRoom.get();
     }
 
-    public Optional<Device> addDevice(String nameDevice, String nameRoom){
+    public Device addDevice(String nameDevice, String nameRoom) {
         return changeRoom(nameDevice, nameRoom);
     }
 
-    public Optional<Device> deleteDevice(String nameDevice){
+    public Device deleteDevice(String nameDevice) {
         return changeRoom(nameDevice, "Default");
     }
 
-    public List<Device> findDevices(String nameRoom){
+    public List<Device> findDevices(String nameRoom) {
         Optional<Room> room = roomRepo.findByName(nameRoom);
         return room.isPresent() ? roomRepo.findAllDevices(nameRoom) : null;
     }
 
-    private Optional<Device> changeRoom(String nameDevice, String nameRoom){
-        Optional<Room> room = roomRepo.findByName(nameRoom);
-        Optional<Device> device = roomRepo.findDeviceByName(nameDevice);
-        if(room.isPresent() && device.isPresent()){
+    private Device changeRoom(String deviceName, String roomName) {
+        Optional<Room> room = roomRepo.findByName(roomName);
+        Optional<Device> device = roomRepo.findDeviceByName(deviceName);
+        if (room.isPresent() && device.isPresent()) {
             device.get().setRoom(room.get());
-            return device;
+            return device.get();
         }
         return null;
     }
