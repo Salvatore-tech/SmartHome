@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +12,9 @@ public class Room implements Serializable {
 
     @JsonIgnore
     @Id
-    @Column(updatable = false)
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @Column(nullable = false, updatable = false)
     private String id;
 
     @Column(nullable = false, unique = true)

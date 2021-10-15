@@ -1,6 +1,9 @@
 package com.gruppo1.smarthome.model;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -10,6 +13,8 @@ public class Profile implements Serializable {
 
 
     @Id
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
     @Column(nullable = false)

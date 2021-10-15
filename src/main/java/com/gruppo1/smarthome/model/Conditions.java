@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -8,6 +10,9 @@ import java.util.Date;
 public class Conditions implements Serializable {
 
     @EmbeddedId
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @Column(nullable = false, updatable = false)
     private ConditionId conditionId = new ConditionId();
     private Date activationDate;
     private String period;

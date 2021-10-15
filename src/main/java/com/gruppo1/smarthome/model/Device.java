@@ -1,4 +1,6 @@
 package com.gruppo1.smarthome.model;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -7,6 +9,8 @@ import java.io.Serializable;
 public class Device implements Serializable {
 
     @Id
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
     @Column(nullable = false, unique = true)
