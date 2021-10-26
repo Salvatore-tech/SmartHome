@@ -7,6 +7,8 @@ import java.util.Optional;
 
 
 public interface DeviceRepo extends CrudRepository<Device, String> {
-    void deleteDeviceById(String id);
+
+    void deleteDeviceByName(String name);
+
     Optional<Device> findByName(String deviceName);
 }
