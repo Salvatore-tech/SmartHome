@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -20,6 +21,9 @@ public class DeviceService {
     }
 
     public Device addDevice(Device device) {
+        if (deviceRepo.findByName(device.getName()).isPresent())
+            return null;
+        device.setId(UUID.randomUUID().toString());
         return deviceRepo.save(device);
     }
 
@@ -27,17 +31,27 @@ public class DeviceService {
         return (List<Device>) deviceRepo.findAll();
     }
 
-    public Optional<Device> findDeviceByID(String id){
-        return deviceRepo.findById(id);
+    public Optional<Device> findDeviceByName(String name) {
+        return deviceRepo.findByName(name);
     }
 
     public Device updateDevice(Device device){
-        return deviceRepo.save(device);
+        if (deviceRepo.findByName(device.getName()).isPresent()) {
+            deviceRepo.save(device);
+            return device;
+        }
+        return null;
     }
 
-    public void deleteDevice(String id){
-        deviceRepo.deleteDeviceById(id);
+    public Boolean deleteDevice(String name){
+        Optional<Device> device = deviceRepo.findByName(name);
+        if(device.isPresent()){
+            deviceRepo.deleteDeviceByName(name);
+            return true;
+        }
+        return false;
     }
+
 
     public long countDevices(){
         return deviceRepo.count();

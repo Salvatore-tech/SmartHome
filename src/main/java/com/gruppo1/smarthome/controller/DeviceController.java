@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -29,8 +30,8 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Device>> getAllDevices(){
-        List<Device> devices = deviceService.findAllDevices();
-        return new ResponseEntity<>(devices, HttpStatus.OK);
+        Iterable<Device> devices = deviceService.findAllDevices();
+        return new ResponseEntity(devices, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -44,35 +45,38 @@ public class DeviceController {
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
     }
 
-    @GetMapping("/find/{id}")
-    @ApiOperation(value = "Find device by ID", tags = {"Device"})
+    @GetMapping("/find/{name}")
+    @ApiOperation(value = "Find device by name", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return device"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Optional<Device>> getDeviceById(@ApiParam(value = "Device ID", required = true)
-                                                              @PathVariable("id") String id){
-        Optional<Device> device = deviceService.findDeviceByID(id);
-        return new ResponseEntity<>(device, HttpStatus.OK);
+    public ResponseEntity<Optional<Device>> getDeviceByName(@ApiParam(value = "Device ID", required = true)
+                                                              @PathVariable("name") String name){
+        Optional<Device> device = deviceService.findDeviceByName(name);
+        return device.isPresent()? new ResponseEntity<>(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "Delete device by ID", tags = {"Device"})
+    @DeleteMapping("/delete/{name}")
+    @ApiOperation(value = "Delete device by name", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device ID", required = true)
-                                              @PathVariable("id") String id){
-        deviceService.deleteDevice(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+                                              @PathVariable("name") String name){
+        return deviceService.deleteDevice(name) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{name}")
     @ApiOperation(value = "Update device", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Device> updateDevice(@RequestBody Device device){
+    public ResponseEntity<Device> updateDevice(@PathVariable("name") String name, @RequestBody Device device){
         Device updatedDevice = deviceService.updateDevice(device);
-        return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
+        //return Objects.nonNull(updatedDevice) ? new ResponseEntity<>(updatedDevice, HttpStatus.OK) : new ResponseEntity<>(updatedDevice, HttpStatus.NOT_FOUND);
+        return Objects.nonNull(updatedDevice) ?
+                new ResponseEntity<>(updatedDevice, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       // return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
     }
 
     @GetMapping("/count")
