@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 
 @Entity
-public class Device implements Serializable {
+public abstract class Device implements Serializable {
 
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -17,6 +17,8 @@ public class Device implements Serializable {
     private String name;
     @Column(nullable = false)
     private Boolean status;
+    @Column(nullable = false)
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
@@ -45,6 +47,10 @@ public class Device implements Serializable {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+    public void setType(String type){this.type = type;}
+
+    public String getType(){return type;}
 
     public Room getRoom() {
         return room;
