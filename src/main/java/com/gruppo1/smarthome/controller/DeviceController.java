@@ -3,6 +3,8 @@ package com.gruppo1.smarthome.controller;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +42,17 @@ public class DeviceController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> addDevice(@RequestBody Device device){
-        Device newDevice = deviceService.addDevice(device);
+    public ResponseEntity<Device> addDevice(@RequestBody String inputJson) throws JSONException {
+        JSONObject jsonObj = new JSONObject(inputJson);
+        JSONObject deviceObj = (JSONObject)jsonObj.get("device");
+        Boolean status = true;
+        if(deviceObj.get("status").equals("true")){
+            status = true;
+        }else{
+            status = false;
+        }
+        Device deviceToPass = new Device("",(String)deviceObj.get("name"), status);
+        Device newDevice = deviceService.addDevice(deviceToPass, (String)jsonObj.get("room"));
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
     }
 

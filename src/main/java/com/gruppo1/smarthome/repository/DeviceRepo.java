@@ -13,5 +13,8 @@ public interface DeviceRepo extends CrudRepository<Device, String> {
 
     void deleteDeviceByName(String name);
 
+    @Query("select r from Room r where  r.name = :nameRoom")
+    Optional<Room> findRoomByName(@Param("nameRoom") String nameRoom);
+
     Optional<Device> findByName(String deviceName);
 }

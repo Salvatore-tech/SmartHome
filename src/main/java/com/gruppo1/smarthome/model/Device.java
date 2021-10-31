@@ -22,6 +22,15 @@ public class Device implements Serializable {
     @JoinColumn(name = "room_id", nullable = true)
     private Room room;
 
+    public Device(String id, String name, Boolean status) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+    }
+
+    public Device() {
+    }
+
     public String getId() {
         return id;
     }

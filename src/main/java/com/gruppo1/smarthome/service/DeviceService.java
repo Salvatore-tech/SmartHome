@@ -19,10 +19,15 @@ public class DeviceService {
         this.deviceRepo = deviceRepo;
     }
 
-    public Device addDevice(Device device) {
-        if (deviceRepo.findByName(device.getName()).isPresent())
+    public Device addDevice(Device device, String roomName) {
+        if(deviceRepo.findByName(device.getName()).isPresent()) {
             return null;
-//        device.setId(UUID.randomUUID().toString());
+        }
+        if(deviceRepo.findRoomByName(roomName).isPresent()){
+            device.setRoom(deviceRepo.findRoomByName(roomName).get());
+        }else{
+            return null;
+        }
         return deviceRepo.save(device);
     }
 
