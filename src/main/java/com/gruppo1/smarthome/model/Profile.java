@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 
 @Entity
-public class Profile implements Serializable {
+public class Profile extends SmartHomeItem implements Serializable {
 
 
     @Id

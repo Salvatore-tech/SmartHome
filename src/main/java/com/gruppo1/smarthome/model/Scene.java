@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Scene implements Serializable {
+public class Scene extends SmartHomeItem implements Serializable {
 
     @Id
     @GeneratedValue(generator="system-uuid")

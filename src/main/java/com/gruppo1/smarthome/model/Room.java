@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Entity
-public class Room implements Serializable {
+public class Room extends SmartHomeItem implements Serializable {
 
     @JsonIgnore
     @Id

@@ -7,11 +7,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Conditions implements Serializable {
+public class Conditions extends SmartHomeItem implements Serializable {
 
     @EmbeddedId
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private ConditionId conditionId = new ConditionId();
     private Date activationDate;
