@@ -27,8 +27,30 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Room>> getAllRooms() {
-        Iterable<Room> rooms = roomService.findAllRoom();
-        return new ResponseEntity(rooms, HttpStatus.OK);
+        return new ResponseEntity(roomService.findAllRoom(), HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/find/{name}")
+    @ApiOperation(value = "Find room by name", tags = {"Room"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return room"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
+    public ResponseEntity<Optional<Room>> getRoomById(@ApiParam(value = "Room ID", required = true)
+                                                      @PathVariable("name") String name) {
+        Room room = roomService.findRoomByName(name);
+        return Objects.nonNull(room) ? new ResponseEntity(room, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/update/{name}")
+    @ApiOperation(value = "Update room", tags = {"Room"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Room updated"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<Room> updateRoom(@PathVariable("name") String name, @RequestBody Room updatedRoom) {
+        Room result = roomService.updateRoom(name, updatedRoom);
+        return Objects.nonNull(updatedRoom) ?
+                new ResponseEntity<>(updatedRoom, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/add")
@@ -44,16 +66,6 @@ public class RoomController {
                 new ResponseEntity<>(newRoom, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @GetMapping("/find/{name}")
-    @ApiOperation(value = "Find room by name", tags = {"Room"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return room"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Optional<Room>> getRoomById(@ApiParam(value = "Room ID", required = true)
-                                                      @PathVariable("name") String name) {
-        Optional<Room> room = roomService.findRoomByName(name);
-        return room.isPresent() ? new ResponseEntity<>(room, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
     @DeleteMapping("/delete/{name}")
     @ApiOperation(value = "Delete room by name", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Room deleted"),
@@ -61,21 +73,15 @@ public class RoomController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<?> deleteRoom(@ApiParam(value = "Room ID", required = true)
                                         @PathVariable("name") String name) {
-        return roomService.deleteRoom(name) ?
-                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return roomService.deleteRoom(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update/{name}")
-    @ApiOperation(value = "Update room", tags = {"Room"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Room updated"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
-            @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Room> updateRoom(@PathVariable("name") String name, @RequestBody Room room) {
-        Room updatedRoom = roomService.updateRoom(name, room);
-        return Objects.nonNull(updatedRoom) ?
-                new ResponseEntity<>(updatedRoom, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
+
+
+
+
+    // TODO SS: not yet implemented
     @PostMapping("/addDevice/{roomName}/{deviceName}")
     @ApiOperation(value = "Add device in a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Device added"),

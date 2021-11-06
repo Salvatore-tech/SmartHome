@@ -31,28 +31,27 @@ public class SceneController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Scene>> getAllScenes() {
-        Iterable<Scene> scenes = sceneService.findAllScene();
-        return new ResponseEntity(scenes, HttpStatus.OK);
+        return new ResponseEntity(sceneService.findAllScene(), HttpStatus.OK);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/find/{name}")
     @ApiOperation(value = "Find scene by ID", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scene"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Optional<Scene>> getSceneById(@PathVariable("id") String id) {
-        Optional<Scene> scene = sceneService.findSceneByID(id);
-        return scene.isPresent() ? new ResponseEntity<>(scene, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Optional<Scene>> getSceneById(@PathVariable("name") String name) {
+        Scene scene = sceneService.findSceneByName(name);
+        return Objects.nonNull(scene) ? new ResponseEntity(scene, HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{name}")
     @ApiOperation(value = "Update scene", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     //TODO: 500 INTERNAL ERROR
-    public ResponseEntity<Scene> updateScene(@RequestBody Scene scene) {
-        Scene updatedScene = sceneService.updateScene(scene);
+    public ResponseEntity<Scene> updateScene(@PathVariable("name") String name, @RequestBody Scene updatedScene) {
+        Scene result = sceneService.updateScene(name, updatedScene);
         return Objects.nonNull(updatedScene) ? new ResponseEntity<>(updatedScene, HttpStatus.OK) : new ResponseEntity<>(updatedScene, HttpStatus.NOT_FOUND);
 
     }
@@ -67,16 +66,17 @@ public class SceneController {
         return new ResponseEntity<>(newScene, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{name}")
     @ApiOperation(value = "Delete scene by ID", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     //TODO: remove id in the URL
-    public ResponseEntity<?> deleteScene(@PathVariable("id") String id) {
-        return sceneService.deleteScene(id) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteScene(@PathVariable("name") String name) {
+        return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // TODO SS: not yet implemented
     @PostMapping("/addDevice/{sceneName}/{deviceName}")
     public ResponseEntity<Optional<Device>> addDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
         Optional<Device> device = sceneService.addDevice(sceneName, deviceName);
