@@ -7,10 +7,9 @@ import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.json.*;
 import java.util.List;
 import java.util.Objects;
-
 
 // http://localhost:8080/device/all
 // http://localhost:8080/swagger-ui.html#/
@@ -39,8 +38,9 @@ public class DeviceController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> addDevice(@RequestBody Device device) {
-        Device newDevice = (Device) deviceService.addDevice(device);
+    public ResponseEntity<Device> addDevice(@RequestBody String deviceString) throws JSONException {
+        JSONObject device = new JSONObject(deviceString);
+        Device newDevice = deviceService.addDevice(device);
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
     }
 
@@ -74,7 +74,6 @@ public class DeviceController {
         Device result = deviceService.updateDevice(name, updatedDevice);
         return Objects.nonNull(result) ?
                 new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
     }
 
     @GetMapping("/count")

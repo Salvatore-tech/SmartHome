@@ -16,72 +16,53 @@ VALUES ('DPVC-4769', 'Bedroom3');
 INSERT INTO room(id, name)
 VALUES ('UAAT-5485', 'Living');
 
-INSERT INTO room(name)
-VALUES ('Bedroom4');
+INSERT INTO room(id, name)
+VALUES ('ZUQJ-9281','Bedroom4');
 
 INSERT INTO room(id, name)
 VALUES ('QXFG-5409', 'Bathroom2');
 
+INSERT INTO room(id, name)
+VALUES ('_DEF-0000', 'Default');
+
+
 /* DEVICE */
-INSERT INTO device(id, name, status, room_id)
-VALUES ('PCRM-6254', 'Vacuum', 'true', 'DPVC-4769');
+/*INSERT INTO speaker(id, name, status, type, volume, room_id)
+VALUES ('PCRM-6254', 'Speaker', 'true', 'speaker', 20, 'DPVC-4769');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('JGLZ-6650', 'Television', 'true', 'ZUQJ-9281');
+INSERT INTO device(id, name, status, type, room_id)
+VALUES ('PCRM-6254', 'Speaker', 'true', 'speaker', 'DPVC-4769');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('AMYJ-6823', 'Vacuum', 'true', 'ZUQJ-9281');
+INSERT INTO speaker(volume, id)
+VALUES (20, 'PCRM-6254');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('RMVZ-0994', 'Light bulb', 'true', 'TRHE-4606');
+INSERT INTO television(id, name, status, type, room_id)
+VALUES ('JGLZ-6650', 'Television', 'true', 'television', 'ZUQJ-9281');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('YZQS-8865', 'Conditioner', 'false', 'QXFG-5409');
+INSERT INTO speaker(id, name, status, type, room_id)
+VALUES ('AMYJ-6823', 'Speaker2', 'true', 'speaker', 'ZUQJ-9281');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('SXQT-1887', 'Light bulb', 'false', 'ZUQJ-9281');
+INSERT INTO lightbulb(id, name, status, type, room_id)
+VALUES ('RMVZ-0994', 'Light bulb', 'true', 'lightbulb', 'TRHE-4606');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('JPDV-0784', 'Television', 'false', 'XUZC-2250');
+INSERT INTO conditioner(id, name, status, type, room_id)
+VALUES ('YZQS-8865', 'Conditioner', 'false', 'conditioner', 'QXFG-5409');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('FIIE-9288', 'Vacuum', 'true', 'TRHE-4606');
+INSERT INTO lightbulb(id, name, status, type, room_id)
+VALUES ('SXQT-1887', 'Light bulb2', 'false', 'lightbulb', 'ZUQJ-9281');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('NWKI-0073', 'Vacuum', 'false', 'UAAT-5485');
+INSERT INTO television(id, name, status, type, room_id)
+VALUES ('JPDV-0784', 'Television2', 'false', 'television', 'XUZC-2250');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('RSML-7282', 'Conditioner', 'false', 'UAAT-5485');
+INSERT INTO alarmclock(id, name, status, type, room_id)
+VALUES ('FIIE-9288', 'Alarm Clock', 'true', 'alarmclock', 'TRHE-4606');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('XCYP-9524', 'Alarm clock', 'false', 'QXFG-5409');
+INSERT INTO alarmclock(id, name, status, type, room_id)
+VALUES ('NWKI-0073', 'Alarm Clock2', 'false', 'alarmclock', 'UAAT-5485');
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('BZRQ-5070', 'Conditioner', 'true', 'QXFG-5409');
+INSERT INTO conditioner(id, name, status, type, room_id)
+VALUES ('RSML-7282', 'Conditioner', 'false', 'conditioner', 'UAAT-5485');*/
 
-INSERT INTO device(id, name, status, room_id)
-VALUES ('JRRT-8956', 'Alarm clock', 'false', 'DPVC-4769');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('NQHW-1220', 'Alarm clock', 'true', 'UAAT-5485');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('LVAL-1828', 'Vacuum', 'true', 'QXFG-5409');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('XYQW-2381', 'Thermostat', 'true', 'QXFG-5409');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('FVNP-2689', 'Vacuum', 'false', 'ZUQJ-9281');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('EUOB-7427', 'Conditioner', 'false', 'TRHE-4606');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('OWOD-0897', 'Conditioner', 'false', 'DPVC-4769');
-
-INSERT INTO device(id, name, status, room_id)
-VALUES ('KBNF-3574', 'Thermostat', 'false', 'QXFG-5409');
 
 
 /* SCENE */

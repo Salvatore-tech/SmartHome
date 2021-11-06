@@ -1,11 +1,11 @@
 package com.gruppo1.smarthome.model;
 
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Device extends SmartHomeItem implements Serializable  {
 
     @Id
@@ -17,6 +17,8 @@ public class Device extends SmartHomeItem implements Serializable  {
     private String name;
     @Column(nullable = false)
     private Boolean status;
+    @Column(nullable = false)
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
@@ -44,6 +46,14 @@ public class Device extends SmartHomeItem implements Serializable  {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public Room getRoom() {

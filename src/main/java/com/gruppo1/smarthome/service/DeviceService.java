@@ -3,9 +3,11 @@ package com.gruppo1.smarthome.service;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.FactoryDevice;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -20,13 +22,16 @@ public class DeviceService {
         this.operationExecutor = operationExecutor;
     }
 
-    public Device addDevice(Device device) {
-//        if (deviceRepo.findByName(device.getName()).isPresent())
-//            return null;
-////        device.setId(UUID.randomUUID().toString());
-//        return deviceRepo.save(device);
+    public Device addDevice(JSONObject device) throws JSONException {
         //TODO check if already exists
-        return (Device) operationExecutor.execute(new AddOperationImpl(), device);
+
+        FactoryDevice factory = new FactoryDevice();
+        Device newDevice = factory.getDevice(device.get("type").toString().toLowerCase());
+        newDevice.setName(device.get("name").toString());
+        newDevice.setStatus(Boolean.parseBoolean(device.get("status").toString()));
+        newDevice.setType(device.get("type").toString());
+        newDevice.setRoom(null);
+        return (Device) operationExecutor.execute(new AddOperationImpl(), newDevice);
     }
 
     public List<Device> findAllDevices() {
