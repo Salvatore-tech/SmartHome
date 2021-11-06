@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.controller;
 
 import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 // http://localhost:8080/device/all
@@ -29,9 +29,8 @@ public class DeviceController {
     @ApiOperation(value = "List all devices installed", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Device>> getAllDevices(){
-        Iterable<Device> devices = deviceService.findAllDevices();
-        return new ResponseEntity(devices, HttpStatus.OK);
+    public ResponseEntity<List<Device>> getAllDevices() {
+        return new ResponseEntity<>(deviceService.findAllDevices(), HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -40,19 +39,19 @@ public class DeviceController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> addDevice(@RequestBody Device device){
-        Device newDevice = deviceService.addDevice(device);
+    public ResponseEntity<Device> addDevice(@RequestBody Device device) {
+        Device newDevice = (Device) deviceService.addDevice(device);
         return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{name}")
-    @ApiOperation(value = "Find device by name", tags = {"Device"})
+    @ApiOperation(value = "Find device", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return device"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Optional<Device>> getDeviceByName(@ApiParam(value = "Device ID", required = true)
-                                                              @PathVariable("name") String name){
-        Optional<Device> device = deviceService.findDeviceByName(name);
-        return device.isPresent()? new ResponseEntity<>(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<SmartHomeItem>> getDeviceByName(@ApiParam(value = "Device name", required = true)
+                                                               @PathVariable("name") String name) {
+       Device device = deviceService.findDeviceByName(name);
+        return Objects.nonNull(device) ? new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{name}")
@@ -61,8 +60,8 @@ public class DeviceController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device ID", required = true)
-                                              @PathVariable("name") String name){
-        return deviceService.deleteDevice(name) ?
+                                          @PathVariable("name") String name) {
+        return deviceService.deleteDevice(name).equals(1) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -71,19 +70,18 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Device> updateDevice(@PathVariable("name") String name, @RequestBody Device device){
-        Device updatedDevice = deviceService.updateDevice(device);
-        //return Objects.nonNull(updatedDevice) ? new ResponseEntity<>(updatedDevice, HttpStatus.OK) : new ResponseEntity<>(updatedDevice, HttpStatus.NOT_FOUND);
-        return Objects.nonNull(updatedDevice) ?
-                new ResponseEntity<>(updatedDevice, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       // return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
+    public ResponseEntity<Device> updateDevice(@PathVariable("name") String name, @RequestBody Device updatedDevice) {
+        Device result = deviceService.updateDevice(name, updatedDevice);
+        return Objects.nonNull(result) ?
+                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
     }
 
     @GetMapping("/count")
     @ApiOperation(value = "Count devices", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity countDevices(){
+    public ResponseEntity countDevices() {
         long devices = deviceService.countDevices();
         return new ResponseEntity(devices, HttpStatus.OK);
     }

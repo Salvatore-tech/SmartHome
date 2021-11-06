@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.crud.beans;
 
+import com.gruppo1.smarthome.crud.api.GenericRepository;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Profile;
 import com.gruppo1.smarthome.model.Room;
@@ -11,7 +12,6 @@ import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,7 +29,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
         this.context = context;
     }
 
-    public static CrudRepository getRepository(Object item) {
+    public static GenericRepository getRepository(Object item) {
         if (item instanceof Device || item.getClass().getName().contains("Device")) {
             return context.getBean(DeviceRepo.class);
         } else if (item instanceof Room || item.getClass().getName().contains("Room")) {

@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.repository.RoomRepo;
@@ -10,51 +12,64 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Transactional
 public class RoomService {
+    private CrudOperationExecutor operationExecutor;
     private final RoomRepo roomRepo;
 
     @Autowired
-    public RoomService(RoomRepo roomRepo) {
+    public RoomService(RoomRepo roomRepo, CrudOperationExecutor operationExecutor) {
         this.roomRepo = roomRepo;
-    }
-
-    public Iterable<Room> findAllRoom() {
-        return roomRepo.findAll();
+        this.operationExecutor = operationExecutor;
     }
 
     public Room addRoom(Room room) {
-        if (roomRepo.findByName(room.getName()).isPresent())
-            return null;
-        room.setId(UUID.randomUUID().toString());
-        return roomRepo.save(room);
+        //TODO SS: check if already exists
+        return (Room) operationExecutor.execute(new AddOperationImpl(), room);
     }
 
-    public Optional<Room> findRoomByName(String name) {
-        return roomRepo.findByName(name);
+    public List<Room> findAllRoom() {
+        return (List<Room>) operationExecutor.execute(new GetOperationImpl(), this);
     }
 
-    public Boolean deleteRoom(String name) {
-        List<Device> devices = findDevices(name);
-        if (!Objects.nonNull(devices) || name.equals("Default"))
-            return false;
-        for (Device device : devices) {
-            device.setRoom(roomRepo.findByName("Default").get());
+    public Room findRoomByName(String name) {
+        return (Room) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+    }
+
+    public Room updateRoom(String roomNameToUpdate, Room updatedRoom) {
+//        Optional<Room> oldRoom = roomRepo.findByName(name);
+//        if (!oldRoom.isPresent() || name.equals("Default") || roomRepo.findByName(newRoom.getName()).isPresent()) // TODO
+//            return null;
+//        oldRoom.get().setName(newRoom.getName());
+//        return oldRoom.get();
+
+        //TODO SS: hide more the id handling
+
+        Room oldRoom = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomNameToUpdate, this);
+        if (Objects.nonNull(oldRoom)) {
+            updatedRoom.setId(oldRoom.getId());
+            return (Room) operationExecutor.execute(new UpdateOperationImpl(), updatedRoom);
         }
-        roomRepo.deleteRoomByName(name);
-        return true;
+        return null;
     }
 
-    public Room updateRoom(String name, Room newRoom) {
-        Optional<Room> oldRoom = roomRepo.findByName(name);
-        if (!oldRoom.isPresent() || name.equals("Default") || roomRepo.findByName(newRoom.getName()).isPresent()) // TODO: move this check away
-            return null;
-        oldRoom.get().setName(newRoom.getName());
-        return oldRoom.get();
+    public Integer deleteRoom(String name) {
+//        List<Device> devices = findDevices(name);
+//        if (!Objects.nonNull(devices) || name.equals("Default"))
+//            return false;
+//        for (Device device : devices) {
+//            device.setRoom(roomRepo.findByName("Default").get());
+//        }
+//        roomRepo.deleteRoomByName(name);
+//        return true;
+        //TODO check if already exists
+        return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
     }
+
+
+    // TODO SS: not yet implemented
 
     public Device addDevice(String nameDevice, String nameRoom) {
         return changeRoom(nameDevice, nameRoom);
@@ -66,16 +81,17 @@ public class RoomService {
 
     public List<Device> findDevices(String nameRoom) {
         Optional<Room> room = roomRepo.findByName(nameRoom);
-        return room.isPresent() ? roomRepo.findAllDevices(nameRoom) : null;
+//        return room.isPresent() ? roomRepo.findAllDevices(nameRoom) : null;
+        return null;
     }
 
     private Device changeRoom(String deviceName, String roomName) {
         Optional<Room> room = roomRepo.findByName(roomName);
-        Optional<Device> device = roomRepo.findDeviceByName(deviceName);
-        if (room.isPresent() && device.isPresent()) {
-            device.get().setRoom(room.get());
-            return device.get();
-        }
+//        Optional<Device> device = roomRepo.findDeviceByName(deviceName);
+//        if (room.isPresent() && device.isPresent()) {
+//            device.get().setRoom(room.get());
+//            return device.get();
+//        }
         return null;
     }
 

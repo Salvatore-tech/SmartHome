@@ -1,60 +1,72 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Device;
-import com.gruppo1.smarthome.repository.DeviceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @Transactional
 public class DeviceService {
-    private final DeviceRepo deviceRepo;
+    private final CrudOperationExecutor operationExecutor;
 
     @Autowired
-    public DeviceService(DeviceRepo deviceRepo) {
-        this.deviceRepo = deviceRepo;
+    public DeviceService(CrudOperationExecutor operationExecutor) {
+        this.operationExecutor = operationExecutor;
     }
 
     public Device addDevice(Device device) {
-        if (deviceRepo.findByName(device.getName()).isPresent())
-            return null;
-//        device.setId(UUID.randomUUID().toString());
-        return deviceRepo.save(device);
+//        if (deviceRepo.findByName(device.getName()).isPresent())
+//            return null;
+////        device.setId(UUID.randomUUID().toString());
+//        return deviceRepo.save(device);
+        //TODO check if already exists
+        return (Device) operationExecutor.execute(new AddOperationImpl(), device);
     }
 
-    public List<Device> findAllDevices(){
-        return (List<Device>) deviceRepo.findAll();
+    public List<Device> findAllDevices() {
+        return (List<Device>) operationExecutor.execute(new GetOperationImpl(), this);
     }
 
-    public Optional<Device> findDeviceByName(String name) {
-        return deviceRepo.findByName(name);
+    public Device findDeviceByName(String name) {
+        return (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
     }
 
-    public Device updateDevice(Device device){
-        if (deviceRepo.findByName(device.getName()).isPresent()) {
-            deviceRepo.save(device);
-            return device;
+    public Device updateDevice(String deviceNameToUpdate, Device updatedDevice) {
+//        if (deviceRepo.findByName(device.getName()).isPresent()) {
+//            deviceRepo.save(device);
+//            return device;
+//        }
+        //TODO: hide more the id handling
+
+        Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
+        if (Objects.nonNull(oldDevice)) {
+            updatedDevice.setId(oldDevice.getId());
+            return (Device) operationExecutor.execute(new UpdateOperationImpl(), updatedDevice);
         }
         return null;
     }
 
-    public Boolean deleteDevice(String name){
-        Optional<Device> device = deviceRepo.findByName(name);
-        if(device.isPresent()){
-            deviceRepo.deleteDeviceByName(name);
-            return true;
-        }
-        return false;
+    public Integer deleteDevice(String name) {
+//        Optional<Device> device = deviceRepo.findByName(name);
+//        if (device.isPresent()) {
+//            deviceRepo.deleteDeviceByName(name);
+//            return true;
+//        }
+//        return false;
+        //TODO check if already exists
+        return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
+
     }
 
 
-    public long countDevices(){
-        return deviceRepo.count();
+    public Integer countDevices() {
+        return ((List<Device>) operationExecutor.execute(new GetOperationImpl(), this)).size();
     }
-
 
 }

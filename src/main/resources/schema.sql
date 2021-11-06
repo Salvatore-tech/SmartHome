@@ -1,15 +1,15 @@
--- DROP TABLE profile;
--- DROP TABLE conditions;
--- DROP TABLE device;
--- DROP TABLE room;
--- DROP TABLE scene;
+DROP TABLE profile;
+DROP TABLE conditions;
+DROP TABLE device;
+DROP TABLE room;
+DROP TABLE scene;
 
 CREATE TABLE profile
 (
     id       VARCHAR(50)        NOT NULL,
     name     VARCHAR(20)        not NULL,
     surname  VARCHAR(20)        not NULL,
-    email    VARCHAR(20) UNIQUE not NULL,
+    email    VARCHAR(20)        not NULL,
     password VARCHAR(20)        not NULL,
     CONSTRAINT pk_profile PRIMARY KEY (id)
 );

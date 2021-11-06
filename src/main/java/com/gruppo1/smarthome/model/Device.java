@@ -1,17 +1,17 @@
 package com.gruppo1.smarthome.model;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @Entity
-public class Device implements Serializable {
+public class Device extends SmartHomeItem implements Serializable  {
 
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = true)
     private String id;
     @Column(nullable = false, unique = true)
     private String name;

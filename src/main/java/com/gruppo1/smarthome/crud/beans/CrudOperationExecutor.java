@@ -11,9 +11,9 @@ public class CrudOperationExecutor {
 
     private final List<CrudOperation> operations = new ArrayList<>();
 
-    public Object execute(CrudOperation operation, Object s) {
+    public Object execute(CrudOperation operation, Object homeItem) {
         operations.add(operation);
-        return operation.execute(s);
+        return operation.execute(homeItem);
     }
 
     public Object execute(CrudOperation operation, String itemName, Object s) {

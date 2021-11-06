@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Conditions;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
@@ -10,50 +12,67 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class SceneService {
-    @Autowired
     private final SceneRepo sceneRepo;
-    @Autowired
     private final DeviceRepo deviceRepo;
+    private CrudOperationExecutor operationExecutor;
 
-    public SceneService(SceneRepo sceneRepo, DeviceRepo deviceRepo) {
+    @Autowired
+    public SceneService(SceneRepo sceneRepo, DeviceRepo deviceRepo, CrudOperationExecutor operationExecutor) {
         this.sceneRepo = sceneRepo;
         this.deviceRepo = deviceRepo;
+        this.operationExecutor = operationExecutor;
     }
 
 
     public Scene addScene(Scene scene) {
-        return sceneRepo.save(scene);
+//        return sceneRepo.save(scene);
+        //TODO SS: check if already exists
+        return (Scene) operationExecutor.execute(new AddOperationImpl(), scene);
     }
 
-    public Iterable<Scene> findAllScene() {
-        return sceneRepo.findAll();
+    public List<Scene> findAllScene() {
+        return (List<Scene>) operationExecutor.execute(new GetOperationImpl(), this);
     }
 
-    public Scene updateScene(Scene scene) {
-        if (sceneRepo.findById(scene.getId()).isPresent()) {
-            sceneRepo.save(scene);
-            return scene;
+    public Scene findSceneByName(String name) {
+        return (Scene) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+    }
+
+
+    public Scene updateScene(String sceneNameToUpdate, Scene updatedScene) {
+//        if (Objects.nonNull(sceneRepo.findById(scene.getId()))) {
+//            sceneRepo.save(scene);
+//            return scene;
+//        }
+        //TODO SS: hide more the id handling
+
+        Scene oldScene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneNameToUpdate, this);
+        if (Objects.nonNull(oldScene)) {
+            updatedScene.setId(oldScene.getId());
+            return (Scene) operationExecutor.execute(new UpdateOperationImpl(), updatedScene);
         }
         return null;
     }
 
-    public Optional<Scene> findSceneByID(String id) {
-        return sceneRepo.findById(id);
+
+    public Integer deleteScene(String name) {
+//        Optional<Scene> scene = sceneRepo.findById(id);
+//        if (scene.isPresent()) {
+//            sceneRepo.deleteSceneById(id);
+//            return true;
+//        }
+        //TODO check if already exists
+        return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
     }
 
-    public Boolean deleteScene(String id) {
-        Optional<Scene> scene = sceneRepo.findById(id);
-        if (scene.isPresent()) {
-            sceneRepo.deleteSceneById(id);
-            return true;
-        }
-        return false;
-    }
+    // TODO SS: not yet implemented
+
 
     public Optional<Device> addDevice(String sceneName, String deviceName) {
         Optional<Scene> scene = sceneRepo.findByName(sceneName);
@@ -78,8 +97,8 @@ public class SceneService {
 
     public List<Device> findDevices(String sceneName) {
         Optional<Scene> scene = sceneRepo.findByName(sceneName);
-        List<Device> devices = sceneRepo.findAllDevices(scene);
-        return devices;
+//        List<Device> devices = sceneRepo.findAllDevices(scene);
+        return null;
     }
 
 
