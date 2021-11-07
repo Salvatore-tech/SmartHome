@@ -39,6 +39,8 @@ public class Room extends SmartHomeItem implements Serializable {
         this.name = name;
     }
 
+    public List<Device> getDevices() { return this.devices; }
+
     public void addDevice(Device device) {this.devices.add(device);}
 
     public void removeDevice(Device device) { this.devices.remove(device); }

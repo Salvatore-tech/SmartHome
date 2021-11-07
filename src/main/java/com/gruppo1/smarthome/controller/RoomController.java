@@ -91,7 +91,7 @@ public class RoomController {
     public ResponseEntity<Device> addDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
         Device device = roomService.addDevice(deviceName, roomName);
         return Objects.nonNull(device) ?
-                new ResponseEntity(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/findDevices/{roomName}")
@@ -99,10 +99,10 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return list devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<List<Device>> findDevices(@PathVariable("roomName") String nameRoom) {
-        List<Device> listDevices = roomService.findDevices(nameRoom);
-        return Objects.nonNull(listDevices) ?
-                new ResponseEntity<>(listDevices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("roomName") String roomName) {
+        List<Device> devices = roomService.findDevicesInRoom(roomName);
+        return devices.size() > 0 ?  new ResponseEntity<>(devices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     @DeleteMapping("/deleteDevice/{nameDevice}")

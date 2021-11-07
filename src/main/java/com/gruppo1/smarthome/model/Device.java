@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,10 +22,12 @@ public class Device extends SmartHomeItem implements Serializable  {
     @Column(nullable = false)
     private String type;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
     private Room room;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<Conditions> conditions;
 
@@ -67,4 +70,8 @@ public class Device extends SmartHomeItem implements Serializable  {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    public void addCondition(Conditions condition){ this.conditions.add(condition); }
+
+    public List<Conditions> getConditions() { return this.conditions; }
 }
