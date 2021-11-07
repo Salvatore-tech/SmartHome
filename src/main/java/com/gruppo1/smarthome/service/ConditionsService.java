@@ -1,44 +1,45 @@
 package com.gruppo1.smarthome.service;
 
 
+import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.crud.impl.GetByNameOperationImpl;
+import com.gruppo1.smarthome.crud.impl.GetOperationImpl;
 import com.gruppo1.smarthome.model.Conditions;
-import com.gruppo1.smarthome.repository.ConditionsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @Transactional
 public class ConditionsService {
-    private final ConditionsRepo conditionsRepo;
+    private final CrudOperationExecutor operationExecutor;
 
     @Autowired
-    public ConditionsService(ConditionsRepo conditionsRepo) {
-        this.conditionsRepo = conditionsRepo;
+    public ConditionsService(CrudOperationExecutor operationExecutor) {
+        this.operationExecutor = operationExecutor;
     }
 
     public Conditions addConditions(Conditions condition) {
-        return conditionsRepo.save(condition);
+        return null; // TODO
     }
 
     public List<Conditions> findAllCondition() {
-        return (List<Conditions>) conditionsRepo.findAll();
+        return (List<Conditions>) operationExecutor.execute(new GetOperationImpl(), this);
     }
 
-    public Optional<Conditions> findConditionsById(Conditions condition) {
-        return conditionsRepo.findById(condition.getConditionId());
+    public Conditions findConditionsById(Conditions condition) {
+        return (Conditions) operationExecutor.execute(new GetByNameOperationImpl(), condition);
     }
 
     public Conditions updateConditions(Conditions conditions) {
-        return conditionsRepo.save(conditions);
+        return null; // TODO
     }
 
     public void deleteConditions(Conditions conditions) {
-        conditionsRepo.deleteById(conditions.getConditionId());
+        return; // TODO
     }
 
 }

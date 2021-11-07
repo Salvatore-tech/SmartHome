@@ -6,7 +6,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface GenericRepository<SmartHomeItem, String>
+public interface BaseSmartHomeRepository<SmartHomeItem, String>
         extends CrudRepository<SmartHomeItem, String> {
 
     Optional<SmartHomeItem> findById(String entityId);
