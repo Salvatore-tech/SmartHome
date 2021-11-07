@@ -17,7 +17,7 @@ public class Conditions extends SmartHomeItem implements Serializable {
     private Date activationDate;
     private String period;
     private Double threshold;
-
+    private String name;
 
     @ManyToOne
     @MapsId("deviceId")
@@ -68,12 +68,20 @@ public class Conditions extends SmartHomeItem implements Serializable {
         this.threshold = threshold;
     }
 
-    public Device getDevice() { return this.device; }
+    public Device getDevice() {
+        return this.device;
+    }
 
-    public void setDevice(Device device) { this.device = device; }
+    public void setDevice(Device device) {
+        this.device = device;
+    }
 
-    public Scene getScene() { return this.scene; }
+    public Scene getScene() {
+        return this.scene;
+    }
 
-    public void setScene(Scene scene) { this.scene = scene; }
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
 
 }
