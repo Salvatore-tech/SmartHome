@@ -48,6 +48,8 @@ public class Scene extends SmartHomeItem implements Serializable {
         this.status = status;
     }
 
+    public List<Conditions> getConditions() { return this.conditions; }
+
     public void addCondition(Conditions condition){this.conditions.add(condition);}
 
     public void removeCondition(Conditions condition){this.conditions.remove(condition);}

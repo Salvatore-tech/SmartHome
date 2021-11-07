@@ -67,4 +67,13 @@ public class Conditions extends SmartHomeItem implements Serializable {
     public void setThreshold(Double threshold) {
         this.threshold = threshold;
     }
+
+    public Device getDevice() { return this.device; }
+
+    public void setDevice(Device device) { this.device = device; }
+
+    public Scene getScene() { return this.scene; }
+
+    public void setScene(Scene scene) { this.scene = scene; }
+
 }

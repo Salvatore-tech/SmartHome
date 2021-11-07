@@ -8,9 +8,10 @@ import com.gruppo1.smarthome.model.SmartHomeItem;
 public class GetByNameOperationImpl implements CrudOperation {
     @Override
     public SmartHomeItem execute(Object item, String name) {
-//        CrudRepository repository = ApplicationContextProvider.getRepository(item);
-        GenericRepository repository = (GenericRepository) ApplicationContextProvider.getRepository(item);
+
+        GenericRepository repository = ApplicationContextProvider.getRepository(item);
         assert repository != null;
-        return (SmartHomeItem) repository.findByName(name).get();
+        return repository.findByName(name).isPresent() ? (SmartHomeItem) repository.findByName(name).get() : null;
+
     }
 }

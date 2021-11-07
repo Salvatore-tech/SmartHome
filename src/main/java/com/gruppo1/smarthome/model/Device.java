@@ -3,6 +3,7 @@ package com.gruppo1.smarthome.model;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -23,6 +24,9 @@ public class Device extends SmartHomeItem implements Serializable  {
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
     private Room room;
+
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    private List<Conditions> conditions;
 
     public String getId() {
         return id;

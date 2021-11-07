@@ -1,13 +1,13 @@
-DROP TABLE profile;
-DROP TABLE conditions;
-DROP TABLE device;
-DROP TABLE room;
-DROP TABLE scene;
+/*DROP TABLE profile;
 DROP TABLE alarm_clock;
 DROP TABLE conditioner;
 DROP TABLE light_bulb;
 DROP TABLE speaker;
 DROP TABLE television;
+DROP TABLE conditions;
+DROP TABLE scene;
+DROP TABLE device;
+DROP TABLE room;*/
 
 CREATE TABLE profile
 (
