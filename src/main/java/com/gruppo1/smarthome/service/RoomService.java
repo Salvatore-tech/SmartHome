@@ -4,24 +4,21 @@ import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
-import com.gruppo1.smarthome.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
 
 @Service
 @Transactional
 public class RoomService {
     private CrudOperationExecutor operationExecutor;
-    private final RoomRepo roomRepo;
 
     @Autowired
-    public RoomService(RoomRepo roomRepo, CrudOperationExecutor operationExecutor) {
-        this.roomRepo = roomRepo;
+    public RoomService(CrudOperationExecutor operationExecutor) {
         this.operationExecutor = operationExecutor;
     }
 
@@ -68,9 +65,6 @@ public class RoomService {
         return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
     }
 
-
-    // TODO SS: not yet implemented
-
     public Device addDevice(String nameDevice, String nameRoom) {
         return changeRoom(nameDevice, nameRoom);
     }
@@ -79,19 +73,24 @@ public class RoomService {
         return changeRoom(nameDevice, "Default");
     }
 
-    public List<Device> findDevices(String nameRoom) {
-        Optional<Room> room = roomRepo.findByName(nameRoom);
-//        return room.isPresent() ? roomRepo.findAllDevices(nameRoom) : null;
-        return null;
+    public List<Device> findDevicesInRoom(String roomName) {
+        List<Device> devices = new ArrayList<>();
+        Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
+        if(Objects.nonNull(room)) {
+            if(Objects.nonNull(room.getDevices()))
+                devices = room.getDevices();
+        }
+
+        return devices;
     }
 
     private Device changeRoom(String deviceName, String roomName) {
-        Optional<Room> room = roomRepo.findByName(roomName);
-//        Optional<Device> device = roomRepo.findDeviceByName(deviceName);
-//        if (room.isPresent() && device.isPresent()) {
-//            device.get().setRoom(room.get());
-//            return device.get();
-//        }
+        Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
+        Device device = (Device) operationExecutor.execute(new GetDeviceInRoomByNameImpl(), deviceName, this);
+        if(Objects.nonNull(room) && Objects.nonNull(device)){
+            device.setRoom(room);
+            return device;
+        }
         return null;
     }
 
