@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -57,16 +58,16 @@ public class DeviceService {
         return null;
     }
 
-    public Integer deleteDevice(String name) {
-//        Optional<Device> device = deviceRepo.findByName(name);
-//        if (device.isPresent()) {
-//            deviceRepo.deleteDeviceByName(name);
-//            return true;
-//        }
-//        return false;
-        //TODO check if already exists
-        return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
 
+    public Integer deleteDevice(String name) {
+
+        Device device = (Device) operationExecutor.execute (new GetByNameOperationImpl(), name, this);
+        if (Objects.nonNull(device))
+        {
+            return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
+        }
+
+        return 0;
     }
 
 
