@@ -1,9 +1,12 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
+import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.FactoryDevice;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +15,16 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
-
 @Service
 @Transactional
 public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
+    private MementoCareTaker mementoCareTaker;
 
     @Autowired
-    public DeviceService(CrudOperationExecutor operationExecutor) {
+    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
         this.operationExecutor = operationExecutor;
+        this.mementoCareTaker = mementoCareTaker;
     }
 
     public Device addDevice(JSONObject device) throws JSONException {
@@ -32,15 +36,21 @@ public class DeviceService {
         newDevice.setStatus(Boolean.parseBoolean(device.get("status").toString()));
         newDevice.setType(device.get("type").toString());
         newDevice.setRoom(null);
-        return (Device) operationExecutor.execute(new AddOperationImpl(), newDevice);
+        CrudOperation operationToPerform = new AddOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), newDevice);
+        return (Device) operationExecutor.execute(operationToPerform, newDevice);
     }
 
     public List<Device> findAllDevices() {
-        return (List<Device>) operationExecutor.execute(new GetOperationImpl(), this);
+        CrudOperation operationToPerform = new GetOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        return (List<Device>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Device findDeviceByName(String name) {
-        return (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        return (Device) operationExecutor.execute(operationToPerform, name, this);
     }
 
     public Device updateDevice(String deviceNameToUpdate, Device updatedDevice) {
@@ -53,11 +63,12 @@ public class DeviceService {
         Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
         if (Objects.nonNull(oldDevice)) {
             updatedDevice.setId(oldDevice.getId());
-            return (Device) operationExecutor.execute(new UpdateOperationImpl(), updatedDevice);
+            UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
+            mementoCareTaker.add(operationToPerform.generateMemento(), oldDevice); //TODO
+            return (Device) operationExecutor.execute(operationToPerform, updatedDevice);
         }
         return null;
     }
-
 
     public Integer deleteDevice(String name) {
 
@@ -72,7 +83,9 @@ public class DeviceService {
 
 
     public Integer countDevices() {
-        return ((List<Device>) operationExecutor.execute(new GetOperationImpl(), this)).size();
+        CrudOperation operationToPerform = new GetOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        return ((List<Device>) operationExecutor.execute(operationToPerform, this)).size();
     }
 
 }

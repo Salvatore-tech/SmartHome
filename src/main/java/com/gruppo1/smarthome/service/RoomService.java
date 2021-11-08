@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.model.Device;
@@ -16,23 +17,31 @@ import java.util.Objects;
 @Transactional
 public class RoomService {
     private CrudOperationExecutor operationExecutor;
+    private MementoCareTaker mementoCareTaker;
 
     @Autowired
-    public RoomService(CrudOperationExecutor operationExecutor) {
+    public RoomService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
         this.operationExecutor = operationExecutor;
+        this.mementoCareTaker = mementoCareTaker;
     }
 
     public Room addRoom(Room room) {
         //TODO SS: check if already exists
-        return (Room) operationExecutor.execute(new AddOperationImpl(), room);
+        CrudOperation operationToPerform = new AddOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), room);
+        return (Room) operationExecutor.execute(operationToPerform, room);
     }
 
     public List<Room> findAllRoom() {
-        return (List<Room>) operationExecutor.execute(new GetOperationImpl(), this);
+        CrudOperation operationToPerform = new GetOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        return (List<Room>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Room findRoomByName(String name) {
-        return (Room) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        return (Room) operationExecutor.execute(operationToPerform, name, this);
     }
 
     public Room updateRoom(String roomNameToUpdate, Room updatedRoom) {
@@ -43,11 +52,12 @@ public class RoomService {
 //        return oldRoom.get();
 
         //TODO SS: hide more the id handling
-
         Room oldRoom = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomNameToUpdate, this);
         if (Objects.nonNull(oldRoom)) {
             updatedRoom.setId(oldRoom.getId());
-            return (Room) operationExecutor.execute(new UpdateOperationImpl(), updatedRoom);
+            CrudOperation operationToPerform = new UpdateOperationImpl();
+            mementoCareTaker.add(operationToPerform.generateMemento(), oldRoom);
+            return (Room) operationExecutor.execute(operationToPerform, updatedRoom);
         }
         return null;
     }
@@ -61,9 +71,15 @@ public class RoomService {
 //        }
 //        roomRepo.deleteRoomByName(name);
 //        return true;
+
         //TODO check if already exists
-        return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
+        CrudOperation operationToPerform = new DeleteOperationImpl();
+        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
+
+
+    // TODO SS: not yet implemented: Command and Memento
 
     public Device addDevice(String nameDevice, String nameRoom) {
         return changeRoom(nameDevice, nameRoom);
@@ -75,7 +91,9 @@ public class RoomService {
 
     public List<Device> findDevicesInRoom(String roomName) {
         List<Device> devices = new ArrayList<>();
-        Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
+        mementoCareTaker.add(operationToPerform.generateMemento(), null);
         if(Objects.nonNull(room)) {
             if(Objects.nonNull(room.getDevices()))
                 devices = room.getDevices();
@@ -86,7 +104,9 @@ public class RoomService {
 
     private Device changeRoom(String deviceName, String roomName) {
         Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
-        Device device = (Device) operationExecutor.execute(new GetDeviceInRoomByNameImpl(), deviceName, this);
+        CrudOperation operationToPerform = new GetDeviceInRoomByNameImpl();
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        mementoCareTaker.add(operationToPerform.generateMemento(), room);
         if(Objects.nonNull(room) && Objects.nonNull(device)){
             device.setRoom(room);
             return device;
