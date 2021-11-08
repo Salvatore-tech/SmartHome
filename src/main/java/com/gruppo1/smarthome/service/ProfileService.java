@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.crud.api.CrudOperation;
+import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
@@ -27,19 +28,19 @@ public class ProfileService {
     public Profile addProfile(Profile profile) {
         //TODO check if already exists
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), profile);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(profile.getName(), "Profile"));
         return (Profile) operationExecutor.execute(operationToPerform, profile);
     }
 
     public List<Profile> findAllProfile() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Profile"));
         return (List<Profile>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Profile findProfileByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Profile")); //TODO
         return (Profile) operationExecutor.execute(operationToPerform, name, this);
     }
 
@@ -49,7 +50,7 @@ public class ProfileService {
         if (Objects.nonNull(oldProfile)) {
             updatedProfile.setId(oldProfile.getId());
             CrudOperation operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), oldProfile); //TODO
+            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldProfile.getName(), "Profile")); //TODO
             return (Profile) operationExecutor.execute(operationToPerform, updatedProfile);
         }
         return null;
@@ -58,7 +59,7 @@ public class ProfileService {
     public Integer deleteProfile(String name) {
         //TODO check if already exists
         CrudOperation operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Profile")); //TODO
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 

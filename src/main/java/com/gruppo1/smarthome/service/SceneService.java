@@ -39,19 +39,19 @@ public class SceneService {
 //        return sceneRepo.save(scene);
         //TODO SS: check if already exists
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), scene);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(scene.getName(), "Scene"));
         return (Scene) operationExecutor.execute(operationToPerform, scene);
     }
 
     public List<Scene> findAllScene() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Sceme"));
         return (List<Scene>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Scene findSceneByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Scene"));
         return (Scene) operationExecutor.execute(operationToPerform, name, this);
     }
 
@@ -67,7 +67,7 @@ public class SceneService {
         if (Objects.nonNull(oldScene)) {
             updatedScene.setId(oldScene.getId());
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), oldScene);
+            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldScene.getName(), "Scene"));
             return (Scene) operationExecutor.execute(operationToPerform, updatedScene);
         }
         return null;
@@ -81,9 +81,9 @@ public class SceneService {
 //            return true;
 //        }
         //TODO check if already exists
-        SmartHomeItem roomToDelete = (SmartHomeItem) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+        SmartHomeItem sceneToDelete = (SmartHomeItem) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
         DeleteOperationImpl operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), roomToDelete); //TODO
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(sceneToDelete.getName(), "Scene")); //TODO
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 

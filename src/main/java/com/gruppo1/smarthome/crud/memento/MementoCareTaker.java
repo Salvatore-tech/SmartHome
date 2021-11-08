@@ -1,6 +1,6 @@
 package com.gruppo1.smarthome.crud.memento;
 
-import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,25 +11,25 @@ import java.util.Map;
 @Component
 public class MementoCareTaker {
 
-    private List<Map<SmartHomeItem, Memento>> mementoList = new ArrayList<>();
+    private List<Map<SmartHomeItemLight, Memento>> mementoList = new ArrayList<>();
 
-    public Boolean add(Memento mementoOperation, SmartHomeItem homeItem) {
-        Map<SmartHomeItem, Memento> mementoMap = new HashMap<>();
-        mementoMap.put(homeItem, mementoOperation);
+    public Boolean add(Memento mementoOperation, SmartHomeItemLight homeItemLight) {
+        Map<SmartHomeItemLight, Memento> mementoMap = new HashMap<>();
+        mementoMap.put(homeItemLight, mementoOperation);
         return mementoList.add(mementoMap);
     }
 
     public boolean add(Memento mementoOperation) {
-        Map<SmartHomeItem, Memento> mementoMap = new HashMap<>();
+        Map<SmartHomeItemLight, Memento> mementoMap = new HashMap<>();
         mementoMap.put(null, mementoOperation);
         return mementoList.add(mementoMap);
     }
 
-    public List<Map<SmartHomeItem, Memento>> getMementoList() {
+    public List<Map<SmartHomeItemLight, Memento>> getMementoList() {
         return mementoList;
     }
 
-    public Map<SmartHomeItem, Memento> getMemento(int index) {
+    public Map<SmartHomeItemLight, Memento> getMemento(int index) {
         return mementoList.get(index);
     }
 

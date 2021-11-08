@@ -28,19 +28,19 @@ public class RoomService {
     public Room addRoom(Room room) {
         //TODO SS: check if already exists
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), room);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(room.getName(), "Room"));
         return (Room) operationExecutor.execute(operationToPerform, room);
     }
 
     public List<Room> findAllRoom() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Room"));
         return (List<Room>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Room findRoomByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Room"));
         return (Room) operationExecutor.execute(operationToPerform, name, this);
     }
 
@@ -56,7 +56,7 @@ public class RoomService {
         if (Objects.nonNull(oldRoom)) {
             updatedRoom.setId(oldRoom.getId());
             CrudOperation operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), oldRoom);
+            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldRoom.getName(), "Room"));
             return (Room) operationExecutor.execute(operationToPerform, updatedRoom);
         }
         return null;
@@ -74,7 +74,7 @@ public class RoomService {
 
         //TODO check if already exists
         CrudOperation operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Room")); //TODO
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 
@@ -93,7 +93,7 @@ public class RoomService {
         List<Device> devices = new ArrayList<>();
         CrudOperation operationToPerform = new GetByNameOperationImpl();
         Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(roomName, null));
         if(Objects.nonNull(room)) {
             if(Objects.nonNull(room.getDevices()))
                 devices = room.getDevices();
@@ -106,7 +106,7 @@ public class RoomService {
         Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
         CrudOperation operationToPerform = new GetDeviceInRoomByNameImpl();
         Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
-        mementoCareTaker.add(operationToPerform.generateMemento(), room);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(deviceName, roomName));
         if(Objects.nonNull(room) && Objects.nonNull(device)){
             device.setRoom(room);
             return device;

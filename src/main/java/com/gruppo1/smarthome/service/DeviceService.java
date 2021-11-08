@@ -1,16 +1,17 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.crud.api.CrudOperation;
+import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.FactoryDevice;
-import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
 @Transactional
 public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
-    private MementoCareTaker mementoCareTaker;
+    private final MementoCareTaker mementoCareTaker;
 
     @Autowired
     public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
@@ -37,19 +38,19 @@ public class DeviceService {
         newDevice.setType(device.get("type").toString());
         newDevice.setRoom(null);
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), newDevice);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(newDevice.getName(), newDevice.getType()));
         return (Device) operationExecutor.execute(operationToPerform, newDevice);
     }
 
     public List<Device> findAllDevices() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null);
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Device"));
         return (List<Device>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Device findDeviceByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
+        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Device")); //TODO
         return (Device) operationExecutor.execute(operationToPerform, name, this);
     }
 
@@ -64,7 +65,7 @@ public class DeviceService {
         if (Objects.nonNull(oldDevice)) {
             updatedDevice.setId(oldDevice.getId());
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), oldDevice); //TODO
+            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldDevice.getName(), oldDevice.getType())); //TODO
             return (Device) operationExecutor.execute(operationToPerform, updatedDevice);
         }
         return null;
@@ -85,7 +86,7 @@ public class DeviceService {
     public Integer countDevices() {
         CrudOperation operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
-        return ((List<Device>) operationExecutor.execute(operationToPerform, this)).size();
+        return ((List<Device>) operationExecutor.execute(operationToPerform, new SmartHomeItemLight(null, "Devices"))).size();
     }
 
 }
