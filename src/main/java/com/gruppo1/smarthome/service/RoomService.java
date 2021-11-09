@@ -1,8 +1,10 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.crud.api.CrudOperation;
+import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
+import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
