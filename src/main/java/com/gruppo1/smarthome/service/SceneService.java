@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.service;
 
+
 import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
