@@ -63,7 +63,7 @@ public class SceneController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Scene> addScene(@RequestBody Scene scene) {
         Scene newScene = sceneService.addScene(scene);
-        return new ResponseEntity<>(newScene, HttpStatus.CREATED);
+        return Objects.nonNull(newScene) ? new ResponseEntity<>(newScene, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/delete/{name}")

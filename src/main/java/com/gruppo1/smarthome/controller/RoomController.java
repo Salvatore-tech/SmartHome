@@ -63,7 +63,7 @@ public class RoomController {
     public ResponseEntity<Room> addRoom(@RequestBody Room room) {
         Room newRoom = roomService.addRoom(room);
         return Objects.nonNull(newRoom) ?
-                new ResponseEntity<>(newRoom, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
+                new ResponseEntity<>(newRoom, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/delete/{name}")

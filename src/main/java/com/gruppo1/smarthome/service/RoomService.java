@@ -28,7 +28,8 @@ public class RoomService {
     }
 
     public Room addRoom(Room room) {
-        //TODO SS: check if already exists
+        if (Objects.nonNull(this.findRoomByName(room.getName())))
+            return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(room.getName(), "Room"));
         return (Room) operationExecutor.execute(operationToPerform, room);

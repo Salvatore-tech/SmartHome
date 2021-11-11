@@ -26,7 +26,8 @@ public class ProfileService {
     }
 
     public Profile addProfile(Profile profile) {
-        //TODO check if already exists
+        if (Objects.nonNull(this.findProfileByName(profile.getName())))
+            return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(profile.getName(), "Profile"));
         return (Profile) operationExecutor.execute(operationToPerform, profile);

@@ -64,10 +64,8 @@ public class ProfileController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Profile> addProfile(@RequestBody Profile profile){
-
         Profile newProfile = profileService.addProfile(profile);
-
-        return new ResponseEntity<>(newProfile, HttpStatus.CREATED);
+        return Objects.nonNull(newProfile) ? new ResponseEntity<>(newProfile, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/deleteProfile/{name}")

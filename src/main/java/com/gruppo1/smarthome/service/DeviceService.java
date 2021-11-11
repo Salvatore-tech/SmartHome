@@ -29,8 +29,8 @@ public class DeviceService {
     }
 
     public Device addDevice(JSONObject device) throws JSONException {
-        //TODO check if already exists
-
+        if(Objects.nonNull(findDeviceByName(device.get("name").toString())))
+            return null;
         FactoryDevice factory = new FactoryDevice();
         Device newDevice = factory.getDevice(device.get("type").toString().toLowerCase());
         newDevice.setName(device.get("name").toString());

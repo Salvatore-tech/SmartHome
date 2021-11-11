@@ -38,8 +38,8 @@ public class SceneService {
 
 
     public Scene addScene(Scene scene) {
-//        return sceneRepo.save(scene);
-        //TODO SS: check if already exists
+        if(Objects.nonNull(this.findSceneByName(scene.getName())))
+            return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(scene.getName(), "Scene"));
         return (Scene) operationExecutor.execute(operationToPerform, scene);

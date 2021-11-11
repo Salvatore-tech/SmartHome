@@ -41,7 +41,7 @@ public class DeviceController {
     public ResponseEntity<Device> addDevice(@RequestBody String deviceString) throws JSONException {
         JSONObject device = new JSONObject(deviceString);
         Device newDevice = deviceService.addDevice(device);
-        return new ResponseEntity<>(newDevice, HttpStatus.CREATED);
+        return Objects.nonNull(newDevice) ? new ResponseEntity<>(newDevice, HttpStatus.CREATED) : new ResponseEntity<>(newDevice, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/find/{name}")
