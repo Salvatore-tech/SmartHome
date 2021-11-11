@@ -1,6 +1,10 @@
 package com.gruppo1.smarthome.model;
 
-import javax.persistence.*;
+import org.apache.commons.lang.StringUtils;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Television extends Device {
@@ -11,12 +15,24 @@ public class Television extends Device {
     private Integer volume;
     private Integer channel;
 
-    public void setVolume(Integer volume) {this.volume = volume;}
+    public Television() {
+        super(StringUtils.EMPTY);
+    }
 
-    public void setChannel(Integer channel) {this.channel = channel;}
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
 
-    public Integer getVolume(){return volume;}
+    public void setChannel(Integer channel) {
+        this.channel = channel;
+    }
 
-    public Integer getChannel(){return channel;}
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public Integer getChannel() {
+        return channel;
+    }
 
 }
