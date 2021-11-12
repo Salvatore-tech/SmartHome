@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
+import com.gruppo1.smarthome.model.Conditions;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.service.SceneService;
@@ -76,24 +77,43 @@ public class SceneController {
         return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // TODO SS: not yet implemented
+    @ApiOperation(value = "Add device in scene", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Device Added"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 405, message = "Method Not Allowed"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
     @PostMapping("/addDevice/{sceneName}/{deviceName}")
-    public ResponseEntity<Optional<Device>> addDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
-        Optional<Device> device = sceneService.addDevice(sceneName, deviceName);
-        return device.isPresent() ?
-                new ResponseEntity<>(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Conditions> addDevice(@PathVariable("sceneName") String sceneName,
+                                                      @PathVariable("deviceName") String deviceName,
+                                                      @RequestBody Conditions condition) {
+        Conditions newCondition = sceneService.addDeviceToScene(sceneName, deviceName, condition);
+        return Objects.nonNull(newCondition) ?
+                new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Remove device in scene", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Device removed"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 405, message = "Method Not Allowed"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
     @DeleteMapping("/removeDevice/{sceneName}/{deviceName}")
-    public ResponseEntity<Optional<Device>> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
-        Optional<Device> device = sceneService.removeDevice(sceneName, deviceName);
-        return device.isPresent() ?
-                new ResponseEntity<>(device, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Integer> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
+        Integer result = sceneService.removeDeviceToScene(sceneName, deviceName);
+        return result.equals(1) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Find all devices in scene", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return all devices"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 405, message = "Method Not Allowed"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
     @GetMapping("/findDevices/{sceneName}")
     public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName){
-        List<Device> devices = sceneService.findDevices(sceneName);
+        List<Device> devices = sceneService.findDevicesInScene(sceneName);
         return devices.size() > 0 ?  new ResponseEntity<>(devices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

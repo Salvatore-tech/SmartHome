@@ -9,33 +9,24 @@ import com.gruppo1.smarthome.model.Conditions;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
-import com.gruppo1.smarthome.repository.DeviceRepo;
-import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
 public class SceneService {
-    private final SceneRepo sceneRepo;
-    private final DeviceRepo deviceRepo;
-    private CrudOperationExecutor operationExecutor;
-    private MementoCareTaker mementoCareTaker;
-
+    private final ConditionsService conditionsService;
+    private final CrudOperationExecutor operationExecutor;
+    private final MementoCareTaker mementoCareTaker;
 
     @Autowired
-    public SceneService(SceneRepo sceneRepo, DeviceRepo deviceRepo, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
-        this.sceneRepo = sceneRepo;
-        this.deviceRepo = deviceRepo;
+    public SceneService(ConditionsService conditionsService, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+        this.conditionsService = conditionsService;
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
     }
-
 
     public Scene addScene(Scene scene) {
         if(Objects.nonNull(this.findSceneByName(scene.getName())))
@@ -57,7 +48,6 @@ public class SceneService {
         return (Scene) operationExecutor.execute(operationToPerform, name, this);
     }
 
-
     public Scene updateScene(String sceneNameToUpdate, Scene updatedScene) {
 //        if (Objects.nonNull(sceneRepo.findById(scene.getId()))) {
 //            sceneRepo.save(scene);
@@ -75,7 +65,6 @@ public class SceneService {
         return null;
     }
 
-
     public Integer deleteScene(String name) {
 //        Optional<Scene> scene = sceneRepo.findById(id);
 //        if (scene.isPresent()) {
@@ -89,34 +78,57 @@ public class SceneService {
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 
-    // TODO SS: not yet implemented
-
-    public Optional<Device> addDevice(String sceneName, String deviceName) {
-        Optional<Scene> scene = sceneRepo.findByName(sceneName);
-        Optional<Device> device = deviceRepo.findByName(deviceName);
-        //TODO: check if already present (duplicate foreign key)
-        if (scene.isPresent() && device.isPresent()) {
-            scene.get().addCondition(new Conditions(device.get(), scene.get()));
+    public Conditions addDeviceToScene(String sceneName, String deviceName, Conditions condition) {
+        CrudOperation getByName = new GetByNameOperationImpl();
+        Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
+        Device device = (Device) operationExecutor.execute(getByName, deviceName, "Device");
+        if(Objects.isNull(scene) || Objects.isNull(device))
+            return null;
+        condition.setScene(scene);
+        condition.setDevice(device);
+        //TODO: activation date is always null (Postman return null date format)
+        //condition.setActivation();
+        Conditions conditionToAdd = conditionsService.findConditionsByName(condition.getName());
+        if(Objects.nonNull(conditionToAdd))
+        {
+            return null;
         }
-        //TODO: change return value
-        return device;
+        conditionToAdd = conditionsService.addConditions(condition);
+        scene.addCondition(conditionToAdd);
+        device.addCondition(conditionToAdd);
+        return conditionToAdd;
     }
 
-    //Thread starvation/clock leap?
-    public Optional<Device> removeDevice(String sceneName, String deviceName) {
-        Optional<Scene> scene = sceneRepo.findByName(sceneName);
-        Optional<Device> device = deviceRepo.findByName(deviceName);
-        if (scene.isPresent() && device.isPresent()) {
-            scene.get().removeCondition(new Conditions(device.get(), scene.get()));
+    public Integer removeDeviceToScene(String sceneName, String deviceName) {
+        CrudOperation getByName = new GetByNameOperationImpl();
+        Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
+        List<Conditions> conditions = (List<Conditions>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, conditionsService);
+        if(Objects.isNull(scene) || Objects.isNull(conditions))
+            return 0;
+        for (Conditions condition: conditions) {
+            conditionsService.deleteConditions(condition.getName());
         }
-        return device;
+        return 1;
     }
 
-    public List<Device> findDevices(String sceneName) {
-        Optional<Scene> scene = sceneRepo.findByName(sceneName);
-//        List<Device> devices = sceneRepo.findAllDevices(scene);
-        return null;
+    public List<Device> findDevicesInScene(String sceneName) {
+        List<Device> devices = new ArrayList<>();
+        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
+        if(Objects.nonNull(scene)) {
+            List<Conditions> conditions = scene.getConditions();
+            if (Objects.isNull(conditions)) {
+                return devices;
+            }
+            for (Conditions condition : conditions) {
+                Device device = condition.getDevice();
+                if (Objects.nonNull(device))
+                    devices.add(device);
+            }
+        }
+        return devices;
     }
+
+
 
 
 }

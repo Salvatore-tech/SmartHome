@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +20,7 @@ public class Room extends SmartHomeItem implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     private List<Device> devices;
 

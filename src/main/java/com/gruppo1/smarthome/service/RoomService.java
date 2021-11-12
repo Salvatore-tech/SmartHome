@@ -66,16 +66,13 @@ public class RoomService {
     }
 
     public Integer deleteRoom(String name) {
-//        List<Device> devices = findDevices(name);
-//        if (!Objects.nonNull(devices) || name.equals("Default"))
-//            return false;
-//        for (Device device : devices) {
-//            device.setRoom(roomRepo.findByName("Default").get());
-//        }
-//        roomRepo.deleteRoomByName(name);
-//        return true;
-
-        //TODO check if already exists
+        CrudOperation getByName = new GetByNameOperationImpl();
+        List<Device> devices = (List<Device>) operationExecutor.execute(new GetOperationImpl(), "Device");
+        if (!Objects.nonNull(devices) || name.equals("Default"))
+            return 0;
+        for (Device device : devices) {
+            device.setRoom((Room) operationExecutor.execute(getByName, "Default", this));
+        }
         CrudOperation operationToPerform = new DeleteOperationImpl();
         mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Room")); //TODO
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
@@ -106,9 +103,10 @@ public class RoomService {
     }
 
     private Device changeRoom(String deviceName, String roomName) {
-        Room room = (Room) operationExecutor.execute(new GetByNameOperationImpl(), roomName, this);
-        CrudOperation operationToPerform = new GetDeviceInRoomByNameImpl();
-        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
+
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, "Device");
         mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(deviceName, roomName));
         if(Objects.nonNull(room) && Objects.nonNull(device)){
             device.setRoom(room);
