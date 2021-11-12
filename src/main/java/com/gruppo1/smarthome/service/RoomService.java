@@ -71,9 +71,7 @@ public class RoomService {
         List<Device> devices = (List<Device>) operationExecutor.execute(new GetOperationImpl(), "Device");
         if (!Objects.nonNull(devices) || name.equals("Default"))
             return 0;
-        for (Device device : devices) {
-            device.setRoom((Room) operationExecutor.execute(getByName, "Default", this));
-        }
+        devices.forEach(device -> device.setRoom((Room) operationExecutor.execute(getByName, "Default", this)));
         CrudOperation operationToPerform = new DeleteOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, null, "Delete room"));
         return (Integer) operationExecutor.execute(operationToPerform, name, this);

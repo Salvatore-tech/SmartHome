@@ -32,7 +32,7 @@ public class SceneService {
     }
 
     public Scene addScene(Scene scene) {
-        if(Objects.nonNull(this.findSceneByName(scene.getName())))
+        if (Objects.nonNull(this.findSceneByName(scene.getName())))
             return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, scene, "Add a scene"));
@@ -86,15 +86,14 @@ public class SceneService {
         CrudOperation getByName = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
         Device device = (Device) operationExecutor.execute(getByName, deviceName, "Device");
-        if(Objects.isNull(scene) || Objects.isNull(device))
+        if (Objects.isNull(scene) || Objects.isNull(device))
             return null;
         condition.setScene(scene);
         condition.setDevice(device);
         //TODO: activation date is always null (Postman return null date format)
         //condition.setActivation();
         Conditions conditionToAdd = conditionsService.findConditionsByName(condition.getName());
-        if(Objects.nonNull(conditionToAdd))
-        {
+        if (Objects.nonNull(conditionToAdd)) {
             return null;
         }
         conditionToAdd = conditionsService.addConditions(condition);
@@ -107,32 +106,29 @@ public class SceneService {
         CrudOperation getByName = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
         List<Conditions> conditions = (List<Conditions>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, conditionsService);
-        if(Objects.isNull(scene) || Objects.isNull(conditions))
+        if (Objects.isNull(scene) || Objects.isNull(conditions))
             return 0;
-        for (Conditions condition: conditions) {
-            conditionsService.deleteConditions(condition.getName());
-        }
+        conditions.forEach(condition -> conditionsService.deleteConditions(condition.getName()));
         return 1;
     }
 
     public List<Device> findDevicesInScene(String sceneName) {
         List<Device> devices = new ArrayList<>();
         Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
-        if(Objects.nonNull(scene)) {
+        if (Objects.nonNull(scene)) {
             List<Conditions> conditions = scene.getConditions();
             if (Objects.isNull(conditions)) {
                 return devices;
             }
-            for (Conditions condition : conditions) {
-                Device device = condition.getDevice();
-                if (Objects.nonNull(device))
-                    devices.add(device);
-            }
+            conditions.forEach(condition ->
+                    {
+                        Device device = condition.getDevice();
+                        if (Objects.nonNull(device))
+                            devices.add(device);
+                    }
+
+            );
         }
         return devices;
     }
-
-
-
-
 }
