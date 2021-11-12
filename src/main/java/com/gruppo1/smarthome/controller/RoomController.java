@@ -7,7 +7,6 @@ import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,7 +48,7 @@ public class RoomController {
             @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<Room> updateRoom(@PathVariable("name") String name, @RequestBody Room updatedRoom) {
         Room result = roomService.updateRoom(name, updatedRoom);
-        return Objects.nonNull(updatedRoom) ?
+        return Objects.nonNull(result) ?
                 new ResponseEntity<>(updatedRoom, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -75,11 +74,6 @@ public class RoomController {
                                         @PathVariable("name") String name) {
         return roomService.deleteRoom(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
-
-
-
 
     // TODO SS: not yet implemented
     @PostMapping("/addDevice/{roomName}/{deviceName}")

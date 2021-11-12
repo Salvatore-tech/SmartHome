@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -21,6 +21,7 @@ public class Scene extends SmartHomeItem implements Serializable {
     @Column(nullable = false)
     private Boolean status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
     private List<Conditions> conditions;
 
