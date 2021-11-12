@@ -1,9 +1,9 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
+import com.gruppo1.smarthome.crud.memento.Memento;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.FactoryDevice;
@@ -38,55 +38,52 @@ public class DeviceService {
         newDevice.setType(device.get("type").toString());
         newDevice.setRoom(null);
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(newDevice.getName(), newDevice.getType()));
+        mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
         return (Device) operationExecutor.execute(operationToPerform, newDevice);
     }
 
     public List<Device> findAllDevices() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Device"));
+        mementoCareTaker.add(new Memento(operationToPerform, new Device("Device"), "Find all devices"));
         return (List<Device>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Device findDeviceByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(name, "Device")); //TODO
-        return (Device) operationExecutor.execute(operationToPerform, name, this);
+        Device result = (Device) operationExecutor.execute(operationToPerform, name, this);
+        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a device given a name"));
+        return result;
     }
 
     public Device updateDevice(String deviceNameToUpdate, Device updatedDevice) {
-//        if (deviceRepo.findByName(device.getName()).isPresent()) {
-//            deviceRepo.save(device);
-//            return device;
-//        }
-        //TODO: hide more the id handling
 
+        //TODO: hide more the id handling
         Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
         if (Objects.nonNull(oldDevice)) {
             updatedDevice.setId(oldDevice.getId());
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldDevice.getName(), oldDevice.getType())); //TODO
+            mementoCareTaker.add(new Memento(operationToPerform, oldDevice, "Update device"));
             return (Device) operationExecutor.execute(operationToPerform, updatedDevice);
         }
         return null;
     }
 
     public Integer deleteDevice(String name) {
-
-        Device device = (Device) operationExecutor.execute (new GetByNameOperationImpl(), name, this);
-        if (Objects.nonNull(device))
-        {
-            return (Integer) operationExecutor.execute(new DeleteOperationImpl(), name, this);
+        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+        if (Objects.nonNull(device)) {
+            Device deviceToDelete = (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+            CrudOperation operationToPerform = new DeleteOperationImpl();
+            mementoCareTaker.add(new Memento(operationToPerform, deviceToDelete, "Delete device"));
+            return (Integer) operationExecutor.execute(operationToPerform, name, this);
         }
-
         return 0;
     }
 
 
     public Integer countDevices() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), null); //TODO
-        return ((List<Device>) operationExecutor.execute(operationToPerform, new SmartHomeItemLight(null, "Devices"))).size();
+        mementoCareTaker.add(new Memento(operationToPerform, new Device("Devices"), "Count devices")); //TODO
+        return ((List<Device>) operationExecutor.execute(operationToPerform, null)).size();
     }
 
 }

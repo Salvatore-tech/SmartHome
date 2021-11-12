@@ -1,6 +1,10 @@
 package com.gruppo1.smarthome.model;
 
-import javax.persistence.*;
+import org.apache.commons.lang.StringUtils;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 public class Conditioner extends Device {
@@ -11,6 +15,9 @@ public class Conditioner extends Device {
     private Integer temperature;
     private String settings;
 
+    public Conditioner() {
+        super(StringUtils.EMPTY);
+    }
 
     public void setTemperature(Integer temperature) {this.temperature = temperature;}
 

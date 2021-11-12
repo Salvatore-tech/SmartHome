@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.service.RoomService;
@@ -7,6 +9,7 @@ import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,8 +28,10 @@ public class RoomController {
     @ApiOperation(value = "List all rooms", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Room>> getAllRooms() {
-        return new ResponseEntity(roomService.findAllRoom(), HttpStatus.OK);
+    public ResponseEntity<String> getAllRooms() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(roomService.findAllRoom());
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
 

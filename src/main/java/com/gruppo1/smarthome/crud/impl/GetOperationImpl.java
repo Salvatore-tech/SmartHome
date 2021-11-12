@@ -4,7 +4,6 @@ import com.gruppo1.smarthome.crud.api.BaseSmartHomeRepository;
 import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.ApplicationContextProvider;
 import com.gruppo1.smarthome.model.SmartHomeItem;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

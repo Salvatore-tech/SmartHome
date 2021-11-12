@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Profile;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.service.ProfileService;
@@ -9,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 
@@ -28,10 +29,10 @@ public class ProfileController {
     @ApiOperation(value = "Profile", tags = {"Profile"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "return profile"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Profile>> getAllProfile(){
-//        List<Profile> profiles = profileService.findAllProfile();
-//        return new ResponseEntity<>(profiles, HttpStatus.OK);
-        return new ResponseEntity<>(profileService.findAllProfile(), HttpStatus.OK);
+    public ResponseEntity<String> getAllProfile() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(profileService.findAllProfile());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/find/{name}")

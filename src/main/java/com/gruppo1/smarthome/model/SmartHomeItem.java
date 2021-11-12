@@ -6,7 +6,7 @@ import java.io.Serializable;
 public abstract class SmartHomeItem implements Serializable {
 
     protected String id;
-    protected String name; // TODO
+    protected String name;
     protected String desc;
 
 

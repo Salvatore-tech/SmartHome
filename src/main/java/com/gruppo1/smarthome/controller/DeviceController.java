@@ -1,13 +1,17 @@
 package com.gruppo1.smarthome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.json.*;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +32,10 @@ public class DeviceController {
     @ApiOperation(value = "List all devices installed", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Device>> getAllDevices() {
-        return new ResponseEntity<>(deviceService.findAllDevices(), HttpStatus.OK);
+    public ResponseEntity<String> getAllDevices() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(deviceService.findAllDevices());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -76,6 +82,7 @@ public class DeviceController {
                 new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // TODO Internal error
     @GetMapping("/count")
     @ApiOperation(value = "Count devices", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of devices"),

@@ -1,9 +1,9 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.api.SmartHomeItemLight;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
+import com.gruppo1.smarthome.crud.memento.Memento;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Conditions;
 import com.gruppo1.smarthome.model.Device;
@@ -11,8 +11,11 @@ import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -32,20 +35,21 @@ public class SceneService {
         if(Objects.nonNull(this.findSceneByName(scene.getName())))
             return null;
         CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(scene.getName(), "Scene"));
+        mementoCareTaker.add(new Memento(operationToPerform, scene, "Add a scene"));
         return (Scene) operationExecutor.execute(operationToPerform, scene);
     }
 
     public List<Scene> findAllScene() {
         CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Sceme"));
+        mementoCareTaker.add(new Memento(operationToPerform, null, "Get all scenes"));
         return (List<Scene>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Scene findSceneByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(null, "Scene"));
-        return (Scene) operationExecutor.execute(operationToPerform, name, this);
+        Scene result = (Scene) operationExecutor.execute(operationToPerform, name, this);
+        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a scene by name"));
+        return result;
     }
 
     public Scene updateScene(String sceneNameToUpdate, Scene updatedScene) {
@@ -59,7 +63,7 @@ public class SceneService {
         if (Objects.nonNull(oldScene)) {
             updatedScene.setId(oldScene.getId());
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(oldScene.getName(), "Scene"));
+            mementoCareTaker.add(new Memento(operationToPerform, oldScene, "Update a scene"));
             return (Scene) operationExecutor.execute(operationToPerform, updatedScene);
         }
         return null;
@@ -74,7 +78,7 @@ public class SceneService {
         //TODO check if already exists
         SmartHomeItem sceneToDelete = (SmartHomeItem) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
         DeleteOperationImpl operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(operationToPerform.generateMemento(), new SmartHomeItemLight(sceneToDelete.getName(), "Scene")); //TODO
+        mementoCareTaker.add(new Memento(operationToPerform, sceneToDelete, "Delete a scene")); //TODO
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 

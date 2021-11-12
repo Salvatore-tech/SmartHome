@@ -1,5 +1,7 @@
 package com.gruppo1.smarthome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Conditions;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
@@ -31,8 +33,10 @@ public class SceneController {
     @ApiOperation(value = "List all scenes", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Scene>> getAllScenes() {
-        return new ResponseEntity(sceneService.findAllScene(), HttpStatus.OK);
+    public ResponseEntity<String> getAllScenes() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(sceneService.findAllScene());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/find/{name}")

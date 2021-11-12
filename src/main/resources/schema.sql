@@ -1,4 +1,4 @@
-/*DROP TABLE profile;
+DROP TABLE profile;
 DROP TABLE alarm_clock;
 DROP TABLE conditioner;
 DROP TABLE light_bulb;
