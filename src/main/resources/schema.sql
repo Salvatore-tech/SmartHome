@@ -7,8 +7,8 @@ DROP TABLE television;
 DROP TABLE conditions;
 DROP TABLE scene;
 DROP TABLE device;
-DROP TABLE room;
-*/
+DROP TABLE room;*/
+
 
 CREATE TABLE profile
 (
@@ -47,12 +47,13 @@ CREATE TABLE scene
 
 CREATE TABLE conditions
 (
-    condition_id    VARCHAR(50) NOT NULL,
+    id              VARCHAR(50) NOT NULL,
     device_id       VARCHAR(50) NOT NULL,
     scene_id        VARCHAR(50) NOT NULL,
     activation_date DATE,
     period          VARCHAR(20),
     threshold       FLOAT,
+    name            VARCHAR(50) UNIQUE NOT NULL,
     CONSTRAINT pk_condition PRIMARY KEY (condition_id),
     FOREIGN KEY (device_id) REFERENCES device (id),
     FOREIGN KEY (scene_id) REFERENCES scene (id)
