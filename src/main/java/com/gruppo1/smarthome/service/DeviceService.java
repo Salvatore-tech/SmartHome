@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.service;
 
+import com.gruppo1.smarthome.adapter.AdapterService;
 import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
@@ -7,11 +8,11 @@ import com.gruppo1.smarthome.crud.memento.Memento;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.FactoryDevice;
+import com.gruppo1.smarthome.model.Room;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -28,18 +29,26 @@ public class DeviceService {
         this.mementoCareTaker = mementoCareTaker;
     }
 
-    public Device addDevice(JSONObject device) throws JSONException {
-        if(Objects.nonNull(findDeviceByName(device.get("name").toString())))
+    public Device addDevice(JSONObject deviceJson) throws JSONException {
+        if (!validateJson(deviceJson))
             return null;
-        FactoryDevice factory = new FactoryDevice();
-        Device newDevice = factory.getDevice(device.get("type").toString().toLowerCase());
-        newDevice.setName(device.get("name").toString());
-        newDevice.setStatus(Boolean.parseBoolean(device.get("status").toString()));
-        newDevice.setType(device.get("type").toString());
-        newDevice.setRoom(null);
-        CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
-        return (Device) operationExecutor.execute(operationToPerform, newDevice);
+
+        Device newDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceJson.get("name").toString(), this);
+        if (Objects.isNull(newDevice)) {
+            String typeDevice = deviceJson.get("type").toString().toLowerCase();
+            FactoryDevice factory = new FactoryDevice();
+            newDevice = factory.getDevice(typeDevice);
+            if (Objects.nonNull(newDevice)) {
+                AdapterService adapterDevice = new AdapterService();
+                adapterDevice.adapt(deviceJson, newDevice);
+                Room room = validateRoom(deviceJson);
+                newDevice.setRoom(room);
+                CrudOperation operationToPerform = new AddOperationImpl();
+                mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
+                return (Device) operationExecutor.execute(operationToPerform, newDevice);
+            }
+        }
+        return null;
     }
 
     public List<Device> findAllDevices() {
@@ -86,4 +95,24 @@ public class DeviceService {
         return ((List<Device>) operationExecutor.execute(operationToPerform, null)).size();
     }
 
+    private Boolean validateJson(JSONObject objectToCheck) {
+        if (objectToCheck.has("type") && objectToCheck.has("name")) {
+            return true;
+        }
+        return false;
+    }
+
+    private Room validateRoom(JSONObject deviceJson) throws JSONException {
+        Room room;
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        if (deviceJson.has("room_name")) {
+            room = (Room) operationExecutor.execute(operationToPerform, deviceJson.get("room_name").toString(), "Room");
+            if (Objects.isNull(room)) {
+                room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
+            }
+        } else {
+            room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
+        }
+        return room;
+    }
 }
