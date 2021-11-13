@@ -15,13 +15,13 @@ public class Device extends SmartHomeItem implements Serializable  {
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = true)
-    private String id;
+    protected String id;
     @Column(nullable = false, unique = true)
-    private String name;
+    protected String name;
     @Column(nullable = false)
-    private Boolean status;
+    protected Boolean status;
     @Column(nullable = false)
-    private String type;
+    protected String type;
 
     @JsonIgnore
     @ManyToOne
