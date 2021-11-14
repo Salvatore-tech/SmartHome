@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Conditions extends SmartHomeItem implements Serializable {
+public class Condition extends SmartHomeItem implements Serializable {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -26,6 +26,16 @@ public class Conditions extends SmartHomeItem implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "scene_id")
     private Scene scene;
+
+    public Condition() {
+    }
+
+    public Condition(String name, Device device, Scene scene, Double threshold) {
+        this.name = name;
+        this.device = device;
+        this.scene = scene;
+        this.threshold = threshold;
+    }
 
     public Date getActivation() {
         return activationDate;
@@ -63,4 +73,13 @@ public class Conditions extends SmartHomeItem implements Serializable {
         this.scene = scene;
     }
 
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "threshold=" + threshold +
+                ", name='" + name + '\'' +
+                ", device=" + device.getName() +
+                ", scene=" + scene.getName() +
+                '}';
+    }
 }

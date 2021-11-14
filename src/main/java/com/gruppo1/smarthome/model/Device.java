@@ -26,18 +26,25 @@ public class Device extends SmartHomeItem implements Serializable  {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)
-    private Room room;
+    protected Room room;
 
     @JsonIgnore
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
-    private List<Conditions> conditions;
+    protected List<Condition> conditions;
 
+
+    public Device() {
+    }
 
     public Device(String name) {
         this.name = name;
     }
 
-    public Device() {
+
+    public Device(String name, String type) {
+        this.name = name;
+        this.status = false;
+        this.type = type;
     }
 
     public String getId() {
@@ -80,7 +87,18 @@ public class Device extends SmartHomeItem implements Serializable  {
         this.room = room;
     }
 
-    public void addCondition(Conditions condition){ this.conditions.add(condition); }
+    public void addCondition(Condition condition){ this.conditions.add(condition); }
 
-    public List<Conditions> getConditions() { return this.conditions; }
+    public List<Condition> getConditions() { return this.conditions; }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", type='" + type + '\'' +
+                ", room=" + room +
+                '}';
+    }
 }

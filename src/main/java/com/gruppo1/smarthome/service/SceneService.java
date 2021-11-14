@@ -5,12 +5,13 @@ import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
 import com.gruppo1.smarthome.crud.memento.Memento;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.Conditions;
+import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,13 @@ import java.util.Objects;
 @Service
 @Transactional
 public class SceneService {
-    private final ConditionsService conditionsService;
+    private final ConditionService conditionService;
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
 
     @Autowired
-    public SceneService(ConditionsService conditionsService, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
-        this.conditionsService = conditionsService;
+    public SceneService(ConditionService conditionService, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+        this.conditionService = conditionService;
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
     }
@@ -81,7 +82,7 @@ public class SceneService {
         return (Integer) operationExecutor.execute(operationToPerform, name, this);
     }
 
-    public Conditions addDeviceToScene(String sceneName, String deviceName, Conditions condition) {
+    public Condition addDeviceToScene(String sceneName, String deviceName, Condition condition) {
         CrudOperation getByName = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
         Device device = (Device) operationExecutor.execute(getByName, deviceName, "Device");
@@ -91,11 +92,11 @@ public class SceneService {
         condition.setDevice(device);
         //TODO: activation date is always null (Postman return null date format)
         //condition.setActivation();
-        Conditions conditionToAdd = conditionsService.findConditionsByName(condition.getName());
+        Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
         if (Objects.nonNull(conditionToAdd)) {
             return null;
         }
-        conditionToAdd = conditionsService.addConditions(condition);
+        conditionToAdd = conditionService.addCondition(condition);
         scene.addCondition(conditionToAdd);
         device.addCondition(conditionToAdd);
         return conditionToAdd;
@@ -104,10 +105,10 @@ public class SceneService {
     public Integer removeDeviceToScene(String sceneName, String deviceName) {
         CrudOperation getByName = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
-        List<Conditions> conditions = (List<Conditions>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, conditionsService);
+        List<Condition> conditions = (List<Condition>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, conditionService);
         if (Objects.isNull(scene) || Objects.isNull(conditions))
             return 0;
-        conditions.forEach(condition -> conditionsService.deleteConditions(condition.getName()));
+        conditions.forEach(condition -> conditionService.deleteCondition(condition.getName()));
         return 1;
     }
 
@@ -115,7 +116,7 @@ public class SceneService {
         List<Device> devices = new ArrayList<>();
         Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
         if (Objects.nonNull(scene)) {
-            List<Conditions> conditions = scene.getConditions();
+            List<Condition> conditions = scene.getConditions();
             if (Objects.isNull(conditions)) {
                 return devices;
             }

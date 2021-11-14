@@ -4,11 +4,10 @@ DROP TABLE conditioner;
 DROP TABLE light_bulb;
 DROP TABLE speaker;
 DROP TABLE television;
-DROP TABLE conditions;
+DROP TABLE condition;
 DROP TABLE scene;
 DROP TABLE device;
-DROP TABLE room;*/
-
+DROP TABLE room;
 
 CREATE TABLE profile
 (
@@ -45,7 +44,7 @@ CREATE TABLE scene
     CONSTRAINT pk_scene PRIMARY KEY (id)
 );
 
-CREATE TABLE conditions
+CREATE TABLE condition
 (
     id              VARCHAR(50) NOT NULL,
     device_id       VARCHAR(50) NOT NULL,
@@ -54,7 +53,7 @@ CREATE TABLE conditions
     period          VARCHAR(20),
     threshold       FLOAT,
     name            VARCHAR(50) UNIQUE NOT NULL,
-    CONSTRAINT pk_condition PRIMARY KEY (condition_id),
+    CONSTRAINT pk_condition PRIMARY KEY (id),
     FOREIGN KEY (device_id) REFERENCES device (id),
     FOREIGN KEY (scene_id) REFERENCES scene (id)
 );
@@ -68,7 +67,8 @@ CREATE TABLE alarm_clock
     time    VARCHAR(20),
     room_id VARCHAR(50),
     CONSTRAINT pk_device PRIMARY KEY (id),
-    FOREIGN KEY (room_id) REFERENCES room (id)
+    FOREIGN KEY (room_id) REFERENCES room (id),
+    FOREIGN KEY (id) REFERENCES device(id)
 );
 
 CREATE TABLE conditioner
@@ -81,7 +81,8 @@ CREATE TABLE conditioner
     settings    VARCHAR(20),
     room_id     VARCHAR(50),
     CONSTRAINT pk_device PRIMARY KEY (id),
-    FOREIGN KEY (room_id) REFERENCES room (id)
+    FOREIGN KEY (room_id) REFERENCES room (id),
+    FOREIGN KEY (id) REFERENCES device(id)
 );
 
 CREATE TABLE light_bulb
@@ -94,7 +95,8 @@ CREATE TABLE light_bulb
     colortemp  INTEGER,
     room_id    VARCHAR(50),
     CONSTRAINT pk_device PRIMARY KEY (id),
-    FOREIGN KEY (room_id) REFERENCES room (id)
+    FOREIGN KEY (room_id) REFERENCES room (id),
+    FOREIGN KEY (id) REFERENCES device(id)
 );
 
 CREATE TABLE speaker
@@ -104,9 +106,9 @@ CREATE TABLE speaker
     status  BOOLEAN DEFAULT FALSE,
     type    VARCHAR(20)        NOT NULL,
     volume  INTEGER,
-    room_id VARCHAR(50),
+    device_fk VARCHAR(50),
     CONSTRAINT pk_device PRIMARY KEY (id),
-    FOREIGN KEY (room_id) REFERENCES room (id)
+    FOREIGN KEY (device_fk) REFERENCES device(id)
 );
 
 CREATE TABLE television
@@ -119,6 +121,7 @@ CREATE TABLE television
     channel INTEGER,
     room_id VARCHAR(50),
     CONSTRAINT pk_device PRIMARY KEY (id),
-    FOREIGN KEY (room_id) REFERENCES room (id)
+    FOREIGN KEY (room_id) REFERENCES room (id),
+    FOREIGN KEY (id) REFERENCES device(id)
 );
 

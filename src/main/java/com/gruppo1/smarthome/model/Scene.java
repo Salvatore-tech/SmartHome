@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -10,8 +11,8 @@ import java.util.List;
 public class Scene extends SmartHomeItem implements Serializable {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
 
@@ -23,9 +24,16 @@ public class Scene extends SmartHomeItem implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
-    private List<Conditions> conditions;
+    private List<Condition> conditions;
 
-    public String getId(){
+    public Scene() {}
+
+    public Scene(String name) {
+        this.name = name;
+        this.status = false;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -33,26 +41,39 @@ public class Scene extends SmartHomeItem implements Serializable {
         this.id = id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Boolean getStatus(){
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status){
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public List<Conditions> getConditions() { return this.conditions; }
+    public List<Condition> getConditions() {
+        return this.conditions;
+    }
 
-    public void addCondition(Conditions condition){this.conditions.add(condition);}
+    public void addCondition(Condition condition) {
+        this.conditions.add(condition);
+    }
 
-    public void removeCondition(Conditions condition){this.conditions.remove(condition);}
+    public void removeCondition(Condition condition) {
+        this.conditions.remove(condition);
+    }
 
+    @Override
+    public String toString() {
+        return "Scene{" +
+                "name='" + name + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

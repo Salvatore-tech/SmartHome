@@ -26,6 +26,14 @@ public class Profile extends SmartHomeItem implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    public Profile() {}
+
+    public Profile(String email, String name, String surname, String password) {
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+    }
 
     public String getId() {
         return id;
@@ -65,5 +73,14 @@ public class Profile extends SmartHomeItem implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
     }
 }

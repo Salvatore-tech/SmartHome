@@ -2,7 +2,7 @@ package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gruppo1.smarthome.model.Conditions;
+import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.service.SceneService;
@@ -88,10 +88,10 @@ public class SceneController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @PostMapping("/addDevice/{sceneName}/{deviceName}")
-    public ResponseEntity<Conditions> addDevice(@PathVariable("sceneName") String sceneName,
-                                                      @PathVariable("deviceName") String deviceName,
-                                                      @RequestBody Conditions condition) {
-        Conditions newCondition = sceneService.addDeviceToScene(sceneName, deviceName, condition);
+    public ResponseEntity<Condition> addDevice(@PathVariable("sceneName") String sceneName,
+                                               @PathVariable("deviceName") String deviceName,
+                                               @RequestBody Condition condition) {
+        Condition newCondition = sceneService.addDeviceToScene(sceneName, deviceName, condition);
         return Objects.nonNull(newCondition) ?
                 new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
