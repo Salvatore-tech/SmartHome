@@ -14,11 +14,14 @@ public class SpeakerAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if (deviceJson.has("status")) {
-            speaker.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
+        if (deviceJson.has("power")) {
+            speaker.setPower((Integer) deviceJson.get("power"));
         }
-        if (deviceJson.has("volume")) {
-            speaker.setPower((Integer) deviceJson.get("volume"));
+        if(deviceJson.has("brand")){
+            speaker.setBrand(deviceJson.get("brand").toString());
+        }
+        if(deviceJson.has("model")){
+            speaker.setModel(deviceJson.get("model").toString());
         }
     }
 }

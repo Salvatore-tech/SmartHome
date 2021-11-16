@@ -14,9 +14,6 @@ public class LightBulbAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if (deviceJson.has("status")) {
-            lightBulb.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
-        }
         if (deviceJson.has("brightness")) {
             lightBulb.setBrightness((Integer) deviceJson.get("brightness"));
         }

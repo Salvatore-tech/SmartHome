@@ -14,14 +14,17 @@ public class TelevisionAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if (deviceJson.has("status")) {
-            television.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
-        }
-        if (deviceJson.has("volume")) {
+        if(deviceJson.has("volume")) {
             television.setVolume((Integer) deviceJson.get("volume"));
         }
-        if (deviceJson.has("channel")) {
+        if(deviceJson.has("channel")) {
             television.setChannel((Integer) deviceJson.get("channel"));
+        }
+        if(deviceJson.has("brand")){
+            television.setBrand(deviceJson.get("brand").toString());
+        }
+        if(deviceJson.has("model")){
+            television.setModel(deviceJson.get("model").toString());
         }
     }
 }
