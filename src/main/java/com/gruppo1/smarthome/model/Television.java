@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringUtils;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class Television extends Device {
-
+    @JsonIgnore
     @Id
     @Column(nullable = false, updatable = false)
     private String id;

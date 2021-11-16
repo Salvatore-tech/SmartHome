@@ -2,7 +2,6 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -11,16 +10,17 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Device extends SmartHomeItem implements Serializable  {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = true)
+    @Column(nullable = false, updatable = false)
     protected String id;
     @Column(nullable = false, unique = true)
     protected String name;
     @Column(nullable = false)
     protected Boolean status;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     protected String type;
 
     @JsonIgnore
