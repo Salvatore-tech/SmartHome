@@ -14,9 +14,6 @@ public class ConditionerAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if (deviceJson.has("status")) {
-            conditioner.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
-        }
         if (deviceJson.has("settings")) {
             conditioner.setSettings(deviceJson.get("settings").toString());
         }

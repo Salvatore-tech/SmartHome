@@ -13,11 +13,14 @@ public class AlarmClockAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if (deviceJson.has("status")) {
-            alarmClock.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
-        }
         if (deviceJson.has("time")) {
             alarmClock.setTime(deviceJson.get("time").toString());
+        }
+        if(deviceJson.has("frequency")){
+            alarmClock.setFrequency(deviceJson.get("frequency").toString());
+        }
+        if(deviceJson.has("song")){
+            alarmClock.setSong(deviceJson.get("song").toString());
         }
     }
 }

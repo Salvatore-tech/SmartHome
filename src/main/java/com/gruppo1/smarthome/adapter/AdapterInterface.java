@@ -10,8 +10,8 @@ public abstract class AdapterInterface {
 
     void run(JSONObject deviceJson, Device deviceToAdapt) throws JSONException
     {
-
-        deviceToAdapt.setName(deviceJson.get("name").toString());
         deviceToAdapt.setType(deviceJson.get("type").toString());
+        deviceToAdapt.setName(deviceJson.get("name").toString());
+        deviceToAdapt.setStatus(Boolean.parseBoolean(deviceJson.get("status").toString()));
     }
 }
