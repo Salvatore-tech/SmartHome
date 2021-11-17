@@ -31,6 +31,7 @@ public class RoomService {
         if (Objects.nonNull(this.findRoomByName(room.getName())))
             return null;
         CrudOperation operationToPerform = new AddOperationImpl();
+        // result = room.generateMemento()
         mementoCareTaker.add(new Memento(operationToPerform, room, "Add a room"));
         return (Room) operationExecutor.execute(operationToPerform, room);
     }
