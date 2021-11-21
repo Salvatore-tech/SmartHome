@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional
@@ -32,7 +33,8 @@ public class SceneService {
     }
 
     public Scene addScene(Scene scene) {
-        if (Objects.nonNull(this.findSceneByName(scene.getName())))
+        Scene sceneToCheck = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), scene.getName(), this);
+        if(Objects.nonNull(sceneToCheck))
             return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, scene, "Add a scene"));
@@ -53,37 +55,34 @@ public class SceneService {
     }
 
     public Scene updateScene(String sceneNameToUpdate, Scene updatedScene) {
-//        if (Objects.nonNull(sceneRepo.findById(scene.getId()))) {
-//            sceneRepo.save(scene);
-//            return scene;
-//        }
         //TODO SS: hide more the id handling
-
-        Scene oldScene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneNameToUpdate, this);
-        if (Objects.nonNull(oldScene)) {
-            updatedScene.setId(oldScene.getId());
+        CrudOperation getByName = new GetByNameOperationImpl();
+        Scene oldScene = (Scene) operationExecutor.execute(getByName, sceneNameToUpdate, this);
+        Scene sceneToCheck = (Scene) operationExecutor.execute(getByName, updatedScene.getName(),this);
+        if (Objects.nonNull(oldScene) && Objects.isNull(sceneToCheck)) {
+            setScene(oldScene, updatedScene);
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, oldScene, "Update a scene"));
-            return (Scene) operationExecutor.execute(operationToPerform, updatedScene);
+            return (Scene) operationExecutor.execute(operationToPerform, oldScene);
         }
         return null;
     }
 
     public Integer deleteScene(String name) {
-//        Optional<Scene> scene = sceneRepo.findById(id);
-//        if (scene.isPresent()) {
-//            sceneRepo.deleteSceneById(id);
-//            return true;
-//        }
-        //TODO check if already exists
         SmartHomeItem sceneToDelete = (SmartHomeItem) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
-        DeleteOperationImpl operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, sceneToDelete, "Delete a scene")); //TODO
-        return (Integer) operationExecutor.execute(operationToPerform, name, this);
+        if (Objects.nonNull(sceneToDelete)) {
+            DeleteOperationImpl operationToPerform = new DeleteOperationImpl();
+            mementoCareTaker.add(new Memento(operationToPerform, sceneToDelete, "Delete a scene")); //TODO
+            return (Integer) operationExecutor.execute(operationToPerform, name, this);
+        }
+        return 0;
     }
 
     public Condition addDeviceToScene(String sceneName, String deviceName, Condition condition) {
         CrudOperation getByName = new GetByNameOperationImpl();
+        Condition conditionToCheck = (Condition) operationExecutor.execute(getByName, condition.getName(), "Condition");
+        if(Objects.nonNull(conditionToCheck))
+            return null;
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
         Device device = (Device) operationExecutor.execute(getByName, deviceName, "Device");
         if (Objects.isNull(scene) || Objects.isNull(device))
@@ -103,13 +102,19 @@ public class SceneService {
     }
 
     public Integer removeDeviceToScene(String sceneName, String deviceName) {
+        AtomicBoolean conditionFound = new AtomicBoolean(false);
         CrudOperation getByName = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(getByName, sceneName, this);
-        List<Condition> conditions = (List<Condition>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, conditionService);
+        List<Condition> conditions = (List<Condition>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, "Condition");
         if (Objects.isNull(scene) || Objects.isNull(conditions))
             return 0;
-        conditions.forEach(condition -> conditionService.deleteCondition(condition.getName()));
-        return 1;
+        conditions.forEach(condition -> {
+            if (condition.getScene().getName().equals(sceneName)) {
+                conditionService.deleteCondition(condition.getName());
+                conditionFound.set(true);
+            }
+        });
+        return (conditionFound.get() == true) ? 1 : 0;
     }
 
     public List<Device> findDevicesInScene(String sceneName) {
@@ -130,5 +135,10 @@ public class SceneService {
             );
         }
         return devices;
+    }
+
+    private void setScene(Scene oldScene, Scene updatedScene) {
+        oldScene.setName(updatedScene.getName());
+        oldScene.setStatus(updatedScene.getStatus());
     }
 }

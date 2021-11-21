@@ -1,4 +1,5 @@
 package com.gruppo1.smarthome.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Entity
 public class Profile extends SmartHomeItem implements Serializable {
 
-
+    @JsonIgnore
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
