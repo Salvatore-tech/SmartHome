@@ -17,8 +17,9 @@ import java.util.Objects;
 @Service
 @Transactional
 public class RoomService {
-    private CrudOperationExecutor operationExecutor;
-    private MementoCareTaker mementoCareTaker;
+    private final CrudOperationExecutor operationExecutor;
+    private final MementoCareTaker mementoCareTaker;
+    private CrudOperation operationToPerform;
 
     @Autowired
     public RoomService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
@@ -29,36 +30,37 @@ public class RoomService {
     //TODO FIX MEMENTO IN ALL METHODS
 
     public Room addRoom(Room room) {
-        Room roomToCheck = (Room) operationExecutor.execute(new GetByNameOperationImpl(), room.getName(),this);
-        if (Objects.nonNull(roomToCheck))
-            return null;
-        CrudOperation operationToPerform = new AddOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, room, "Add a room"));
-        return (Room) operationExecutor.execute(operationToPerform, room);
+        if (validateRoom(room)){
+            operationToPerform = new AddOperationImpl();
+            mementoCareTaker.add(new Memento(operationToPerform, room, "Add a room"));
+            return (Room) operationExecutor.execute(operationToPerform, room);
+        }
+        return null;
     }
 
     public List<Room> findAllRoom() {
-        CrudOperation operationToPerform = new GetOperationImpl();
+        operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, null, "Get all rooms"));
         return (List<Room>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Room findRoomByName(String name) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        operationToPerform = new GetByNameOperationImpl();
         Room result = (Room) operationExecutor.execute(operationToPerform, name, this);
         mementoCareTaker.add(new Memento(operationToPerform, result, "Find a room given a name"));
         return result;
     }
 
     public Room updateRoom(String roomNameToUpdate, Room updatedRoom) {
-        CrudOperation getByName = new GetByNameOperationImpl();
-        Room oldRoom = (Room) operationExecutor.execute(getByName, roomNameToUpdate, this);
-        Room roomToCheck = (Room) operationExecutor.execute(getByName, updatedRoom.getName(), this);
-        if (Objects.nonNull(oldRoom) && Objects.isNull(roomToCheck) && !roomNameToUpdate.equalsIgnoreCase("Default")) {
-            oldRoom.setName(updatedRoom.getName());
-            CrudOperation operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(new Memento(operationToPerform, oldRoom, "Update a room"));
-            return (Room) operationExecutor.execute(operationToPerform, oldRoom);
+        if(!roomNameToUpdate.equals("Default")){
+            operationToPerform = new GetByNameOperationImpl();
+            Room oldRoom = (Room) operationExecutor.execute(operationToPerform, roomNameToUpdate, this);
+            if (validateUpdate(oldRoom, updatedRoom)){
+                oldRoom.setName(updatedRoom.getName());
+                operationToPerform = new UpdateOperationImpl();
+                mementoCareTaker.add(new Memento(operationToPerform, oldRoom, "Update a room"));
+                return (Room) operationExecutor.execute(operationToPerform, oldRoom);
+            }
         }
         return null;
     }
@@ -66,11 +68,14 @@ public class RoomService {
     public Integer deleteRoom(String roomName) {
         if (roomName.equals("Default"))
             return 0;
-        CrudOperation getByName = new GetByNameOperationImpl();
-        List<Device> devices = (List<Device>) operationExecutor.execute(new GetDevicesByRoomName(), roomName,"Device" );
-        if(Objects.nonNull(devices))
-                devices.forEach(device -> device.setRoom((Room) operationExecutor.execute(getByName, "Default", this)));
-        CrudOperation operationToPerform = new DeleteOperationImpl();
+       operationToPerform = new GetDevicesByRoomName();
+        List<Device> devices = (List<Device>) operationExecutor.execute(operationToPerform, roomName,"Device" );
+        if(Objects.nonNull(devices)){
+            operationToPerform = new GetByNameOperationImpl();
+            Room defaultRoom = (Room) operationExecutor.execute(operationToPerform, "Default", this);
+            devices.forEach(device -> device.setRoom(defaultRoom));
+        }
+        operationToPerform = new DeleteOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, null, "Delete room"));
         return (Integer) operationExecutor.execute(operationToPerform, roomName, this);
     }
@@ -85,16 +90,17 @@ public class RoomService {
 
     public List<Device> findDevicesInRoom(String roomName) {
         List<Device> devices = new ArrayList<>();
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        operationToPerform = new GetByNameOperationImpl();
         Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
         if (Objects.nonNull(room)) {
-            devices = (List<Device>) operationExecutor.execute(new GetDevicesByRoomName(), roomName,"Device" );
+            operationToPerform = new GetDevicesByRoomName();
+            devices = (List<Device>) operationExecutor.execute(operationToPerform, roomName,"Device" );
         }
         return devices;
     }
 
     private Device changeRoom(String deviceName, String roomName) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        operationToPerform = new GetByNameOperationImpl();
         Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
         Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, "Device");
         if(Objects.nonNull(room) && Objects.nonNull(device)){
@@ -105,9 +111,25 @@ public class RoomService {
     }
 
     public Integer countRooms() {
-        CrudOperation operationToPerform = new GetOperationImpl();
+        operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, new Room("Room"), "Count rooms")); //TODO
         return ((List<Room>) operationExecutor.execute(operationToPerform, "Room")).size();
+    }
+
+    private Boolean validateRoom(Room room){
+        operationToPerform = new GetByNameOperationImpl();
+        return Objects.isNull(operationExecutor.execute(operationToPerform, room.getName(), this));
+    }
+
+    private Boolean validateUpdate(Room oldRoom, Room updatedRoom){
+        if(Objects.nonNull(oldRoom)){
+            operationToPerform = new GetByNameOperationImpl();
+            Room roomToCheck = (Room) operationExecutor.execute(operationToPerform, updatedRoom.getName(), this);
+            if(Objects.isNull(roomToCheck)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
