@@ -4,7 +4,6 @@ import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.ApplicationContextProvider;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.repository.ConditionRepo;
-
 import java.util.List;
 import java.util.Objects;
 

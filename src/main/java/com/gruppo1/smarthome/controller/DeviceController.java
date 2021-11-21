@@ -3,7 +3,6 @@ package com.gruppo1.smarthome.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Device;
-import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
 import org.json.JSONException;
@@ -11,8 +10,6 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Objects;
 
 // http://localhost:8080/device/all
@@ -45,8 +42,8 @@ public class DeviceController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Device> addDevice(@RequestBody String deviceString) throws JSONException {
-        JSONObject device = new JSONObject(deviceString);
-        Device newDevice = deviceService.addDevice(device);
+        JSONObject deviceJson = new JSONObject(deviceString);
+        Device newDevice = deviceService.addDevice(deviceJson);
         return Objects.nonNull(newDevice) ? new ResponseEntity<>(newDevice, HttpStatus.CREATED) : new ResponseEntity<>(newDevice, HttpStatus.BAD_REQUEST);
     }
 
@@ -54,7 +51,7 @@ public class DeviceController {
     @ApiOperation(value = "Find device", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return device"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<SmartHomeItem>> getDeviceByName(@ApiParam(value = "Device name", required = true)
+    public ResponseEntity<Device> getDeviceByName(@ApiParam(value = "Device name", required = true)
                                                                @PathVariable("name") String name) {
        Device device = deviceService.findDeviceByName(name);
         return Objects.nonNull(device) ? new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +65,7 @@ public class DeviceController {
     public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device ID", required = true)
                                           @PathVariable("name") String name) {
         return deviceService.deleteDevice(name).equals(1) ?
-                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/update/{name}")
@@ -76,13 +73,13 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Device> updateDevice(@PathVariable("name") String name, @RequestBody Device updatedDevice) {
-        Device result = deviceService.updateDevice(name, updatedDevice);
+    public ResponseEntity<Device> updateDevice(@PathVariable("name") String name, @RequestBody String deviceString) throws JSONException {
+        JSONObject deviceJson = new JSONObject(deviceString);
+        Device result = deviceService.updateDevice(name, deviceJson);
         return Objects.nonNull(result) ?
-                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    // TODO Internal error
     @GetMapping("/count")
     @ApiOperation(value = "Count devices", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of devices"),
