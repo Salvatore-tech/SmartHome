@@ -22,24 +22,26 @@ import java.util.Objects;
 public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
+    private final AdapterService adapterDevice;
 
     @Autowired
-    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, AdapterService adapterDevice) {
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
+        this.adapterDevice = adapterDevice;
     }
+
+    //TODO FIX MEMENTO IN ALL METHODS
 
     public Device addDevice(JSONObject deviceJson) throws JSONException {
         if (!validateJson(deviceJson))
             return null;
-
         Device newDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceJson.get("name").toString(), this);
         if (Objects.isNull(newDevice)) {
             String typeDevice = deviceJson.get("type").toString().toLowerCase();
             FactoryDevice factory = new FactoryDevice();
             newDevice = factory.getDevice(typeDevice);
             if (Objects.nonNull(newDevice)) {
-                AdapterService adapterDevice = new AdapterService();
                 adapterDevice.adapt(deviceJson, newDevice);
                 Room room = validateRoom(deviceJson);
                 newDevice.setRoom(room);
@@ -64,15 +66,15 @@ public class DeviceService {
         return result;
     }
 
-    public Device updateDevice(String deviceNameToUpdate, Device updatedDevice) {
-
-        //TODO: hide more the id handling
+    public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
         Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
-        if (Objects.nonNull(oldDevice)) {
-            updatedDevice.setId(oldDevice.getId());
+        if(validateUpdate(deviceJson, oldDevice)) {
+            adapterDevice.adapt(deviceJson, oldDevice);
+            Room room = validateRoom(deviceJson);
+            oldDevice.setRoom(room);
             UpdateOperationImpl operationToPerform = new UpdateOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, oldDevice, "Update device"));
-            return (Device) operationExecutor.execute(operationToPerform, updatedDevice);
+            return (Device) operationExecutor.execute(operationToPerform, oldDevice);
         }
         return null;
     }
@@ -80,26 +82,21 @@ public class DeviceService {
     public Integer deleteDevice(String name) {
         Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
         if (Objects.nonNull(device)) {
-            Device deviceToDelete = (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
             CrudOperation operationToPerform = new DeleteOperationImpl();
-            mementoCareTaker.add(new Memento(operationToPerform, deviceToDelete, "Delete device"));
+            mementoCareTaker.add(new Memento(operationToPerform, device, "Delete device"));
             return (Integer) operationExecutor.execute(operationToPerform, name, this);
         }
         return 0;
     }
 
-
     public Integer countDevices() {
         CrudOperation operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, new Device("Devices"), "Count devices")); //TODO
-        return ((List<Device>) operationExecutor.execute(operationToPerform, null)).size();
+        return ((List<Device>) operationExecutor.execute(operationToPerform, "Device")).size();
     }
 
     private Boolean validateJson(JSONObject objectToCheck) {
-        if (objectToCheck.has("type") && objectToCheck.has("name")) {
-            return true;
-        }
-        return false;
+        return objectToCheck.has("type") && objectToCheck.has("name");
     }
 
     private Room validateRoom(JSONObject deviceJson) throws JSONException {
@@ -114,5 +111,14 @@ public class DeviceService {
             room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
         }
         return room;
+    }
+
+    private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
+        if(validateJson(deviceJson) && deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType())){
+            Device deviceDB = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceJson.get("name").toString(), this);
+            if(Objects.nonNull(oldDevice) && (Objects.isNull(deviceDB) || deviceDB.equals(oldDevice)))
+                return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
+        }
+        return false;
     }
 }
