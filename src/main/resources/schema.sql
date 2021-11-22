@@ -9,6 +9,7 @@ DROP TABLE scene;
 DROP TABLE device;
 DROP TABLE room;
 
+tftt
 CREATE TABLE profile
 (
     id       VARCHAR(50) NOT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE condition
     id              VARCHAR(50) NOT NULL,
     device_id       VARCHAR(50) NOT NULL,
     scene_id        VARCHAR(50) NOT NULL,
-    activation_date DATE,
+    activation_date TIMESTAMP,
     period          VARCHAR(20),
     threshold       FLOAT,
     name            VARCHAR(50) UNIQUE NOT NULL,
