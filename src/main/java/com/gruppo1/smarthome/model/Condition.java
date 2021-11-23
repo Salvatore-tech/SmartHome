@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +14,7 @@ public class Condition extends SmartHomeItem implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date activationDate;
     private String period;
     private Double threshold;
@@ -37,13 +38,11 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.threshold = threshold;
     }
 
-    public Date getActivation() {
+    public Date getActivationDate() {
         return activationDate;
     }
 
-    public void setActivation(Date activation) {
-        this.activationDate = activation;
-    }
+    public void setActivationDate(Date activation) { this.activationDate = activation; }
 
     public Double getThreshold() {
         return threshold;
