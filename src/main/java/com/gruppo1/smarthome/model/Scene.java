@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 public class Scene extends SmartHomeItem implements Serializable {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")

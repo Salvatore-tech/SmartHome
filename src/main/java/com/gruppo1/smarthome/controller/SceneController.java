@@ -54,11 +54,9 @@ public class SceneController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    //TODO: 500 INTERNAL ERROR
     public ResponseEntity<Scene> updateScene(@PathVariable("name") String name, @RequestBody Scene updatedScene) {
         Scene result = sceneService.updateScene(name, updatedScene);
-        return Objects.nonNull(updatedScene) ? new ResponseEntity<>(updatedScene, HttpStatus.OK) : new ResponseEntity<>(updatedScene, HttpStatus.NOT_FOUND);
-
+        return Objects.nonNull(result) ? new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/add")
@@ -71,14 +69,13 @@ public class SceneController {
         return Objects.nonNull(newScene) ? new ResponseEntity<>(newScene, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/delete/{name}")
-    @ApiOperation(value = "Delete scene by ID", tags = {"Scene"})
+    @DeleteMapping("/deleteScene/{name}")
+    @ApiOperation(value = "Delete scene", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    //TODO: remove id in the URL
     public ResponseEntity<?> deleteScene(@PathVariable("name") String name) {
-        return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "Add device in scene", tags = {"Scene"})
@@ -93,7 +90,7 @@ public class SceneController {
                                                @RequestBody Condition condition) {
         Condition newCondition = sceneService.addDeviceToScene(sceneName, deviceName, condition);
         return Objects.nonNull(newCondition) ?
-                new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "Remove device in scene", tags = {"Scene"})
@@ -106,7 +103,7 @@ public class SceneController {
     public ResponseEntity<Integer> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
         Integer result = sceneService.removeDeviceToScene(sceneName, deviceName);
         return result.equals(1) ?
-                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "Find all devices in scene", tags = {"Scene"})
@@ -116,9 +113,15 @@ public class SceneController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @GetMapping("/findDevices/{sceneName}")
-    public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName){
+    public ResponseEntity<String> findDevices(@PathVariable("sceneName") String sceneName) throws JsonProcessingException {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
-        return devices.size() > 0 ?  new ResponseEntity<>(devices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ObjectMapper objectMapper = new ObjectMapper();
+        if (devices.size() > 0) {
+            String result = objectMapper.writeValueAsString(devices);
+            return new ResponseEntity(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

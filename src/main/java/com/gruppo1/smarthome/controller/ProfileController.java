@@ -40,7 +40,7 @@ public class ProfileController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return profile"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<SmartHomeItem> getProfileByName(@ApiParam(value = "Profile Name", required = true)
-                                                                @PathVariable("name") String name){
+                                                          @PathVariable("name") String name) {
         Profile profile = profileService.findProfileByName(name);
         return Objects.nonNull(profile) ? new ResponseEntity(profile, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -55,7 +55,7 @@ public class ProfileController {
         Profile result = profileService.updateProfile(name, updatedProfile);
 
         return Objects.nonNull(result) ?
-                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/add")
@@ -77,6 +77,6 @@ public class ProfileController {
     public ResponseEntity<?> deleteProfile(@ApiParam(value = "Profile name", required = true)
                                                @PathVariable("name") String name){
         return profileService.deleteProfile(name).equals(1) ?
-                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

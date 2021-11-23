@@ -26,7 +26,8 @@ public class ProfileService {
     }
 
     public Profile addProfile(Profile profile) {
-        if (Objects.nonNull(this.findProfileByName(profile.getName())))
+        Profile profileToCheck = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profile.getName(), this);
+        if(Objects.nonNull(profileToCheck))
             return null;
         CrudOperation operationToPerform = new AddOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, profile, "Add a profile"));
@@ -47,21 +48,34 @@ public class ProfileService {
     }
 
     public Profile updateProfile(String profileNameToUpdate, Profile updatedProfile) {
-        //TODO: hide more the id handling
-        Profile oldProfile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profileNameToUpdate, this);
-        if (Objects.nonNull(oldProfile)) {
-            updatedProfile.setId(oldProfile.getId());
+        CrudOperation getByName = new GetByNameOperationImpl();
+        Profile oldProfile = (Profile) operationExecutor.execute(getByName, profileNameToUpdate, this);
+        Profile profileToCheck = (Profile) operationExecutor.execute(getByName, updatedProfile.getName(), this);
+        if (Objects.nonNull(oldProfile) && Objects.isNull(profileToCheck)) {
+            setProfile(oldProfile, updatedProfile);
             CrudOperation operationToPerform = new UpdateOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, oldProfile, "Update a profile")); //TODO
-            return (Profile) operationExecutor.execute(operationToPerform, updatedProfile);
+            return (Profile) operationExecutor.execute(operationToPerform, oldProfile);
         }
         return null;
     }
 
     public Integer deleteProfile(String name) {
-        //TODO not implemented
-        CrudOperation operationToPerform = new DeleteOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, null, "Delete a profile")); //TODO
-        return (Integer) operationExecutor.execute(operationToPerform, name, this);
+        Profile profile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
+        if (Objects.nonNull(profile)) {
+            CrudOperation operationToPerform = new DeleteOperationImpl();
+            mementoCareTaker.add(new Memento(operationToPerform, profile, "Delete a profile")); //TODO
+            return (Integer) operationExecutor.execute(operationToPerform, name, this);
+        }
+        return 0;
     }
+
+    private void setProfile(Profile oldProfile, Profile updatedProfile) {
+        oldProfile.setName(updatedProfile.getName());
+        oldProfile.setSurname(updatedProfile.getSurname());
+        oldProfile.setEmail(updatedProfile.getEmail());
+        oldProfile.setPassword(updatedProfile.getPassword());
+    }
+
+
 }
