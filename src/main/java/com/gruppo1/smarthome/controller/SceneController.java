@@ -13,10 +13,8 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 @RestController
@@ -35,15 +33,15 @@ public class SceneController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<String> getAllScenes() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(sceneService.findAllScene());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Scene> scenes = sceneService.findAllScene();
+        return scenes.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(scenes), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/find/{name}")
     @ApiOperation(value = "Find scene by ID", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scene"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Optional<Scene>> getSceneById(@PathVariable("name") String name) {
+    public ResponseEntity<Scene> getSceneById(@PathVariable("name") String name) {
         Scene scene = sceneService.findSceneByName(name);
         return Objects.nonNull(scene) ? new ResponseEntity(scene, HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
     }
@@ -116,12 +114,7 @@ public class SceneController {
     public ResponseEntity<String> findDevices(@PathVariable("sceneName") String sceneName) throws JsonProcessingException {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
         ObjectMapper objectMapper = new ObjectMapper();
-        if (devices.size() > 0) {
-            String result = objectMapper.writeValueAsString(devices);
-            return new ResponseEntity(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

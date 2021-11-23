@@ -7,6 +7,7 @@ import com.gruppo1.smarthome.crud.memento.Memento;
 import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -30,7 +31,8 @@ public class RoomService {
     //TODO FIX MEMENTO IN ALL METHODS
 
     public Room addRoom(Room room) {
-        if (validateRoom(room)){
+        operationToPerform = new GetByNameOperationImpl();
+        if (!isPresent((Room) operationExecutor.execute(operationToPerform, room.getName(), this))) {
             operationToPerform = new AddOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, room, "Add a room"));
             return (Room) operationExecutor.execute(operationToPerform, room);
@@ -92,7 +94,7 @@ public class RoomService {
         List<Device> devices = new ArrayList<>();
         operationToPerform = new GetByNameOperationImpl();
         Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
-        if (Objects.nonNull(room)) {
+        if (isPresent(room)) {
             operationToPerform = new GetDevicesByRoomName();
             devices = (List<Device>) operationExecutor.execute(operationToPerform, roomName,"Device" );
         }
@@ -103,7 +105,7 @@ public class RoomService {
         operationToPerform = new GetByNameOperationImpl();
         Room room = (Room) operationExecutor.execute(operationToPerform, roomName, this);
         Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, "Device");
-        if(Objects.nonNull(room) && Objects.nonNull(device)){
+        if(isPresent(room) && isPresent(device)){
             device.setRoom(room);
             return device;
         }
@@ -116,16 +118,15 @@ public class RoomService {
         return ((List<Room>) operationExecutor.execute(operationToPerform, "Room")).size();
     }
 
-    private Boolean validateRoom(Room room){
-        operationToPerform = new GetByNameOperationImpl();
-        return Objects.isNull(operationExecutor.execute(operationToPerform, room.getName(), this));
+    private Boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item) ? true : false;
     }
 
     private Boolean validateUpdate(Room oldRoom, Room updatedRoom){
-        if(Objects.nonNull(oldRoom)){
+        if(isPresent(oldRoom)){
             operationToPerform = new GetByNameOperationImpl();
             Room roomToCheck = (Room) operationExecutor.execute(operationToPerform, updatedRoom.getName(), this);
-            if(Objects.isNull(roomToCheck)){
+            if(!isPresent(roomToCheck)){
                 return true;
             }
         }

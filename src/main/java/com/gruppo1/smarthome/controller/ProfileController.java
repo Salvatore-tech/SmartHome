@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Objects;
 
 
@@ -31,8 +31,8 @@ public class ProfileController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<String> getAllProfile() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(profileService.findAllProfile());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Profile> profiles = profileService.findAllProfile();
+        return profiles.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(profiles), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/find/{name}")

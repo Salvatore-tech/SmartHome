@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import java.util.Objects;
 
 // http://localhost:8080/device/all
@@ -31,8 +32,8 @@ public class DeviceController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<String> getAllDevices() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(deviceService.findAllDevices());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Device> devices = deviceService.findAllDevices();
+        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/add")
