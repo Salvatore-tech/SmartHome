@@ -7,6 +7,7 @@ import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.Objects;
 public class DeviceController {
     private final DeviceService deviceService;
 
+    @Autowired
     public DeviceController(DeviceService deviceService) {
         this.deviceService = deviceService;
     }

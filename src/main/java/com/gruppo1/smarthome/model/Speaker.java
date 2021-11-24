@@ -9,10 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class Speaker extends Device{
-    @JsonIgnore
-    @Id
-    @Column(nullable = false, updatable = false)
-    private String id;
+
     private Integer power;
     private String brand;
     private String model;

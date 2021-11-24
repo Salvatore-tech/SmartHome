@@ -32,7 +32,6 @@ public class UndoOperationImpl implements CrudOperation {
         else if (operationToRevert.getClass().equals(DeleteOperationImpl.class)){
 
             operationReverted = new AddOperationImpl();
-            item.setId(StringUtils.EMPTY);
             repository.save(item);
 
         }

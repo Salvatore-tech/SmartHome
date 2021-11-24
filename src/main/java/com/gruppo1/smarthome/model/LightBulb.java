@@ -9,10 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class LightBulb extends Device{
-    @JsonIgnore
-    @Id
-    @Column(nullable = false, updatable = false)
-    private String id;
+
     private Integer brightness;
     private String colorTemp;
 

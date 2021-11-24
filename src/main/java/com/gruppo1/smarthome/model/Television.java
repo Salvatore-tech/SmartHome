@@ -9,10 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class Television extends Device {
-    @JsonIgnore
-    @Id
-    @Column(nullable = false, updatable = false)
-    private String id;
+
     private String brand;
     private String model;
     private Integer volume;
