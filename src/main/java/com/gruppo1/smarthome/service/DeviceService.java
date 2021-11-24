@@ -1,6 +1,6 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.adapter.AdapterService;
+import com.gruppo1.smarthome.adapter.FactoryDeviceAdapter;
 import com.gruppo1.smarthome.crud.api.CrudOperation;
 import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.crud.impl.*;
@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -23,14 +24,14 @@ import java.util.Objects;
 public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
-    private final AdapterService adapterDevice;
+    private final FactoryDeviceAdapter adapterDevice;
     private CrudOperation operationToPerform;
 
     @Autowired
-    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, AdapterService adapterDevice) {
+    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, FactoryDeviceAdapter factoryDeviceAdapter) {
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
-        this.adapterDevice = adapterDevice;
+        this.adapterDevice = factoryDeviceAdapter;
     }
 
     //TODO FIX MEMENTO IN ALL METHODS

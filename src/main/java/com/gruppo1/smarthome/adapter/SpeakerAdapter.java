@@ -5,7 +5,7 @@ import com.gruppo1.smarthome.model.Speaker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SpeakerAdapter extends AdapterInterface {
+public class SpeakerAdapter extends DeviceAdapter {
 
     @Override
     public void run(JSONObject deviceJson, Device device) throws JSONException {
