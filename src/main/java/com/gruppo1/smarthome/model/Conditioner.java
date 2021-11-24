@@ -10,10 +10,6 @@ import java.util.Objects;
 @Entity
 public class Conditioner extends Device {
 
-    @JsonIgnore
-    @Id
-    @Column(nullable = false, updatable = false)
-    private String id;
     private Integer temperature;
     private String settings;
 

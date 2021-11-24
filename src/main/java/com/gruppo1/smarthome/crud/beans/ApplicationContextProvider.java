@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class ApplicationContextProvider implements ApplicationContextAware {
 
@@ -23,6 +25,8 @@ public class ApplicationContextProvider implements ApplicationContextAware {
     }
 
     public static BaseSmartHomeRepository getRepository(Object item) {
+        if(Objects.isNull(item))
+            return null;
         if (item instanceof Device || item.toString().contains("Device")) {
             return context.getBean(DeviceRepo.class);
         } else if (item instanceof Room || item.toString().contains("Room")) {

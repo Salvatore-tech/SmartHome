@@ -9,10 +9,7 @@ import java.util.Objects;
 
 @Entity
 public class AlarmClock extends Device {
-    @JsonIgnore
-    @Id
-    @Column(nullable = false, updatable = false)
-    private String id;
+
     private String time;
     private String frequency;
     private String song;
