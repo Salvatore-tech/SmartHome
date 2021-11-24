@@ -1,11 +1,11 @@
 package com.gruppo1.smarthome.adapter;
 
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.Television;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TelevisionAdapter extends AdapterInterface {
-
+public class TelevisionAdapter extends DeviceAdapter {
 
     @Override
     public void run(JSONObject deviceJson, Device device) throws JSONException {
@@ -14,7 +14,7 @@ public class TelevisionAdapter extends AdapterInterface {
 
         super.run(deviceJson, device);
 
-        if(deviceJson.has("volume")) {
+        if (deviceJson.has("volume")) {
             television.setVolume((Integer) deviceJson.get("volume"));
         }
         if(deviceJson.has("channel")) {

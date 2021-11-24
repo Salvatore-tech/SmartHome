@@ -5,7 +5,7 @@ import com.gruppo1.smarthome.model.LightBulb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LightBulbAdapter extends AdapterInterface {
+public class LightBulbAdapter extends DeviceAdapter {
 
     @Override
     public void run(JSONObject deviceJson, Device device) throws JSONException {

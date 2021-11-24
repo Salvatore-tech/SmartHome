@@ -9,6 +9,7 @@ import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -33,13 +34,12 @@ public class RoomController {
     }
 
 
-
     @GetMapping("/find/{name}")
     @ApiOperation(value = "Find room by name", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return room"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<Room> getRoomById(@ApiParam(value = "Room ID", required = true)
-                                                      @PathVariable("name") String name) {
+                                            @PathVariable("name") String name) {
         Room room = roomService.findRoomByName(name);
         return Objects.nonNull(room) ? new ResponseEntity(room, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -121,8 +121,7 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity countRooms() {
-        long rooms = roomService.countRooms();
-        return new ResponseEntity(rooms, HttpStatus.OK);
+        return new ResponseEntity(roomService.countRooms(), HttpStatus.OK);
     }
 
 }

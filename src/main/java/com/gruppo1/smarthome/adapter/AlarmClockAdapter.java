@@ -1,10 +1,11 @@
 package com.gruppo1.smarthome.adapter;
 
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.model.AlarmClock;
+import com.gruppo1.smarthome.model.Device;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AlarmClockAdapter extends AdapterInterface {
+public class AlarmClockAdapter extends DeviceAdapter {
 
     @Override
     public void run(JSONObject deviceJson, Device device) throws JSONException {
