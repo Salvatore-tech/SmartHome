@@ -1,7 +1,9 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gruppo1.smarthome.crud.api.Actions;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,13 +16,14 @@ public class Condition extends SmartHomeItem implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private Date activationDate;
     private String period;
     private Double threshold;
     private String name;
+    private Actions action;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
 
@@ -31,18 +34,23 @@ public class Condition extends SmartHomeItem implements Serializable {
     public Condition() {
     }
 
-    public Condition(String name, Device device, Scene scene, Double threshold) {
+    public Condition(String name, Actions action, Date activationDate, Double threshold, Device device, Scene scene, String period) {
         this.name = name;
+        this.action = action;
+        this.activationDate = activationDate;
+        this.threshold = threshold;
         this.device = device;
         this.scene = scene;
-        this.threshold = threshold;
+        this.period = period;
     }
 
     public Date getActivationDate() {
         return activationDate;
     }
 
-    public void setActivationDate(Date activation) { this.activationDate = activation; }
+    public void setActivationDate(Date activation) {
+        this.activationDate = activation;
+    }
 
     public Double getThreshold() {
         return threshold;
@@ -52,9 +60,13 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.threshold = threshold;
     }
 
-    public String getName() { return this.name; }
+    public String getName() {
+        return this.name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Device getDevice() {
         return this.device;
@@ -72,6 +84,14 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.scene = scene;
     }
 
+    public Actions getAction() {
+        return action;
+    }
+
+    public void setAction(Actions action) {
+        this.action = action;
+    }
+
     @Override
     public String toString() {
         return "Condition{" +
@@ -79,6 +99,7 @@ public class Condition extends SmartHomeItem implements Serializable {
                 ", name='" + name + '\'' +
                 ", device=" + device.getName() +
                 ", scene=" + scene.getName() +
+                ", action=" + getAction() +
                 '}';
     }
 }
