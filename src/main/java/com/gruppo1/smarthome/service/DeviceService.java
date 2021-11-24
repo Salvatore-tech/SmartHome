@@ -9,6 +9,7 @@ import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.FactoryDevice;
 import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class DeviceService {
         if (!validateJson(deviceJson))
             return null;
         Device newDevice = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
-        if (Objects.isNull(newDevice)) {
+        if (!isPresent(newDevice)) {
             String typeDevice = deviceJson.get("type").toString().toLowerCase();
             FactoryDevice factory = new FactoryDevice();
             newDevice = factory.getDevice(typeDevice);
-            if (Objects.nonNull(newDevice)) {
+            if (isPresent(newDevice)) {
                 adapterDevice.adapt(deviceJson, newDevice);
                 Room room = validateRoom(deviceJson);
                 newDevice.setRoom(room);
@@ -85,7 +86,7 @@ public class DeviceService {
     public Integer deleteDevice(String name) {
         operationToPerform = new GetByNameOperationImpl();
         Device device = (Device) operationExecutor.execute(operationToPerform, name, this);
-        if (Objects.nonNull(device)) {
+        if (isPresent(device)) {
             operationToPerform = new DeleteOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, device, "Delete device"));
             return (Integer) operationExecutor.execute(operationToPerform, name, this);
@@ -99,6 +100,10 @@ public class DeviceService {
         return ((List<Device>) operationExecutor.execute(operationToPerform, "Device")).size();
     }
 
+    private Boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item) ? true : false;
+    }
+
     private Boolean validateJson(JSONObject objectToCheck) {
         return objectToCheck.has("type") && objectToCheck.has("name");
     }
@@ -108,7 +113,7 @@ public class DeviceService {
         operationToPerform = new GetByNameOperationImpl();
         if(deviceJson.has("room_name")) {
             room = (Room) operationExecutor.execute(operationToPerform, deviceJson.get("room_name").toString(), "Room");
-            if (Objects.isNull(room)) {
+            if (!isPresent(room)) {
                 room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
             }
         } else {
@@ -121,7 +126,7 @@ public class DeviceService {
         operationToPerform = new GetByNameOperationImpl();
         if(validateJson(deviceJson)){
             Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
-            if(Objects.nonNull(oldDevice) && (Objects.isNull(deviceDB) || deviceDB.equals(oldDevice)))
+            if(isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
                 return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
         }
         return false;

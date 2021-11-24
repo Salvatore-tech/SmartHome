@@ -28,8 +28,8 @@ public class RoomController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<String> getAllRooms() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(roomService.findAllRoom());
-        return new ResponseEntity(result, HttpStatus.OK);
+        List<Room> rooms = roomService.findAllRoom();
+        return rooms.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(rooms), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
@@ -97,14 +97,10 @@ public class RoomController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<String> findDevices(@PathVariable("roomName") String roomName) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         List<Device> devices = roomService.findDevicesInRoom(roomName);
-        if(devices.size() > 0 ){
-            String result = objectMapper.writeValueAsString(devices);
-            return new ResponseEntity(result, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     @DeleteMapping("/deleteDevice/{nameDevice}")
