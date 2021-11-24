@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -55,8 +56,8 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return device"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<Device> getDeviceByName(@ApiParam(value = "Device name", required = true)
-                                                               @PathVariable("name") String name) {
-       Device device = deviceService.findDeviceByName(name);
+                                                  @PathVariable("name") String name) {
+        Device device = deviceService.findDeviceByName(name);
         return Objects.nonNull(device) ? new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

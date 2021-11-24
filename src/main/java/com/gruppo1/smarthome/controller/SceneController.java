@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public class SceneController {
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<Scene> getSceneById(@PathVariable("name") String name) {
         Scene scene = sceneService.findSceneByName(name);
-        return Objects.nonNull(scene) ? new ResponseEntity(scene, HttpStatus.OK) : new ResponseEntity(HttpStatus.NOT_FOUND);
+        return Objects.nonNull(scene) ? new ResponseEntity<>(scene, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/update/{name}")
