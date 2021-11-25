@@ -1,6 +1,6 @@
-package com.gruppo1.smarthome.crud.memento;
+package com.gruppo1.smarthome.memento;
 
-import com.gruppo1.smarthome.crud.api.CrudOperation;
+import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 
 public class Memento implements CrudOperation {

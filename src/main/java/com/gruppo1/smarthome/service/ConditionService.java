@@ -1,14 +1,13 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
-import com.gruppo1.smarthome.crud.impl.*;
+import com.gruppo1.smarthome.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.model.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
 
 @Service
 @Transactional

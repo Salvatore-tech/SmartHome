@@ -1,4 +1,4 @@
-package com.gruppo1.smarthome.crud.memento;
+package com.gruppo1.smarthome.memento;
 
 import org.springframework.stereotype.Component;
 

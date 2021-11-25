@@ -1,4 +1,4 @@
-package com.gruppo1.smarthome.crud.api;
+package com.gruppo1.smarthome.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;

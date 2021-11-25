@@ -3,7 +3,7 @@ package com.gruppo1.smarthome.serializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.gruppo1.smarthome.crud.memento.Memento;
+import com.gruppo1.smarthome.memento.Memento;
 import org.springframework.boot.jackson.JsonComponent;
 
 import java.io.IOException;

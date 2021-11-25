@@ -1,14 +1,13 @@
-package com.gruppo1.smarthome.model;
+package com.gruppo1.smarthome.model.device;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Speaker extends Device{
+public class Speaker extends Device {
 
     private Integer power;
     private String brand;

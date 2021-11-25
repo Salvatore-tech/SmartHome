@@ -1,4 +1,4 @@
-package com.gruppo1.smarthome.crud.beans;
+package com.gruppo1.smarthome.beans;
 
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;

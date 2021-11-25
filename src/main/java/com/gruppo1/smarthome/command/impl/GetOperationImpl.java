@@ -1,9 +1,9 @@
-package com.gruppo1.smarthome.crud.impl;
+package com.gruppo1.smarthome.command.impl;
 
-import com.gruppo1.smarthome.crud.api.BaseSmartHomeRepository;
-import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.beans.ApplicationContextProvider;
+import com.gruppo1.smarthome.beans.ApplicationContextProvider;
+import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
 import java.util.List;
 

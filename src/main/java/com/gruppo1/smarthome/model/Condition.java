@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gruppo1.smarthome.crud.api.Actions;
+import com.gruppo1.smarthome.command.api.Actions;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

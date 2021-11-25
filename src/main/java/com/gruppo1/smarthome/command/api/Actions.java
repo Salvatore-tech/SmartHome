@@ -1,4 +1,4 @@
-package com.gruppo1.smarthome.crud.api;
+package com.gruppo1.smarthome.command.api;
 
 public enum Actions {
     RAISE_VOLUME_UP,

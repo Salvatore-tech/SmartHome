@@ -1,9 +1,9 @@
-package com.gruppo1.smarthome.crud;
+package com.gruppo1.smarthome.model;
 
-import com.gruppo1.smarthome.crud.api.Actions;
-import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.command.api.Actions;
+import com.gruppo1.smarthome.command.api.CrudOperation;
+import com.gruppo1.smarthome.model.device.*;
 
 import java.util.ArrayList;
 import java.util.Date;

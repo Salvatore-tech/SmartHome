@@ -1,8 +1,13 @@
-package com.gruppo1.smarthome.model;
+package com.gruppo1.smarthome.beans;
 
-public class FactoryDevice {
+import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.device.*;
+import org.springframework.stereotype.Component;
 
-    public Device getDevice(String deviceType) {
+@Component
+public class DeviceFactory {
+
+    public Device create(String deviceType) {
 
         if (deviceType.isEmpty()) {
             return null;
@@ -10,9 +15,7 @@ public class FactoryDevice {
 
         if (deviceType.equalsIgnoreCase("television")) {
             return new Television();
-        }
-
-        else if (deviceType.equalsIgnoreCase("lightbulb")) {
+        } else if (deviceType.equalsIgnoreCase("lightbulb")) {
             return new LightBulb();
         }
 

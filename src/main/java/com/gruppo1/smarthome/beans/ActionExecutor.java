@@ -1,7 +1,8 @@
-package com.gruppo1.smarthome.crud.beans;
+package com.gruppo1.smarthome.beans;
 
-import com.gruppo1.smarthome.crud.api.Actions;
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.command.api.Actions;
+import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.device.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -35,7 +36,6 @@ public class ActionExecutor {
         }
 
         entityManager.merge(device);
-
     }
 
 

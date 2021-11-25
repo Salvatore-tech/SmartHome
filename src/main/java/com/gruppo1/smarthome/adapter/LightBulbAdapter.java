@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.adapter;
 
 import com.gruppo1.smarthome.model.Device;
-import com.gruppo1.smarthome.model.LightBulb;
+import com.gruppo1.smarthome.model.device.LightBulb;
 import org.json.JSONException;
 import org.json.JSONObject;
 

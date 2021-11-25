@@ -1,10 +1,10 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
-import com.gruppo1.smarthome.crud.impl.UndoOperationImpl;
-import com.gruppo1.smarthome.crud.memento.Memento;
-import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
+import com.gruppo1.smarthome.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.command.api.CrudOperation;
+import com.gruppo1.smarthome.command.impl.UndoOperationImpl;
+import com.gruppo1.smarthome.memento.Memento;
+import com.gruppo1.smarthome.memento.MementoCareTaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.gruppo1.smarthome;
+package com.gruppo1.smarthome.beans;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

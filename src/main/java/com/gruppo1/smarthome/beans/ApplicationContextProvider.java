@@ -1,6 +1,5 @@
-package com.gruppo1.smarthome.crud.beans;
+package com.gruppo1.smarthome.beans;
 
-import com.gruppo1.smarthome.crud.api.BaseSmartHomeRepository;
 import com.gruppo1.smarthome.model.*;
 import com.gruppo1.smarthome.repository.*;
 import org.springframework.beans.BeansException;

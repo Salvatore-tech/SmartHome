@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.controller;
 
-import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.memento.Memento;
+import com.gruppo1.smarthome.command.api.CrudOperation;
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.service.GenericService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

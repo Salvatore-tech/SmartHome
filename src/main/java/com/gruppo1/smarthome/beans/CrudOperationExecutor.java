@@ -1,6 +1,6 @@
-package com.gruppo1.smarthome.crud.beans;
+package com.gruppo1.smarthome.beans;
 
-import com.gruppo1.smarthome.crud.api.CrudOperation;
+import com.gruppo1.smarthome.command.api.CrudOperation;
 import org.springframework.stereotype.Component;
 
 @Component

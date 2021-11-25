@@ -1,13 +1,13 @@
 package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.adapter.FactoryDeviceAdapter;
-import com.gruppo1.smarthome.crud.api.CrudOperation;
-import com.gruppo1.smarthome.crud.beans.CrudOperationExecutor;
-import com.gruppo1.smarthome.crud.impl.*;
-import com.gruppo1.smarthome.crud.memento.Memento;
-import com.gruppo1.smarthome.crud.memento.MementoCareTaker;
+import com.gruppo1.smarthome.beans.CrudOperationExecutor;
+import com.gruppo1.smarthome.beans.DeviceFactory;
+import com.gruppo1.smarthome.command.api.CrudOperation;
+import com.gruppo1.smarthome.command.impl.*;
+import com.gruppo1.smarthome.memento.Memento;
+import com.gruppo1.smarthome.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Device;
-import com.gruppo1.smarthome.model.FactoryDevice;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.json.JSONException;
@@ -22,34 +22,33 @@ import java.util.Objects;
 @Service
 @Transactional
 public class DeviceService {
+    private final DeviceFactory deviceFactory;
+    private final FactoryDeviceAdapter adapterDevice;
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
-    private final FactoryDeviceAdapter adapterDevice;
+
     private CrudOperation operationToPerform;
 
     @Autowired
-    public DeviceService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, FactoryDeviceAdapter factoryDeviceAdapter) {
+    public DeviceService(DeviceFactory deviceFactory, FactoryDeviceAdapter adapterDevice, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+        this.deviceFactory = deviceFactory;
+        this.adapterDevice = adapterDevice;
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
-        this.adapterDevice = factoryDeviceAdapter;
     }
 
-    //TODO FIX MEMENTO IN ALL METHODS
-
     public Device addDevice(JSONObject deviceJson) throws JSONException {
-        operationToPerform = new GetByNameOperationImpl();
+        CrudOperation operationToPerform = new AddOperationImpl();
         if (!validateJson(deviceJson))
             return null;
-        Device newDevice = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
+        Device newDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceJson.get("name").toString(), this);
         if (!isPresent(newDevice)) {
             String typeDevice = deviceJson.get("type").toString().toLowerCase();
-            FactoryDevice factory = new FactoryDevice();
-            newDevice = factory.getDevice(typeDevice);
+            newDevice = deviceFactory.create(typeDevice);
             if (isPresent(newDevice)) {
                 adapterDevice.adapt(deviceJson, newDevice);
                 Room room = validateRoom(deviceJson);
                 newDevice.setRoom(room);
-                operationToPerform = new AddOperationImpl();
                 mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
                 return (Device) operationExecutor.execute(operationToPerform, newDevice);
             }
