@@ -66,14 +66,12 @@ public class DeviceService {
     }
 
     public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Device oldDevice = (Device) operationExecutor.execute(operationToPerform, deviceNameToUpdate, this);
-        if(validateUpdate(deviceJson, oldDevice)) {
+        CrudOperation operationToPerform = new UpdateOperationImpl();
+        Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
+        if (validateUpdate(deviceJson, oldDevice)) {
             adapterDevice.adapt(deviceJson, oldDevice);
             Room room = validateRoom(deviceJson);
             oldDevice.setRoom(room);
-            operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(new Memento(operationToPerform, oldDevice, "Update device"));
             return (Device) operationExecutor.execute(operationToPerform, oldDevice);
         }
         return null;

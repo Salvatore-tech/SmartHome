@@ -13,7 +13,6 @@ public class UndoOperationImpl implements CrudOperation {
 
     @Override
     public CrudOperation execute(Object item) {
-
         Memento lastMementoOperation = ApplicationContextProvider.getApplicationContext().getBean(MementoCareTaker.class).getLastMementoOperation();
         BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(lastMementoOperation.getHomeItem());
         if (Objects.isNull(repository))
@@ -22,17 +21,14 @@ public class UndoOperationImpl implements CrudOperation {
     }
 
     CrudOperation computeRevertedOperation(CrudOperation operationToRevert, BaseSmartHomeRepository repository, SmartHomeItem item) {
-
         CrudOperation operationReverted;
         if (operationToRevert.getClass().equals(AddOperationImpl.class)){
             operationReverted = new DeleteOperationImpl();
             repository.deleteByName(item.getName());
         }
         else if (operationToRevert.getClass().equals(DeleteOperationImpl.class)){
-
             operationReverted = new AddOperationImpl();
             repository.save(item);
-
         }
         else
             operationReverted = null;

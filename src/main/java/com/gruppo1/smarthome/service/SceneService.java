@@ -69,7 +69,7 @@ public class SceneService {
         CrudOperation operationToPerform = new DeleteOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
         if (isPresent(scene)) {
-            mementoCareTaker.add(new Memento(operationToPerform, scene, "Delete a scene")); //TODO
+            mementoCareTaker.add(new Memento(operationToPerform, scene, "Delete a scene"));
             return (Integer) operationExecutor.execute(operationToPerform, sceneName, this);
         }
         return 0;
