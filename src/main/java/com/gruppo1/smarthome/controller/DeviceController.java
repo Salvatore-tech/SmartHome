@@ -84,12 +84,4 @@ public class DeviceController {
                 new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/count")
-    @ApiOperation(value = "Count devices", tags = {"Device"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of devices"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity countDevices() {
-        long devices = deviceService.countDevices();
-        return new ResponseEntity(devices, HttpStatus.OK);
-    }
 }

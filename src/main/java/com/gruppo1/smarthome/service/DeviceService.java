@@ -27,8 +27,6 @@ public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
 
-    private CrudOperation operationToPerform;
-
     @Autowired
     public DeviceService(DeviceFactory deviceFactory, FactoryDeviceAdapter adapterDevice, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
         this.deviceFactory = deviceFactory;
@@ -41,36 +39,34 @@ public class DeviceService {
         CrudOperation operationToPerform = new AddOperationImpl();
         if (!validateJson(deviceJson))
             return null;
-        Device newDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceJson.get("name").toString(), this);
-        if (!isPresent(newDevice)) {
-            String typeDevice = deviceJson.get("type").toString().toLowerCase();
-            newDevice = deviceFactory.create(typeDevice);
-            if (isPresent(newDevice)) {
-                adapterDevice.adapt(deviceJson, newDevice);
-                Room room = validateRoom(deviceJson);
-                newDevice.setRoom(room);
-                mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
-                return (Device) operationExecutor.execute(operationToPerform, newDevice);
-            }
+
+        String typeDevice = deviceJson.get("type").toString().toLowerCase();
+        Device newDevice = deviceFactory.create(typeDevice);
+        if (isPresent(newDevice)) {
+            adapterDevice.adapt(deviceJson, newDevice);
+            Room room = validateRoom(deviceJson);
+            newDevice.setRoom(room);
+            mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
+            return (Device) operationExecutor.execute(operationToPerform, newDevice);
         }
         return null;
     }
 
     public List<Device> findAllDevices() {
-        operationToPerform = new GetOperationImpl();
+        CrudOperation operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, new Device("Device"), "Find all devices"));
         return (List<Device>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Device findDeviceByName(String name) {
-        operationToPerform = new GetByNameOperationImpl();
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
         Device result = (Device) operationExecutor.execute(operationToPerform, name, this);
         mementoCareTaker.add(new Memento(operationToPerform, result, "Find a device given a name"));
         return result;
     }
 
     public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
-        operationToPerform = new GetByNameOperationImpl();
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
         Device oldDevice = (Device) operationExecutor.execute(operationToPerform, deviceNameToUpdate, this);
         if(validateUpdate(deviceJson, oldDevice)) {
             adapterDevice.adapt(deviceJson, oldDevice);
@@ -84,24 +80,17 @@ public class DeviceService {
     }
 
     public Integer deleteDevice(String name) {
-        operationToPerform = new GetByNameOperationImpl();
-        Device device = (Device) operationExecutor.execute(operationToPerform, name, this);
+        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
         if (isPresent(device)) {
-            operationToPerform = new DeleteOperationImpl();
+            CrudOperation operationToPerform = new DeleteOperationImpl();
             mementoCareTaker.add(new Memento(operationToPerform, device, "Delete device"));
             return (Integer) operationExecutor.execute(operationToPerform, name, this);
         }
         return 0;
     }
 
-    public Integer countDevices() {
-        operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, new Device("Devices"), "Count devices")); //TODO
-        return ((List<Device>) operationExecutor.execute(operationToPerform, "Device")).size();
-    }
-
     private Boolean isPresent(SmartHomeItem item) {
-        return Objects.nonNull(item) ? true : false;
+        return Objects.nonNull(item);
     }
 
     private Boolean validateJson(JSONObject objectToCheck) {
@@ -109,9 +98,9 @@ public class DeviceService {
     }
 
     private Room validateRoom(JSONObject deviceJson) throws JSONException {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
         Room room;
-        operationToPerform = new GetByNameOperationImpl();
-        if(deviceJson.has("room_name")) {
+        if (deviceJson.has("room_name")) {
             room = (Room) operationExecutor.execute(operationToPerform, deviceJson.get("room_name").toString(), "Room");
             if (!isPresent(room)) {
                 room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
@@ -123,7 +112,7 @@ public class DeviceService {
     }
 
     private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
-        operationToPerform = new GetByNameOperationImpl();
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
         if(validateJson(deviceJson)){
             Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
             if(isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))

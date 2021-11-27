@@ -19,7 +19,6 @@ import java.util.Objects;
 public class ProfileService {
     private final CrudOperationExecutor operationExecutor;
     private MementoCareTaker mementoCareTaker;
-    private CrudOperation operationToPerform;
 
     @Autowired
     public ProfileService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
@@ -28,9 +27,8 @@ public class ProfileService {
     }
 
     public Profile addProfile(Profile profile) {
-        operationToPerform = new GetByNameOperationImpl();
-        if (!isPresent((Profile) operationExecutor.execute(operationToPerform, profile.getName(), this))) {
-            operationToPerform = new AddOperationImpl();
+        CrudOperation operationToPerform = new AddOperationImpl();
+        if (!isPresent((Profile) operationExecutor.execute(new GetByNameOperationImpl(), profile.getName(), this))) {
             mementoCareTaker.add(new Memento(operationToPerform, profile, "Add a profile"));
             return (Profile) operationExecutor.execute(operationToPerform, profile);
         }
@@ -38,54 +36,48 @@ public class ProfileService {
     }
 
     public List<Profile> findAllProfile() {
-        operationToPerform = new GetOperationImpl();
+        CrudOperation operationToPerform = new GetOperationImpl();
         mementoCareTaker.add(new Memento(operationToPerform, null, "Find all profiles"));
         return (List<Profile>) operationExecutor.execute(operationToPerform, this);
     }
 
     public Profile findProfileByName(String name) {
-        operationToPerform = new GetByNameOperationImpl();
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
         Profile result = (Profile) operationExecutor.execute(operationToPerform, name, this);
-        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a profile given a name")); //TODO
+        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a profile given a name"));
         return result;
     }
 
     public Profile updateProfile(String profileNameToUpdate, Profile updatedProfile) {
-        operationToPerform = new GetByNameOperationImpl();
-        Profile oldProfile = (Profile) operationExecutor.execute(operationToPerform, profileNameToUpdate, this);
+        CrudOperation operationToPerform = new UpdateOperationImpl();
+        Profile oldProfile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profileNameToUpdate, this);
         if (validateUpdate(oldProfile, updatedProfile)) {
             setProfile(oldProfile, updatedProfile);
-            operationToPerform = new UpdateOperationImpl();
-            mementoCareTaker.add(new Memento(operationToPerform, oldProfile, "Update a profile")); //TODO
+            mementoCareTaker.add(new Memento(operationToPerform, oldProfile, "Update a profile"));
             return (Profile) operationExecutor.execute(operationToPerform, oldProfile);
         }
         return null;
     }
 
     public Integer deleteProfile(String profileName) {
-        operationToPerform = new GetByNameOperationImpl();
-        Profile profile = (Profile) operationExecutor.execute(operationToPerform, profileName, this);
+        CrudOperation operationToPerform = new DeleteOperationImpl();
+        Profile profile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profileName, this);
         if (isPresent(profile)) {
-            operationToPerform = new DeleteOperationImpl();
-            mementoCareTaker.add(new Memento(operationToPerform, profile, "Delete a profile")); //TODO
+            mementoCareTaker.add(new Memento(operationToPerform, profile, "Delete a profile"));
             return (Integer) operationExecutor.execute(operationToPerform, profileName, this);
         }
         return 0;
     }
 
-    private Boolean isPresent(SmartHomeItem item) {
-        return Objects.nonNull(item) ? true : false;
+    private boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item);
     }
 
     private Boolean validateUpdate(Profile oldProfile, Profile updatedProfile) {
-        if (isPresent(oldProfile)) {
-            operationToPerform = new GetByNameOperationImpl();
-            Profile profileToCheck = (Profile) operationExecutor.execute(operationToPerform, updatedProfile.getName(), this);
-            if (!isPresent(profileToCheck)) {
-                return true;
-            }
-        }
-        return false;
+        if (!isPresent(oldProfile)) // No profile to update
+            return false;
+        Profile persistentProfile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), updatedProfile.getName(), this);
+        return !isPresent(persistentProfile) || persistentProfile.getName().equalsIgnoreCase(updatedProfile.getName()); // Check if the new name violates unique constraint
     }
 
     private void setProfile(Profile oldProfile, Profile updatedProfile) {
