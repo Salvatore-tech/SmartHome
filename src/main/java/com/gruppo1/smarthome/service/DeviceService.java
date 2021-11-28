@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,9 +24,7 @@ public class DeviceService {
     private final FactoryDeviceAdapter adapterDevice;
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
-
     private final ConditionService conditionService;
-    private CrudOperation operationToPerform;
 
 
     @Autowired
@@ -89,6 +88,40 @@ public class DeviceService {
         return 0;
     }
 
+    public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition){
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, "Scene");
+        Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
+        if(isPresent(device) && isPresent(scene) && !isPresent(conditionToAdd))
+        {
+            condition.setDevice(device);
+            condition.setScene(scene);
+            return conditionService.addCondition(condition);
+        }
+        return null;
+    }
+
+    public List<Condition> findConditionsInDevice(String deviceName) {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        List<Condition> conditions = new ArrayList<>();
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        if (isPresent(device))
+            conditions = device.getConditions();
+
+        return conditions;
+    }
+
+    public Integer deleteConditionsInDevice(String deviceName, String conditionName){
+        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceName, this);
+        Condition condition = conditionService.findConditionsByName(conditionName);
+        if (isPresent(device) && isPresent(condition)) {
+            if (device.equals(condition.getDevice()))
+                return conditionService.deleteCondition(conditionName);
+        }
+        return 0;
+    }
+
     private Boolean isPresent(SmartHomeItem item) {
         return Objects.nonNull(item);
     }
@@ -113,49 +146,11 @@ public class DeviceService {
 
     private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
-        if(validateJson(deviceJson)){
+        if (validateJson(deviceJson)) {
             Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
-            if(isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
+            if (isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
                 return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
         }
         return false;
-    }
-
-    public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition){
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
-        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, "Scene");
-        Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
-        if(isPresent(device) && isPresent(scene) && !isPresent(conditionToAdd))
-        {
-            condition.setDevice(device);
-            condition.setScene(scene);
-            return conditionService.addCondition(condition);
-        }
-        return null;
-    }
-
-    public List<Condition> findConditionsInDevice(String deviceName) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
-        if (isPresent(device)) {
-            List<Condition> conditions = device.getConditions();
-            mementoCareTaker.add(new Memento(operationToPerform, new Condition("Conditions"), "Find conditions"));
-            return conditions;
-        }
-        return null;
-    }
-
-    public Integer deleteConditionsInDevice(String deviceName, String conditionName){
-        operationToPerform = new DeleteOperationImpl();
-        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceName, this);
-        Condition condition = conditionService.findConditionsByName(conditionName);
-        if (isPresent(device) && isPresent(condition)) {
-            if (device.equals(condition.getDevice())) {
-                mementoCareTaker.add(new Memento(operationToPerform, condition, "Delete condition"));
-                return conditionService.deleteCondition(conditionName);
-            }
-        }
-        return 0;
     }
 }
