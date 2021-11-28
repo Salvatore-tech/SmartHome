@@ -126,32 +126,29 @@ public class SceneService {
         return devices;
     }
 
-    private Boolean isPresent(SmartHomeItem item) {
-        return Objects.nonNull(item);
-    }
-
     public List<Condition> findConditionsInScene(String sceneName) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
+        List<Condition> conditions = new ArrayList<>();
         Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, this);
-        if (isPresent(scene)) {
-            List<Condition> conditions = scene.getConditions();
-            mementoCareTaker.add(new Memento(operationToPerform, new Condition("Conditions"), "Find conditions"));
-            return conditions;
-        }
-        return null;
+        if (isPresent(scene))
+            conditions = scene.getConditions();
+
+        return conditions;
     }
 
     public Integer deleteConditionsInScene(String sceneName, String conditionName) {
-        CrudOperation operationToPerform = new DeleteOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
         Condition condition = conditionService.findConditionsByName(conditionName);
         if (isPresent(scene) && isPresent(condition)) {
-            if (scene.equals(condition.getScene())) {
-                mementoCareTaker.add(new Memento(operationToPerform, condition, "Delete condition"));
+            if (scene.equals(condition.getScene()))
                 return conditionService.deleteCondition(conditionName);
-            }
+
         }
         return 0;
+    }
+
+    private Boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item);
     }
 
     private Boolean validateUpdate(Scene oldScene, Scene updatedScene) {

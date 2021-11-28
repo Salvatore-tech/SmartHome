@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -125,7 +124,7 @@ public class SceneController {
                                                 @PathVariable("sceneName") String sceneName) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Condition> conditions = sceneService.findConditionsInScene(sceneName);
-        return Objects.nonNull(conditions) ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return conditions.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/deleteCondition/{sceneName}/{conditionName}")
