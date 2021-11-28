@@ -126,10 +126,6 @@ public class SceneService {
         return devices;
     }
 
-    private Boolean isPresent(SmartHomeItem item) {
-        return Objects.nonNull(item);
-    }
-
     public List<Condition> findConditionsInScene(String sceneName) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
         Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, this);
@@ -152,6 +148,10 @@ public class SceneService {
             }
         }
         return 0;
+    }
+
+    private Boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item);
     }
 
     private Boolean validateUpdate(Scene oldScene, Scene updatedScene) {

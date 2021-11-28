@@ -89,38 +89,6 @@ public class DeviceService {
         return 0;
     }
 
-    private Boolean isPresent(SmartHomeItem item) {
-        return Objects.nonNull(item);
-    }
-
-    private Boolean validateJson(JSONObject objectToCheck) {
-        return objectToCheck.has("type") && objectToCheck.has("name");
-    }
-
-    private Room validateRoom(JSONObject deviceJson) throws JSONException {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Room room;
-        if (deviceJson.has("room_name")) {
-            room = (Room) operationExecutor.execute(operationToPerform, deviceJson.get("room_name").toString(), "Room");
-            if (!isPresent(room)) {
-                room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
-            }
-        } else {
-            room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
-        }
-        return room;
-    }
-
-    private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        if(validateJson(deviceJson)){
-            Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
-            if(isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
-                return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
-        }
-        return false;
-    }
-
     public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition){
         CrudOperation operationToPerform = new GetByNameOperationImpl();
         Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
@@ -157,5 +125,37 @@ public class DeviceService {
             }
         }
         return 0;
+    }
+
+    private Boolean isPresent(SmartHomeItem item) {
+        return Objects.nonNull(item);
+    }
+
+    private Boolean validateJson(JSONObject objectToCheck) {
+        return objectToCheck.has("type") && objectToCheck.has("name");
+    }
+
+    private Room validateRoom(JSONObject deviceJson) throws JSONException {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Room room;
+        if (deviceJson.has("room_name")) {
+            room = (Room) operationExecutor.execute(operationToPerform, deviceJson.get("room_name").toString(), "Room");
+            if (!isPresent(room)) {
+                room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
+            }
+        } else {
+            room = (Room) operationExecutor.execute(operationToPerform, "Default", "Room");
+        }
+        return room;
+    }
+
+    private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        if (validateJson(deviceJson)) {
+            Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
+            if (isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
+                return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
+        }
+        return false;
     }
 }
