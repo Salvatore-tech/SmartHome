@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrudOperationExecutor {
 
-    public Object execute(CrudOperation operation, Object homeItem) {
-        return operation.execute(homeItem);
+    public Object execute(CrudOperation operation, Object homeItemPlaceholder) {
+        return operation.execute(homeItemPlaceholder);
     }
 
-    public Object execute(CrudOperation operation, String itemName, Object s) {
-        return operation.execute(s, itemName);
+    public Object execute(CrudOperation operation, String itemName, Object homeItemPlaceholder) {
+        return operation.execute(homeItemPlaceholder, itemName);
     }
 }

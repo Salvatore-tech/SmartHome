@@ -7,9 +7,9 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
 public class UpdateOperationImpl implements CrudOperation {
     @Override
-    public SmartHomeItem execute(Object item) {
-        BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(item);
+    public SmartHomeItem execute(Object homeItemPlaceholder) {
+        BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(homeItemPlaceholder);
         assert repository != null;
-        return (SmartHomeItem) repository.save(item);
+        return (SmartHomeItem) repository.save(homeItemPlaceholder);
     }
 }

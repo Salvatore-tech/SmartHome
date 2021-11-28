@@ -12,7 +12,7 @@ import java.util.Objects;
 public class UndoOperationImpl implements CrudOperation {
 
     @Override
-    public CrudOperation execute(Object item) {
+    public CrudOperation execute(Object homeItemPlaceholder) {
         Memento lastMementoOperation = ApplicationContextProvider.getApplicationContext().getBean(MementoCareTaker.class).getLastMementoOperation();
         BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(lastMementoOperation.getHomeItem());
         if (Objects.isNull(repository))

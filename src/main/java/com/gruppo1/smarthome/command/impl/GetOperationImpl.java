@@ -9,8 +9,8 @@ import java.util.List;
 
 public class GetOperationImpl implements CrudOperation {
     @Override
-    public List<SmartHomeItem> execute(Object item) {
-        BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(item);
+    public List<SmartHomeItem> execute(Object homeItemPlaceholder) {
+        BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(homeItemPlaceholder);
         assert repository != null;
         return (List<SmartHomeItem>) repository.findAll();
     }
