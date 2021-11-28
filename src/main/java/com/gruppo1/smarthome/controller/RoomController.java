@@ -80,19 +80,6 @@ public class RoomController {
         return roomService.deleteRoom(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    // TODO SS: not yet implemented
-    @PostMapping("/addDevice/{roomName}/{deviceName}")
-    @ApiOperation(value = "Add device in a room", tags = {"Room"})
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Device added"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> addDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
-        Device device = roomService.addDevice(deviceName, roomName);
-        return Objects.nonNull(device) ?
-                new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
     @GetMapping("/findDevices/{roomName}")
     @ApiOperation(value = "Find all devices in a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return list devices"),
@@ -102,28 +89,31 @@ public class RoomController {
         List<Device> devices = roomService.findDevicesInRoom(roomName);
         ObjectMapper objectMapper = new ObjectMapper();
         return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
-    @DeleteMapping("/deleteDevice/{nameDevice}")
+    @PostMapping("/addDevice/{roomName}/{deviceName}")
+    @ApiOperation(value = "Add device in a room", tags = {"Room"})
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Device added"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    public ResponseEntity<Device> addDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
+        Device device = roomService.addDeviceToRoom(deviceName, roomName);
+        return Objects.nonNull(device) ?
+                new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/deleteDevice/{roomName}/{deviceName}")
     @ApiOperation(value = "Delete device from a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> deleteDevice(@PathVariable("nameDevice") String nameDevice) {
-        Device device = roomService.deleteDevice(nameDevice);
+    public ResponseEntity<Device> deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
+        Device device = roomService.deleteDeviceFromRoom(roomName, deviceName);
         return Objects.nonNull(device) ?
                 new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping("/count")
-    @ApiOperation(value = "Count rooms", tags = {"Room"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Number of rooms"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity countRooms() {
-        return new ResponseEntity(roomService.countRooms(), HttpStatus.OK);
     }
 
 }
