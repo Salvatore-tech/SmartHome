@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,9 +24,7 @@ public class DeviceService {
     private final FactoryDeviceAdapter adapterDevice;
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
-
     private final ConditionService conditionService;
-    private CrudOperation operationToPerform;
 
 
     @Autowired
@@ -105,24 +104,20 @@ public class DeviceService {
 
     public List<Condition> findConditionsInDevice(String deviceName) {
         CrudOperation operationToPerform = new GetByNameOperationImpl();
+        List<Condition> conditions = new ArrayList<>();
         Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
-        if (isPresent(device)) {
-            List<Condition> conditions = device.getConditions();
-            mementoCareTaker.add(new Memento(operationToPerform, new Condition("Conditions"), "Find conditions"));
-            return conditions;
-        }
-        return null;
+        if (isPresent(device))
+            conditions = device.getConditions();
+
+        return conditions;
     }
 
     public Integer deleteConditionsInDevice(String deviceName, String conditionName){
-        operationToPerform = new DeleteOperationImpl();
         Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceName, this);
         Condition condition = conditionService.findConditionsByName(conditionName);
         if (isPresent(device) && isPresent(condition)) {
-            if (device.equals(condition.getDevice())) {
-                mementoCareTaker.add(new Memento(operationToPerform, condition, "Delete condition"));
+            if (device.equals(condition.getDevice()))
                 return conditionService.deleteCondition(conditionName);
-            }
         }
         return 0;
     }
