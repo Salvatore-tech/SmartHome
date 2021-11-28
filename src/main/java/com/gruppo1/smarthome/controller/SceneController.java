@@ -6,10 +6,7 @@ import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.service.SceneService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,6 +115,30 @@ public class SceneController {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
         ObjectMapper objectMapper = new ObjectMapper();
         return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/findConditions/{sceneName}")
+    @ApiOperation(value = "Find conditions", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
+    public ResponseEntity<String> getConditions(@ApiParam(value = "Scene name", required = true)
+                                                @PathVariable("sceneName") String sceneName) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Condition> conditions = sceneService.findConditionsInScene(sceneName);
+        return Objects.nonNull(conditions) ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/deleteCondition/{sceneName}/{conditionName}")
+    @ApiOperation(value = "Delete condition by scene name and condition name", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Condition deleted"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    public ResponseEntity<?> deleteCondition(@ApiParam(value = "Scene name", required = true)
+                                             @PathVariable("sceneName") String sceneName,
+                                             @ApiParam(value = "Condition name", required = true)
+                                             @PathVariable("conditionName") String conditionName) {
+        return sceneService.deleteConditionsInScene(sceneName, conditionName).equals(1) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -7,14 +7,11 @@ import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.Device;
-import com.gruppo1.smarthome.model.Room;
-import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.model.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -27,12 +24,17 @@ public class DeviceService {
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
 
+    private final ConditionService conditionService;
+    private CrudOperation operationToPerform;
+
+
     @Autowired
-    public DeviceService(DeviceFactory deviceFactory, FactoryDeviceAdapter adapterDevice, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+    public DeviceService(DeviceFactory deviceFactory, FactoryDeviceAdapter adapterDevice, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, ConditionService conditionService) {
         this.deviceFactory = deviceFactory;
         this.adapterDevice = adapterDevice;
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
+        this.conditionService = conditionService;
     }
 
     public Device addDevice(JSONObject deviceJson) throws JSONException {
@@ -117,5 +119,43 @@ public class DeviceService {
                 return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
         }
         return false;
+    }
+
+    public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition){
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, "Scene");
+        Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
+        if(isPresent(device) && isPresent(scene) && !isPresent(conditionToAdd))
+        {
+            condition.setDevice(device);
+            condition.setScene(scene);
+            return conditionService.addCondition(condition);
+        }
+        return null;
+    }
+
+    public List<Condition> findConditionsInDevice(String deviceName) {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, this);
+        if (isPresent(device)) {
+            List<Condition> conditions = device.getConditions();
+            mementoCareTaker.add(new Memento(operationToPerform, new Condition("Conditions"), "Find conditions"));
+            return conditions;
+        }
+        return null;
+    }
+
+    public Integer deleteConditionsInDevice(String deviceName, String conditionName){
+        operationToPerform = new DeleteOperationImpl();
+        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceName, this);
+        Condition condition = conditionService.findConditionsByName(conditionName);
+        if (isPresent(device) && isPresent(condition)) {
+            if (device.equals(condition.getDevice())) {
+                mementoCareTaker.add(new Memento(operationToPerform, condition, "Delete condition"));
+                return conditionService.deleteCondition(conditionName);
+            }
+        }
+        return 0;
     }
 }

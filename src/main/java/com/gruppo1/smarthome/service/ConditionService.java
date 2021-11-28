@@ -28,11 +28,7 @@ public class ConditionService {
     }
 
     public Condition findConditionsByName(String name) {
-        return (Condition) operationExecutor.execute(new GetByNameOperationImpl(), name);
-    }
-
-    public Condition updateCondition(Condition condition) {
-        return (Condition) operationExecutor.execute(new UpdateOperationImpl(), condition);
+        return (Condition) operationExecutor.execute(new GetByNameOperationImpl(), name, this);
     }
 
     public Integer deleteCondition(String name) {

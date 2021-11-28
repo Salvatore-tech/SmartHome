@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.service.DeviceService;
 import io.swagger.annotations.*;
@@ -66,7 +67,7 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device ID", required = true)
+    public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device name", required = true)
                                           @PathVariable("name") String name) {
         return deviceService.deleteDevice(name).equals(1) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -84,4 +85,42 @@ public class DeviceController {
                 new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ApiOperation(value = "Add condition", tags = {"Device"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Condition Added"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 405, message = "Method Not Allowed"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    @PostMapping("/addCondition/{deviceName}/{sceneName}")
+    public ResponseEntity<Condition> addDevice(@PathVariable("deviceName") String deviceName,
+                                               @PathVariable("sceneName") String sceneName,
+                                               @RequestBody Condition condition) {
+        Condition newCondition = deviceService.addConditionByDeviceName(deviceName, sceneName, condition);
+        return Objects.nonNull(newCondition) ?
+                new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/findConditions/{deviceName}")
+    @ApiOperation(value = "Find conditions", tags = {"Device"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
+    public ResponseEntity<String> getConditions(@ApiParam(value = "Device name", required = true)
+                                                @PathVariable("deviceName") String deviceName) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Condition> conditions = deviceService.findConditionsInDevice(deviceName);
+        return Objects.nonNull(conditions) ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/deleteCondition/{deviceName}/{conditionName}")
+    @ApiOperation(value = "Delete condition by device name and condition name", tags = {"Device"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Condition deleted"),
+            @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    public ResponseEntity<?> deleteCondition(@ApiParam(value = "Device name", required = true)
+                                             @PathVariable("deviceName") String deviceName,
+                                             @ApiParam(value = "Condition name", required = true)
+                                             @PathVariable("conditionName") String conditionName) {
+        return deviceService.deleteConditionsInDevice(deviceName, conditionName).equals(1) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

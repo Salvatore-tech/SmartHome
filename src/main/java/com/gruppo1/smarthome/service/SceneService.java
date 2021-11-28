@@ -11,7 +11,6 @@ import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +85,6 @@ public class SceneService {
             return null;
         condition.setScene(scene);
         condition.setDevice(device);
-        //TODO: activation date is always null (Postman return null date format)
-        //condition.setActivation();
         conditionToAdd = conditionService.addCondition(condition);
         scene.addCondition(conditionToAdd);
         device.addCondition(conditionToAdd);
@@ -101,7 +98,7 @@ public class SceneService {
         if (!isPresent(scene) || Objects.isNull(conditions))
             return 0;
         conditions.forEach(condition -> {
-            if (condition.getScene().getName().equals(sceneName)) {
+            if (condition.getScene().equals(scene)) {
                 conditionService.deleteCondition(condition.getName());
                 conditionsDeleted.incrementAndGet();
             }
@@ -131,6 +128,30 @@ public class SceneService {
 
     private Boolean isPresent(SmartHomeItem item) {
         return Objects.nonNull(item);
+    }
+
+    public List<Condition> findConditionsInScene(String sceneName) {
+        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, this);
+        if (isPresent(scene)) {
+            List<Condition> conditions = scene.getConditions();
+            mementoCareTaker.add(new Memento(operationToPerform, new Condition("Conditions"), "Find conditions"));
+            return conditions;
+        }
+        return null;
+    }
+
+    public Integer deleteConditionsInScene(String sceneName, String conditionName) {
+        CrudOperation operationToPerform = new DeleteOperationImpl();
+        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
+        Condition condition = conditionService.findConditionsByName(conditionName);
+        if (isPresent(scene) && isPresent(condition)) {
+            if (scene.equals(condition.getScene())) {
+                mementoCareTaker.add(new Memento(operationToPerform, condition, "Delete condition"));
+                return conditionService.deleteCondition(conditionName);
+            }
+        }
+        return 0;
     }
 
     private Boolean validateUpdate(Scene oldScene, Scene updatedScene) {

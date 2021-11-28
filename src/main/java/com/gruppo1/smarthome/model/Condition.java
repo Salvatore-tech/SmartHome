@@ -3,7 +3,6 @@ package com.gruppo1.smarthome.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gruppo1.smarthome.command.api.Actions;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -32,6 +31,10 @@ public class Condition extends SmartHomeItem implements Serializable {
     private Scene scene;
 
     public Condition() {
+    }
+
+    public Condition(String name) {
+        this.name = name;
     }
 
     public Condition(String name, Actions action, Date activationDate, Double threshold, Device device, Scene scene, String period) {
@@ -84,6 +87,14 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.scene = scene;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
     public Actions getAction() {
         return action;
     }
@@ -99,7 +110,9 @@ public class Condition extends SmartHomeItem implements Serializable {
                 ", name='" + name + '\'' +
                 ", device=" + device.getName() +
                 ", scene=" + scene.getName() +
-                ", action=" + getAction() +
+                ", action=" + action +
+                ", period=" + period +
+                ", activation date=" + activationDate +
                 '}';
     }
 }
