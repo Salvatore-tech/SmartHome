@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 
@@ -23,13 +25,15 @@ public class ConditionExecutor {
         this.rand = new Random();
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 60000)
     public void run() {
         Iterable<Condition> conditionList = conditionRepo.findAll();
 
         conditionList.forEach(
                 condition -> {
-                    if (condition.getThreshold() > rand.nextInt(20) || new Date(System.currentTimeMillis()).after(condition.getActivationDate())) {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    LocalDateTime now = LocalDateTime.now();
+                    if (condition.getThreshold() > rand.nextInt(20) || condition.getActivationDate().toString().contains(dtf.format(now))) {
                         Device device = condition.getDevice();
                         actionExecutor.execute(device, condition.getAction());
                     }

@@ -8,29 +8,20 @@ import org.springframework.stereotype.Component;
 public class DeviceFactory {
 
     public Device create(String deviceType) {
-
         if (deviceType.isEmpty()) {
             return null;
         }
-
         if (deviceType.equalsIgnoreCase("television")) {
-            return new Television();
+            return new Television(deviceType);
         } else if (deviceType.equalsIgnoreCase("lightbulb")) {
-            return new LightBulb();
+            return new LightBulb(deviceType);
+        } else if (deviceType.equalsIgnoreCase("speaker")) {
+            return new Speaker(deviceType);
+        } else if (deviceType.equalsIgnoreCase("conditioner")) {
+            return new Conditioner(deviceType);
+        } else if (deviceType.equalsIgnoreCase("alarmclock")) {
+            return new AlarmClock(deviceType);
         }
-
-        else if (deviceType.equalsIgnoreCase("speaker")) {
-            return new Speaker();
-        }
-
-        else if (deviceType.equalsIgnoreCase("conditioner")) {
-            return new Conditioner();
-        }
-
-        else if (deviceType.equalsIgnoreCase("alarmclock")) {
-            return new AlarmClock();
-        }
-
         return null;
     }
 }

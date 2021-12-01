@@ -11,7 +11,7 @@ public class FactoryDeviceAdapter {
     DeviceAdapter deviceAdapter;
 
     public void adapt(JSONObject deviceObject, Device device) throws JSONException {
-        String typeDevice = deviceObject.get("type").toString().toLowerCase();
+        String typeDevice = device.getType().toLowerCase();
 
         if (typeDevice.equalsIgnoreCase("alarmclock")) {
             deviceAdapter = new AlarmClockAdapter();

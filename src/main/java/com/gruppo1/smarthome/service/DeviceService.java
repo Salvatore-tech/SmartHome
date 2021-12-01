@@ -40,7 +40,6 @@ public class DeviceService {
         CrudOperation operationToPerform = new AddOperationImpl();
         if (!validateJson(deviceJson))
             return null;
-
         String typeDevice = deviceJson.get("type").toString().toLowerCase();
         Device newDevice = deviceFactory.create(typeDevice);
         if (isPresent(newDevice)) {
@@ -145,12 +144,15 @@ public class DeviceService {
     }
 
     private Boolean validateUpdate(JSONObject deviceJson, Device oldDevice) throws JSONException {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        if (validateJson(deviceJson)) {
+        if(!isPresent(oldDevice))
+            return false;
+        if(deviceJson.has("type") && !deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType()))
+                return false;
+        if(deviceJson.has("name")){
+            CrudOperation operationToPerform = new GetByNameOperationImpl();
             Device deviceDB = (Device) operationExecutor.execute(operationToPerform, deviceJson.get("name").toString(), this);
-            if (isPresent(oldDevice) && (!isPresent(deviceDB) || deviceDB.equals(oldDevice)))
-                return deviceJson.get("type").toString().equalsIgnoreCase(oldDevice.getType());
+            return !isPresent(deviceDB) || deviceDB.getName().equalsIgnoreCase(oldDevice.getName());
         }
-        return false;
+        return true;
     }
 }
