@@ -16,6 +16,8 @@ public class Conditioner extends Device {
         super(StringUtils.EMPTY);
     }
 
+    public Conditioner(String type) { this.type = type; }
+
     public Conditioner(String name, String type, Integer temperature, String settings) {
         super(name, type);
         this.temperature = temperature;

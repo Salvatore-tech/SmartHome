@@ -18,6 +18,8 @@ public class Television extends Device {
         super(StringUtils.EMPTY);
     }
 
+    public Television(String type) { this.type = type; }
+
     public Television(String name, String type, String brand, String model, Integer volume, Integer channel) {
         super(name, type);
         this.brand = brand;

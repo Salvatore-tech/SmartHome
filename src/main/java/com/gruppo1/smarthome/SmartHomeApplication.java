@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,7 +27,7 @@ public class SmartHomeApplication {
     }
 
     @Bean
-    public CommandLineRunner insertData(CrudOperationExecutor operationExecutor) {
+    public CommandLineRunner insertData(CrudOperationExecutor operationExecutor) throws ParseException {
         AtomicInteger rowNum = new AtomicInteger();
         CrudOperation addOperation = new AddOperationImpl();
 

@@ -4,9 +4,9 @@ import com.gruppo1.smarthome.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.model.device.*;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -75,14 +75,14 @@ public class DataGenerator {
         return scenes;
     }
 
-    public static List<Condition> generateConditions(CrudOperation addOperation, CrudOperationExecutor operationExecutor, List<Device> devices, List<Scene> scenes) {
+    public static List<Condition> generateConditions(CrudOperation addOperation, CrudOperationExecutor operationExecutor, List<Device> devices, List<Scene> scenes) throws ParseException {
         Random rand = new Random();
         List<Condition> conditions = new ArrayList<>();
         int noScenes = scenes.size();
         int noDevices = devices.size();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 //        conditions.add(new Condition("One", devices.get(0), scenes.get(rand.nextInt(noScenes)), Actions.POWER_ON, 10.0));
-        conditions.add(new Condition("Test", Actions.WARMER, new Date(System.currentTimeMillis()), 15.0, devices.get(1), scenes.get(rand.nextInt(noScenes)), "NONE"));
+        conditions.add(new Condition("Test", Actions.WARMER, sdf.parse("28/11/2021 18:34:00"), 15.0, devices.get(1), scenes.get(rand.nextInt(noScenes)), "NONE"));
 //        conditions.add(new Condition("Three", devices.get(1), scenes.get(rand.nextInt(noScenes)), Actions.WARMER, 10.0));
 //        conditions.add(new Condition("Four", devices.get(4), scenes.get(rand.nextInt(noScenes)), Actions.POWER_ON, 10.0));
 //        conditions.add(new Condition("Five", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));

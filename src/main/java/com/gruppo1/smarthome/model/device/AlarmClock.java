@@ -17,6 +17,8 @@ public class AlarmClock extends Device {
         super(StringUtils.EMPTY);
     }
 
+    public AlarmClock(String type) { this.type = type; }
+
     public AlarmClock(String name, String type, String time, String frequency, String song) {
         super(name, type);
         this.time = time;

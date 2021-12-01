@@ -17,6 +17,8 @@ public class Speaker extends Device {
         super(StringUtils.EMPTY);
     }
 
+    public Speaker(String type) { this.type = type; }
+
     public Speaker(String name, String type, Integer power, String brand, String model) {
         super(name, type);
         this.power = power;

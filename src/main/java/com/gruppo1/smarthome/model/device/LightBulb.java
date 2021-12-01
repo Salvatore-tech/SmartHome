@@ -16,6 +16,8 @@ public class LightBulb extends Device {
         super(StringUtils.EMPTY);
     }
 
+    public LightBulb(String type) { this.type = type; }
+
     public LightBulb(String name, String type, Integer brightness, String colorTemp) {
         super(name, type);
         this.brightness = brightness;
