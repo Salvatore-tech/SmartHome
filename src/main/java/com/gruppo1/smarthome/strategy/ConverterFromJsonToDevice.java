@@ -1,12 +1,12 @@
-package com.gruppo1.smarthome.adapter;
+package com.gruppo1.smarthome.strategy;
 
 import com.gruppo1.smarthome.model.Device;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class DeviceAdapter {
+public abstract class ConverterFromJsonToDevice {
 
-    void run(JSONObject deviceJson, Device deviceToAdapt) throws JSONException {
+    public void convert(JSONObject deviceJson, Device deviceToAdapt) throws JSONException {
         if(deviceJson.has("type"))
             deviceToAdapt.setType(deviceJson.get("type").toString());
         if(deviceJson.has("name"))

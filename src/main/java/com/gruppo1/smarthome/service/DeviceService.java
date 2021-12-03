@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.adapter.FactoryDeviceAdapter;
+import com.gruppo1.smarthome.strategy.ConverterFromJsonToDevice;
+import com.gruppo1.smarthome.strategy.FactoryConverterFromJsonToDevice;
 import com.gruppo1.smarthome.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.beans.DeviceFactory;
 import com.gruppo1.smarthome.command.api.CrudOperation;
@@ -21,16 +22,16 @@ import java.util.Objects;
 @Transactional
 public class DeviceService {
     private final DeviceFactory deviceFactory;
-    private final FactoryDeviceAdapter adapterDevice;
+    private final FactoryConverterFromJsonToDevice factoryConverter;
     private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
     private final ConditionService conditionService;
 
 
     @Autowired
-    public DeviceService(DeviceFactory deviceFactory, FactoryDeviceAdapter adapterDevice, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, ConditionService conditionService) {
+    public DeviceService(DeviceFactory deviceFactory, FactoryConverterFromJsonToDevice factoryConverter, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker, ConditionService conditionService) {
         this.deviceFactory = deviceFactory;
-        this.adapterDevice = adapterDevice;
+        this.factoryConverter = factoryConverter;
         this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
         this.conditionService = conditionService;
@@ -43,7 +44,8 @@ public class DeviceService {
         String typeDevice = deviceJson.get("type").toString().toLowerCase();
         Device newDevice = deviceFactory.create(typeDevice);
         if (isPresent(newDevice)) {
-            adapterDevice.adapt(deviceJson, newDevice);
+            ConverterFromJsonToDevice converter = factoryConverter.getInstance(typeDevice);
+            converter.convert(deviceJson, newDevice);
             Room room = validateRoom(deviceJson);
             newDevice.setRoom(room);
             mementoCareTaker.add(new Memento(operationToPerform, newDevice, "Add device"));
@@ -69,7 +71,8 @@ public class DeviceService {
         CrudOperation operationToPerform = new UpdateOperationImpl();
         Device oldDevice = (Device) operationExecutor.execute(new GetByNameOperationImpl(), deviceNameToUpdate, this);
         if (validateUpdate(deviceJson, oldDevice)) {
-            adapterDevice.adapt(deviceJson, oldDevice);
+            ConverterFromJsonToDevice converter = factoryConverter.getInstance(oldDevice.getType().toLowerCase());
+            converter.convert(deviceJson, oldDevice);
             Room room = validateRoom(deviceJson);
             oldDevice.setRoom(room);
             return (Device) operationExecutor.execute(operationToPerform, oldDevice);

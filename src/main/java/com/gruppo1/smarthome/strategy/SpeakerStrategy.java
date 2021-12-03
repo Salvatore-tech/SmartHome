@@ -1,18 +1,18 @@
-package com.gruppo1.smarthome.adapter;
+package com.gruppo1.smarthome.strategy;
 
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.device.Speaker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SpeakerAdapter extends DeviceAdapter {
+public class SpeakerStrategy extends ConverterFromJsonToDevice {
 
     @Override
-    public void run(JSONObject deviceJson, Device device) throws JSONException {
+    public void convert(JSONObject deviceJson, Device device) throws JSONException {
 
         Speaker speaker = (Speaker) device;
 
-        super.run(deviceJson, device);
+        super.convert(deviceJson, device);
 
         if (deviceJson.has("power")) {
             speaker.setPower((Integer) deviceJson.get("power"));
