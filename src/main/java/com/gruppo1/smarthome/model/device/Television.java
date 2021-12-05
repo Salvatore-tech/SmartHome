@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.model.device;
 
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
 
@@ -72,5 +73,25 @@ public class Television extends Device {
                 ", volume=" + volume +
                 ", channel=" + channel +
                 '}';
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoTelevision();
+    }
+
+    class MementoTelevision extends Device.MementoDevice {
+        private String memBrand;
+        private String memModel;
+        private Integer memVolume;
+        private Integer memChannel;
+
+        public MementoTelevision() {
+            super();
+            this.memBrand = brand;
+            this.memModel = model;
+            this.memVolume = volume;
+            this.memChannel = channel;
+        }
     }
 }

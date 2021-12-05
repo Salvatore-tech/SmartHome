@@ -1,8 +1,8 @@
 package com.gruppo1.smarthome.command.impl;
 
-import com.gruppo1.smarthome.beans.ApplicationContextProvider;
 import com.gruppo1.smarthome.command.api.CrudOperation;
-import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 
 import java.util.List;
@@ -10,12 +10,23 @@ import java.util.Objects;
 
 public class GetDevicesByRoomName implements CrudOperation {
 
+    private DeviceRepo repository;
+
+    public GetDevicesByRoomName(DeviceRepo repository) {
+        this.repository = repository;
+    }
+
     @Override
-    public List<Device> execute(Object item, String roomName) {
-        DeviceRepo repository = (DeviceRepo) ApplicationContextProvider.getRepository(item);
-        assert repository != null;
-        List<Device> devicesInTheRoom = repository.findDevicesByRoomName(roomName);
+    public List<SmartHomeItem> execute(String roomName) {
+        if (Objects.isNull(repository))
+            return null;
+        List<SmartHomeItem> devicesInTheRoom = repository.findDevicesByRoomName(roomName);
         return Objects.nonNull(devicesInTheRoom) ?
                 devicesInTheRoom : null;
+    }
+
+    @Override
+    public BaseSmartHomeRepository getRepository() {
+        return repository;
     }
 }

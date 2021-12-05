@@ -1,7 +1,9 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gruppo1.smarthome.memento.Memento;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,12 +54,19 @@ public class Profile extends SmartHomeItem implements Serializable {
         this.email = email;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Memento createMemento() {
+        return null;
     }
 
     public String getSurname() {
@@ -84,4 +93,33 @@ public class Profile extends SmartHomeItem implements Serializable {
                 ", surname='" + surname + '\'' +
                 '}';
     }
+
+    class MementoProfile extends Memento {
+        private String memId;
+        private String memEmail;
+        private String memName;
+        private String memSurname;
+        private String memPassword;
+
+
+        public MementoProfile() {
+            this.memId = id;
+            this.memEmail = email;
+            this.memName = name;
+            this.memSurname = surname;
+            this.memPassword = password;
+        }
+
+        @Override
+        public String getName() {
+            return memName;
+        }
+
+        @Override
+        public void setName(String name) {
+
+        }
+    }
+
+
 }

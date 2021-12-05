@@ -2,7 +2,9 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gruppo1.smarthome.command.api.Actions;
+import com.gruppo1.smarthome.memento.Memento;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -63,12 +65,19 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.threshold = threshold;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Memento createMemento() {
+        return null;
     }
 
     public Device getDevice() {
@@ -114,5 +123,34 @@ public class Condition extends SmartHomeItem implements Serializable {
                 ", period=" + period +
                 ", activation date=" + activationDate +
                 '}';
+    }
+
+    private class MementoCondition extends Memento {
+
+        private String memId;
+        private String memName;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+        private Date memActivationDate;
+        private String memPeriod;
+        private Double memThreshold;
+        private Actions memAction;
+        private Device memDevice;
+        private Scene memScene;
+
+        public MementoCondition() {
+            this.memId = id;
+            this.memName = name;
+            this.memActivationDate = activationDate;
+            this.memPeriod = period;
+            this.memThreshold = threshold;
+            this.memAction = action;
+            this.memDevice = device;
+            this.memScene = scene;
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
     }
 }

@@ -1,17 +1,18 @@
 package com.gruppo1.smarthome.model;
 
+import com.gruppo1.smarthome.memento.Memento;
+
 import java.io.Serializable;
 
 public abstract class SmartHomeItem implements Serializable {
 
-    protected String name;
-
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
     public void setName(String name) {
-        this.name = name;
     }
+
+    ;
+
+    public abstract Memento createMemento();
 
 }

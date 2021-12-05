@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gruppo1.smarthome.memento.Memento;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -42,12 +43,19 @@ public class Scene extends SmartHomeItem implements Serializable {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoScene();
     }
 
     public Boolean getStatus() {
@@ -76,5 +84,25 @@ public class Scene extends SmartHomeItem implements Serializable {
                 "name='" + name + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    class MementoScene extends Memento {
+        private String memId;
+        private String memName;
+        private Boolean memStatus;
+        private List<Condition> memConditions;
+
+
+        public MementoScene() {
+            this.memId = id;
+            this.memName = name;
+            this.memStatus = status;
+            this.memConditions = conditions;
+        }
+
+        @Override
+        public String getName() {
+            return memName;
+        }
     }
 }

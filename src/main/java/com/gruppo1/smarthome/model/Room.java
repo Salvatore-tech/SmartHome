@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gruppo1.smarthome.memento.Memento;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -39,24 +40,57 @@ public class Room extends SmartHomeItem implements Serializable {
         this.id = id;
     }
 
-    public String getName(){
+    @Override
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    @Override
+    public void setName(String name) {
         this.name = name;
     }
 
-    public List<Device> getDevices() { return this.devices; }
+    @Override
+    public Memento createMemento() {
+        return new MementoRoom();
+    }
 
-    public void addDevice(Device device) {this.devices.add(device);}
+    public List<Device> getDevices() {
+        return this.devices;
+    }
 
-    public void removeDevice(Device device) { this.devices.remove(device); }
+    public void addDevice(Device device) {
+        this.devices.add(device);
+    }
+
+    public void removeDevice(Device device) {
+        this.devices.remove(device);
+    }
 
     @Override
     public String toString() {
         return "Room{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+
+    class MementoRoom extends Memento {
+
+        private String memId;
+        private String memName;
+        private List<Device> memDevices;
+
+        public MementoRoom() {
+            this.memId = id;
+            this.memName = name;
+            this.memDevices = devices;
+        }
+
+        @Override
+        public String getName() {
+            return memName;
+        }
+
     }
 }

@@ -28,13 +28,17 @@ public class LightBulb extends Device {
         this.brightness = brightness;
     }
 
-    public void setColorTemp(String colorTemp){
+    public void setColorTemp(String colorTemp) {
         this.colorTemp = colorTemp;
     }
 
-    public Integer getBrightness(){return brightness;}
+    public Integer getBrightness() {
+        return brightness;
+    }
 
-    public String getColorTemp(){return colorTemp;}
+    public String getColorTemp() {
+        return colorTemp;
+    }
 
     @Override
     public String toString() {
@@ -46,5 +50,23 @@ public class LightBulb extends Device {
                 ", brightness=" + brightness +
                 ", colorTemp=" + colorTemp +
                 '}';
+    }
+
+    @Override
+    public MementoLightBulb createMemento() {
+        return new MementoLightBulb();
+    }
+
+    class MementoLightBulb extends MementoDevice {
+        private Integer memBrightness;
+        private String memColorTemp;
+        private String memName;
+
+        public MementoLightBulb() {
+            super();
+            this.memBrightness = brightness;
+            this.memColorTemp = colorTemp;
+            this.memName = name;
+        }
     }
 }

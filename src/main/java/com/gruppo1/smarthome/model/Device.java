@@ -1,19 +1,21 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gruppo1.smarthome.memento.Memento;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Device extends SmartHomeItem implements Serializable  {
+public abstract class Device extends SmartHomeItem implements Serializable {
 
     @JsonIgnore
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     protected String id;
     @Column(nullable = false, unique = true)
@@ -55,10 +57,12 @@ public class Device extends SmartHomeItem implements Serializable  {
         this.id = id;
     }
 
+    @Override
     public String getName(){
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -100,5 +104,34 @@ public class Device extends SmartHomeItem implements Serializable  {
                 ", type='" + type + '\'' +
                 ", room=" + room +
                 '}';
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoDevice();
+    }
+
+    protected class MementoDevice extends Memento {
+
+        private String memId;
+        private String memName;
+        private Boolean memStatus;
+        private String memType;
+        private Room memRoom;
+        private List<Condition> memConditions;
+
+        public MementoDevice() {
+            this.memId = id;
+            this.memName = name;
+            this.memStatus = status;
+            this.memType = type;
+            this.memRoom = room;
+            this.memConditions = conditions;
+        }
+
+        @Override
+        public String getName() {
+            return memName;
+        }
     }
 }

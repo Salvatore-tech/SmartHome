@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.model.device;
 
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
 
@@ -16,7 +17,9 @@ public class Conditioner extends Device {
         super(StringUtils.EMPTY);
     }
 
-    public Conditioner(String type) { this.type = type; }
+    public Conditioner(String type) {
+        this.type = type;
+    }
 
     public Conditioner(String name, String type, Integer temperature, String settings) {
         super(name, type);
@@ -24,13 +27,21 @@ public class Conditioner extends Device {
         this.settings = settings;
     }
 
-    public void setTemperature(Integer temperature) {this.temperature = temperature;}
+    public void setTemperature(Integer temperature) {
+        this.temperature = temperature;
+    }
 
-    public void setSettings(String settings) {this.settings = settings;}
+    public void setSettings(String settings) {
+        this.settings = settings;
+    }
 
-    public Integer getTemperature(){return temperature;}
+    public Integer getTemperature() {
+        return temperature;
+    }
 
-    public String getSettings(){return settings;}
+    public String getSettings() {
+        return settings;
+    }
 
     @Override
     public String toString() {
@@ -42,5 +53,23 @@ public class Conditioner extends Device {
                 ", temperature=" + temperature +
                 ", settings='" + settings + '\'' +
                 '}';
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoConditioner();
+    }
+
+
+    class MementoConditioner extends Device.MementoDevice {
+        private Integer memTemperature;
+        private String memSettings;
+
+        public MementoConditioner() {
+            super();
+            this.memTemperature = temperature;
+            this.memSettings = settings;
+        }
+
     }
 }

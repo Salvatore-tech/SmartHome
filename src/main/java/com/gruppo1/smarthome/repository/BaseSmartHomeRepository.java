@@ -10,8 +10,11 @@ public interface BaseSmartHomeRepository<SmartHomeItem, String>
         extends CrudRepository<SmartHomeItem, String> {
 
     Optional<SmartHomeItem> findById(String entityId);
+
     Optional<SmartHomeItem> findByName(String entityName);
-    Integer deleteByName (String entityName);
+
+    int deleteByName(String entityName);
+
     long count();
 
 }

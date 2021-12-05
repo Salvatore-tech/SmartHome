@@ -1,16 +1,18 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.repository.ConditionRepo;
+import com.gruppo1.smarthome.repository.DeviceRepo;
+import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,65 +23,73 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Transactional
 public class SceneService {
     private final ConditionService conditionService;
-    private final CrudOperationExecutor operationExecutor;
     private final MementoCareTaker mementoCareTaker;
+    private final SceneRepo sceneRepo;
+    private final ConditionRepo conditionRepo;
+    private final DeviceRepo deviceRepo;
 
     @Autowired
-    public SceneService(ConditionService conditionService, CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
+    public SceneService(ConditionService conditionService, MementoCareTaker mementoCareTaker, SceneRepo sceneRepo, ConditionRepo conditionRepo, DeviceRepo deviceRepo) {
         this.conditionService = conditionService;
-        this.operationExecutor = operationExecutor;
         this.mementoCareTaker = mementoCareTaker;
+        this.sceneRepo = sceneRepo;
+        this.conditionRepo = conditionRepo;
+        this.deviceRepo = deviceRepo;
     }
 
     public Scene addScene(Scene scene) {
-        CrudOperation operationToPerform = new AddOperationImpl();
-        if (!isPresent((Scene) operationExecutor.execute(new GetByNameOperationImpl(), scene.getName(), this))) {
-            mementoCareTaker.add(new Memento(operationToPerform, scene, "Add a scene"));
-            return (Scene) operationExecutor.execute(operationToPerform, scene);
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        CrudOperation addSceneOperation = new AddOperationImpl(sceneRepo);
+        if (!isPresent(getSceneOperation.execute(scene.getName()).get(0))) {
+            mementoCareTaker.push(addSceneOperation, scene.createMemento());
+            return (Scene) addSceneOperation.execute(scene);
         }
         return null;
     }
 
     public List<Scene> findAllScene() {
-        CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, null, "Get all scenes"));
-        return (List<Scene>) operationExecutor.execute(operationToPerform, this);
+        CrudOperation operationToPerform = new GetOperationImpl(sceneRepo);
+        mementoCareTaker.push(operationToPerform, null);
+        return (List<Scene>) (List<?>) operationToPerform.execute();
     }
 
     public Scene findSceneByName(String name) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Scene result = (Scene) operationExecutor.execute(operationToPerform, name, this);
-        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a scene by name"));
-        return result;
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        mementoCareTaker.push(getSceneOperation, null); //TODO SS
+        return (Scene) getSceneOperation.execute(name);
     }
 
     public Scene updateScene(String sceneNameToUpdate, Scene updatedScene) {
-        CrudOperation operationToPerform = new UpdateOperationImpl();
-        Scene oldScene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneNameToUpdate, this);
+        CrudOperation updateSceneOperation = new UpdateOperationImpl(sceneRepo);
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        Scene oldScene = (Scene) getSceneOperation.execute(sceneNameToUpdate);
         if (validateUpdate(oldScene, updatedScene)) {
+            mementoCareTaker.push(updateSceneOperation, oldScene.createMemento());
             setScene(oldScene, updatedScene);
-            mementoCareTaker.add(new Memento(operationToPerform, oldScene, "Update a scene"));
-            return (Scene) operationExecutor.execute(operationToPerform, oldScene);
+            return (Scene) updateSceneOperation.execute(oldScene);
         }
         return null;
     }
 
-    public Integer deleteScene(String sceneName) {
-        CrudOperation operationToPerform = new DeleteOperationImpl();
-        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
+    public Scene deleteScene(String sceneName) {
+        CrudOperation deleteSceneOperation = new DeleteOperationImpl(sceneRepo);
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
         if (isPresent(scene)) {
-            mementoCareTaker.add(new Memento(operationToPerform, scene, "Delete a scene"));
-            return (Integer) operationExecutor.execute(operationToPerform, sceneName, this);
+            mementoCareTaker.push(deleteSceneOperation, scene.createMemento());
+            return (Scene) deleteSceneOperation.execute(scene).get(0);
         }
-        return 0;
+        return null;
     }
 
     public Condition addDeviceToScene(String sceneName, String deviceName, Condition condition) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        if (isPresent((Condition) operationExecutor.execute(operationToPerform, condition.getName(), "Condition")))
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
+        CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
+        if (isPresent(getConditionOperation.execute(condition.getName()).get(0)))
             return null;
-        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, this);
-        Device device = (Device) operationExecutor.execute(operationToPerform, deviceName, "Device");
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
+        Device device = (Device) getDeviceOperation.execute(deviceName);
         Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
         if (!isPresent(scene) || !isPresent(device) || isPresent(conditionToAdd))
             return null;
@@ -92,9 +102,13 @@ public class SceneService {
     }
 
     public Integer removeDeviceToScene(String sceneName, String deviceName) {
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        CrudOperation getConditions = new GetByNameOperationImpl(conditionRepo);
+
+
         AtomicInteger conditionsDeleted = new AtomicInteger(0);
-        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
-        List<Condition> conditions = (List<Condition>) operationExecutor.execute(new GetConditionsByDeviceName(), deviceName, "Condition");
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
+        List<Condition> conditions = (List<Condition>) (List<?>) getConditions.execute(deviceName);
         if (!isPresent(scene) || Objects.isNull(conditions))
             return 0;
         conditions.forEach(condition -> {
@@ -107,8 +121,10 @@ public class SceneService {
     }
 
     public List<Device> findDevicesInScene(String sceneName) {
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         List<Device> devices = new ArrayList<>();
-        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
+
         if (isPresent(scene)) {
             List<Condition> conditions = scene.getConditions();
             if (Objects.isNull(conditions)) {
@@ -127,24 +143,24 @@ public class SceneService {
     }
 
     public List<Condition> findConditionsInScene(String sceneName) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         List<Condition> conditions = new ArrayList<>();
-        Scene scene = (Scene) operationExecutor.execute(operationToPerform, sceneName, this);
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
         if (isPresent(scene))
             conditions = scene.getConditions();
-
         return conditions;
     }
 
-    public Integer deleteConditionsInScene(String sceneName, String conditionName) {
-        Scene scene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), sceneName, this);
+    public Condition deleteConditionsInScene(String sceneName, String conditionName) {
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        Scene scene = (Scene) getSceneOperation.execute(sceneName);
         Condition condition = conditionService.findConditionsByName(conditionName);
         if (isPresent(scene) && isPresent(condition)) {
             if (scene.equals(condition.getScene()))
                 return conditionService.deleteCondition(conditionName);
 
         }
-        return 0;
+        return null;
     }
 
     private Boolean isPresent(SmartHomeItem item) {
@@ -154,7 +170,8 @@ public class SceneService {
     private Boolean validateUpdate(Scene oldScene, Scene updatedScene) {
         if (!isPresent(oldScene)) // No scene to update
             return false;
-        Scene persistentScene = (Scene) operationExecutor.execute(new GetByNameOperationImpl(), updatedScene.getName(), this);
+        CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
+        Scene persistentScene = (Scene) getSceneOperation.execute(updatedScene.getName());
         return !isPresent(persistentScene) || persistentScene.getName().equalsIgnoreCase(updatedScene.getName()); // Check if the new name violates unique constraint
     }
 

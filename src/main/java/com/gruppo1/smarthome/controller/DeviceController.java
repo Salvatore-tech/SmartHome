@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -68,7 +69,7 @@ public class DeviceController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<?> deleteDevice(@ApiParam(value = "Device name", required = true)
                                           @PathVariable("name") String name) {
-        return deviceService.deleteDevice(name).equals(1) ?
+        return deviceService.deleteDevice(name) == 1 ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

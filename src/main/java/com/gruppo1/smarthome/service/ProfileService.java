@@ -1,14 +1,14 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.beans.CrudOperationExecutor;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Profile;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.repository.ProfileRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
@@ -16,56 +16,58 @@ import java.util.Objects;
 @Service
 @Transactional
 public class ProfileService {
-    private final CrudOperationExecutor operationExecutor;
-    private MementoCareTaker mementoCareTaker;
+    private final MementoCareTaker mementoCareTaker;
+    private final ProfileRepo profileRepo;
 
     @Autowired
-    public ProfileService(CrudOperationExecutor operationExecutor, MementoCareTaker mementoCareTaker) {
-        this.operationExecutor = operationExecutor;
+    public ProfileService(MementoCareTaker mementoCareTaker, ProfileRepo profileRepo) {
         this.mementoCareTaker = mementoCareTaker;
+        this.profileRepo = profileRepo;
     }
 
     public Profile addProfile(Profile profile) {
-        CrudOperation operationToPerform = new AddOperationImpl();
-        if (!isPresent((Profile) operationExecutor.execute(new GetByNameOperationImpl(), profile.getName(), this))) {
-            mementoCareTaker.add(new Memento(operationToPerform, profile, "Add a profile"));
-            return (Profile) operationExecutor.execute(operationToPerform, profile);
+        CrudOperation addOperation = new AddOperationImpl(profileRepo);
+        CrudOperation getOperation = new GetOperationImpl(profileRepo);
+        mementoCareTaker.push(addOperation, profile.createMemento());
+        if (!isPresent(getOperation.execute(profile.getName()).get(0))) {
+            return (Profile) addOperation.execute(profile);
         }
         return null;
     }
 
     public List<Profile> findAllProfile() {
-        CrudOperation operationToPerform = new GetOperationImpl();
-        mementoCareTaker.add(new Memento(operationToPerform, null, "Find all profiles"));
-        return (List<Profile>) operationExecutor.execute(operationToPerform, this);
+        CrudOperation operationToPerform = new GetOperationImpl(profileRepo);
+        mementoCareTaker.push(operationToPerform, null);
+        return (List<Profile>) (List<?>) operationToPerform.execute();
     }
 
     public Profile findProfileByName(String name) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl();
-        Profile result = (Profile) operationExecutor.execute(operationToPerform, name, this);
-        mementoCareTaker.add(new Memento(operationToPerform, result, "Find a profile given a name"));
-        return result;
+        CrudOperation operationToPerform = new GetByNameOperationImpl(profileRepo);
+        mementoCareTaker.push(operationToPerform, null); // TODO SS
+        return (Profile) operationToPerform.execute(name);
     }
 
     public Profile updateProfile(String profileNameToUpdate, Profile updatedProfile) {
-        CrudOperation operationToPerform = new UpdateOperationImpl();
-        Profile oldProfile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profileNameToUpdate, this);
+        CrudOperation updateOperation = new UpdateOperationImpl(profileRepo);
+        CrudOperation getOperation = new GetOperationImpl(profileRepo);
+        Profile oldProfile = (Profile) getOperation.execute(profileNameToUpdate);
         if (validateUpdate(oldProfile, updatedProfile)) {
+            mementoCareTaker.push(updateOperation, oldProfile.createMemento());
             setProfile(oldProfile, updatedProfile);
-            mementoCareTaker.add(new Memento(operationToPerform, oldProfile, "Update a profile"));
-            return (Profile) operationExecutor.execute(operationToPerform, oldProfile);
+            return (Profile) updateOperation.execute(oldProfile);
         }
         return null;
     }
 
-    public Integer deleteProfile(String profileName) {
-        CrudOperation operationToPerform = new DeleteOperationImpl();
-        Profile profile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), profileName, this);
+    public SmartHomeItem deleteProfile(String profileName) {
+        CrudOperation deleteOperation = new DeleteOperationImpl(profileRepo);
+        CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
+        Profile profile = (Profile) getOperation.execute(profileName);
         if (isPresent(profile)) {
-            mementoCareTaker.add(new Memento(operationToPerform, profile, "Delete a profile"));
-            return (Integer) operationExecutor.execute(operationToPerform, profileName, this);
+            mementoCareTaker.push(deleteOperation, null); // TODO SS
+            return deleteOperation.execute(profileName).get(0);
         }
-        return 0;
+        return null;
     }
 
     private boolean isPresent(SmartHomeItem item) {
@@ -73,9 +75,10 @@ public class ProfileService {
     }
 
     private Boolean validateUpdate(Profile oldProfile, Profile updatedProfile) {
+        CrudOperation getOperation = new GetOperationImpl(profileRepo);
         if (!isPresent(oldProfile)) // No profile to update
             return false;
-        Profile persistentProfile = (Profile) operationExecutor.execute(new GetByNameOperationImpl(), updatedProfile.getName(), this);
+        Profile persistentProfile = (Profile) getOperation.execute(updatedProfile.getName());
         return !isPresent(persistentProfile) || persistentProfile.getName().equalsIgnoreCase(updatedProfile.getName()); // Check if the new name violates unique constraint
     }
 

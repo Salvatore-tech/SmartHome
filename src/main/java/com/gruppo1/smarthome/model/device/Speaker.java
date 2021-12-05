@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.model.device;
 
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
 
@@ -55,5 +56,23 @@ public class Speaker extends Device {
                 ", room='" + (Objects.nonNull(room) ? room.getName() : StringUtils.EMPTY) + '\'' +
                 ", volume=" + power +
                 '}';
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoSpeaker();
+    }
+
+    class MementoSpeaker extends Device.MementoDevice {
+        private Integer memPower;
+        private String memBrand;
+        private String memModel;
+
+        public MementoSpeaker() {
+            super();
+            this.memPower = power;
+            this.memBrand = brand;
+            this.memModel = model;
+        }
     }
 }

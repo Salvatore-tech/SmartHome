@@ -1,5 +1,6 @@
 package com.gruppo1.smarthome.model.device;
 
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
 
@@ -56,10 +57,30 @@ public class AlarmClock extends Device {
                 "name='" + name + '\'' +
                 ", status=" + status +
                 ", type='" + type + '\'' +
-                ", room=" + (Objects.nonNull(room) ? room.getName() : StringUtils.EMPTY) +'\'' +
+                ", room=" + (Objects.nonNull(room) ? room.getName() : StringUtils.EMPTY) + '\'' +
                 ", time='" + time + '\'' +
                 ", frequency='" + frequency + '\'' +
                 ", song='" + song + '\'' +
                 '}';
+    }
+
+    @Override
+    public Memento createMemento() {
+        return new MementoAlarmClock();
+    }
+
+    class MementoAlarmClock extends Device.MementoDevice {
+        private String memTime;
+        private String memFrequency;
+        private String memSong;
+
+        public MementoAlarmClock() {
+            super();
+            this.memTime = time;
+            this.memFrequency = frequency;
+            this.memSong = song;
+        }
+
+
     }
 }
