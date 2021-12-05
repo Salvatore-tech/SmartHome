@@ -3,6 +3,7 @@ package com.gruppo1.smarthome.memento;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.AddOperationImpl;
 import com.gruppo1.smarthome.command.impl.DeleteOperationImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Component
 public class MementoCareTaker {
 
-    private List<MementoCommand> mementoCommandList = new ArrayList<>();
+    private final List<MementoCommand> mementoCommandList = new ArrayList<>();
 
     private class MementoCommand {
         CrudOperation operation;
@@ -39,9 +40,10 @@ public class MementoCareTaker {
 
 
     public int undo() {
-        CrudOperation undoOperation;
+        CrudOperation undoOperation = null;
         MementoCommand lastMementoCommand = getUndo();
-        undoOperation = executeUndoOperation(lastMementoCommand);
+        if (Objects.nonNull(lastMementoCommand))
+            undoOperation = executeUndoOperation(lastMementoCommand);
         if (Objects.nonNull(undoOperation))
             return 1;
         return 0;
@@ -51,7 +53,11 @@ public class MementoCareTaker {
         List<ImmutablePair<String, String>> output = new ArrayList<>();
         mementoCommandList.forEach(
                 element -> {
-                    output.add(new ImmutablePair(element.getMemento().getName(), element.getOperation().toString()));
+                    if (Objects.nonNull(element.getMemento())) {
+                        output.add(new ImmutablePair(element.getMemento().getName(), element.getOperation().toString()));
+                    } else {
+                        output.add(new ImmutablePair(StringUtils.EMPTY, element.getOperation().toString()));
+                    }
                 }
         );
         return output;
