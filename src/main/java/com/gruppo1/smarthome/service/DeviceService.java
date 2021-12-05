@@ -65,7 +65,7 @@ public class DeviceService {
         }
         return null;
     }
-    
+
     public List<Device> findAllDevices() {
         CrudOperation operationToPerform = new GetOperationImpl(deviceRepo);
         mementoCareTaker.push(operationToPerform, null);
@@ -75,14 +75,14 @@ public class DeviceService {
     public Device findDeviceByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
         mementoCareTaker.push(operationToPerform, null); //TODO SS
-        return (Device) operationToPerform.execute(name);
+        return (Device) operationToPerform.execute(name).get(0);
     }
 
     public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
         CrudOperation operationToPerform = new UpdateOperationImpl(deviceRepo);
         CrudOperation getByNameOperation = new GetByNameOperationImpl(deviceRepo);
 
-        Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate);
+        Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate).get(0);
         if (validateUpdate(deviceJson, oldDevice)) {
             ConverterFromJsonToDevice converter = factoryConverter.getInstance(oldDevice.getType().toLowerCase());
             converter.convert(deviceJson, oldDevice);
@@ -98,10 +98,10 @@ public class DeviceService {
         CrudOperation getByNameOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation operationToPerform = new DeleteOperationImpl(deviceRepo);
 
-        Device device = (Device) getByNameOperation.execute(name).get(0);
-        if (isPresent(device)) {
-            mementoCareTaker.push(operationToPerform, device.createMemento());
-            return operationToPerform.executeDelete(device);
+        List<SmartHomeItem> device = getByNameOperation.execute(name);
+        if (!device.isEmpty()) {
+            mementoCareTaker.push(operationToPerform, device.get(0).createMemento());
+            return operationToPerform.executeDelete(device.get(0));
         }
         return 0;
     }
@@ -109,17 +109,18 @@ public class DeviceService {
     public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition) {
         CrudOperation getDevicesByNameOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getScenesByNameOperation = new GetByNameOperationImpl(sceneRepo);
-        Device device = (Device) getDevicesByNameOperation.execute(deviceName);
-        Scene scene = (Scene) getScenesByNameOperation.execute(sceneName);
+        List<SmartHomeItem> device = getDevicesByNameOperation.execute(deviceName);
+        List<SmartHomeItem> scene = getScenesByNameOperation.execute(sceneName);
         Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
-        if (isPresent(device) && isPresent(scene) && !isPresent(conditionToAdd)) {
-            condition.setDevice(device);
-            condition.setScene(scene);
+        if (!device.isEmpty() && !scene.isEmpty() && !isPresent(conditionToAdd)) {
+            condition.setDevice((Device) device.get(0));
+            condition.setScene((Scene) scene.get(0));
             return conditionService.addCondition(condition);
         }
         return null;
     }
 
+    //TODO: TO FIX
     public List<Condition> findConditionsInDevice(String deviceName) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(conditionRepo);
         List<Condition> conditions = new ArrayList<>();
@@ -173,7 +174,7 @@ public class DeviceService {
             return false;
         if (deviceJson.has("name")) {
             CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
-            Device deviceDB = (Device) operationToPerform.execute(deviceJson.get("name").toString());
+            Device deviceDB = (Device) operationToPerform.execute(deviceJson.get("name").toString()).get(0);
             return !isPresent(deviceDB) || deviceDB.getName().equalsIgnoreCase(oldDevice.getName());
         }
         return true;
