@@ -52,6 +52,7 @@ public class DeviceService {
         CrudOperation operationToPerform = new AddOperationImpl(deviceRepo);
         if (!validateJson(deviceJson))
             return null;
+
         String typeDevice = deviceJson.get("type").toString().toLowerCase();
         Device newDevice = deviceFactory.create(typeDevice);
         if (isPresent(newDevice)) {
@@ -59,9 +60,7 @@ public class DeviceService {
             converter.convert(deviceJson, newDevice);
             Room room = validateRoom(deviceJson);
             newDevice.setRoom(room);
-
             mementoCareTaker.push(operationToPerform, newDevice.createMemento());
-
             return operationToPerform.execute(newDevice);
 
         }
@@ -77,7 +76,7 @@ public class DeviceService {
     public Device findDeviceByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
         mementoCareTaker.push(operationToPerform, null); //TODO SS
-        return (Device) operationToPerform.execute(name);
+        return operationToPerform.execute(name);
     }
 
     public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
@@ -151,8 +150,9 @@ public class DeviceService {
         return Objects.nonNull(item);
     }
 
-    private Boolean validateJson(JSONObject objectToCheck) {
-        return objectToCheck.has("type") && objectToCheck.has("name");
+    private Boolean validateJson(JSONObject objectToCheck) throws JSONException {
+        CrudOperation getOperation = new GetByNameOperationImpl(deviceRepo);
+        return objectToCheck.has("type") && objectToCheck.has("name") && Objects.isNull(getOperation.execute(objectToCheck.get("name").toString()));
     }
 
     private Room validateRoom(JSONObject deviceJson) throws JSONException {
