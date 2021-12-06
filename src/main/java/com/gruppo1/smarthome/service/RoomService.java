@@ -3,9 +3,9 @@ package com.gruppo1.smarthome.service;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class RoomService {
             Room defaultRoom = (Room) getOperation.execute("Default");
             devices.forEach(device -> device.setRoom(defaultRoom));
         }
-        return deleteOperation.execute(roomName).get(0);
+        return deleteOperation.execute(roomName);
     }
 
 

@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.model.device;
 
 import com.gruppo1.smarthome.memento.Memento;
-import com.gruppo1.smarthome.model.Device;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;

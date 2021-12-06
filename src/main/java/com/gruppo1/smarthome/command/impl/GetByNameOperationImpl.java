@@ -4,8 +4,6 @@ import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public class GetByNameOperationImpl implements CrudOperation {
@@ -17,10 +15,10 @@ public class GetByNameOperationImpl implements CrudOperation {
     }
 
     @Override
-    public List<SmartHomeItem> execute(String homeItemName) {
+    public SmartHomeItem execute(String homeItemName) {
         if (Objects.isNull(repository))
             return null;
-        return repository.findByName(homeItemName).isPresent() ? Collections.singletonList((SmartHomeItem) repository.findByName(homeItemName).get()) : null;
+        return (repository.findByName(homeItemName).isPresent()) ? (SmartHomeItem) repository.findByName(homeItemName).get() : null;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ProfileService {
         CrudOperation addOperation = new AddOperationImpl(profileRepo);
         CrudOperation getOperation = new GetOperationImpl(profileRepo);
         mementoCareTaker.push(addOperation, profile.createMemento());
-        if (!isPresent(getOperation.execute(profile.getName()).get(0))) {
+        if (!isPresent(getOperation.execute(profile.getName()))) {
             return (Profile) addOperation.execute(profile);
         }
         return null;
@@ -65,7 +65,7 @@ public class ProfileService {
         Profile profile = (Profile) getOperation.execute(profileName);
         if (isPresent(profile)) {
             mementoCareTaker.push(deleteOperation, null); // TODO SS
-            return deleteOperation.execute(profileName).get(0);
+            return deleteOperation.execute(profileName);
         }
         return null;
     }

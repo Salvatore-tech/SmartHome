@@ -1,7 +1,7 @@
 package com.gruppo1.smarthome.repository;
 
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.model.device.Device;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

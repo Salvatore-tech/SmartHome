@@ -3,14 +3,15 @@ package com.gruppo1.smarthome.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Condition;
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.service.SceneService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Objects;
 

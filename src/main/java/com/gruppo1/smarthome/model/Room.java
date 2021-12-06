@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
+import com.gruppo1.smarthome.model.device.Device;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

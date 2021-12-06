@@ -2,8 +2,8 @@ package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.service.RoomService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,16 +10,12 @@ public interface CrudOperation {
         return null;
     }
 
-    default List<SmartHomeItem> execute(String homeItemName) {
+    default <Any> Any execute(String homeItemName) {
         return null;
     }
 
-    default List<SmartHomeItem> execute(SmartHomeItem homeItem) {
+    default <Any> Any execute(SmartHomeItem homeItem) {
         return null;
-    }
-
-    default int executeDelete(SmartHomeItem homeItem) {
-        return 0;
     }
 
     BaseSmartHomeRepository getRepository();

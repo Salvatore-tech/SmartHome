@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.beans;
 
 import com.gruppo1.smarthome.command.api.Actions;
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.device.*;
 import org.springframework.stereotype.Component;
 

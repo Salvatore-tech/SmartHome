@@ -1,6 +1,6 @@
 package com.gruppo1.smarthome.strategy;
 
-import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.model.device.Television;
 import org.json.JSONException;
 import org.json.JSONObject;

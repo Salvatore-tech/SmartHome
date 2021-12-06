@@ -1,6 +1,10 @@
 package com.gruppo1.smarthome.beans;
 
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Profile;
+import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.Scene;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

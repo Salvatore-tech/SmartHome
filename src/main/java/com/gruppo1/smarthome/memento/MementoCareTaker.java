@@ -75,7 +75,7 @@ public class MementoCareTaker {
         Memento lastMemento = mementoCommand.getMemento();
         if (lastOperationPerformed.getClass().equals(AddOperationImpl.class)) {
             operationReverted = new DeleteOperationImpl(lastOperationPerformed.getRepository());
-            operationReverted.executeDelete(lastMemento);
+            operationReverted.execute(lastMemento);
         } else if (lastOperationPerformed.getClass().equals(DeleteOperationImpl.class)) {
             operationReverted = new AddOperationImpl(lastOperationPerformed.getRepository());
             operationReverted.execute(lastMemento);

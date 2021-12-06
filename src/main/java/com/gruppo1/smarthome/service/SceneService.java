@@ -4,9 +4,9 @@ import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
 import com.gruppo1.smarthome.model.Condition;
-import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.SceneRepo;
@@ -40,7 +40,7 @@ public class SceneService {
     public Scene addScene(Scene scene) {
         CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         CrudOperation addSceneOperation = new AddOperationImpl(sceneRepo);
-        if (!isPresent(getSceneOperation.execute(scene.getName()).get(0))) {
+        if (!isPresent(getSceneOperation.execute(scene.getName()))) {
             mementoCareTaker.push(addSceneOperation, scene.createMemento());
             return (Scene) addSceneOperation.execute(scene);
         }
@@ -77,7 +77,7 @@ public class SceneService {
         Scene scene = (Scene) getSceneOperation.execute(sceneName);
         if (isPresent(scene)) {
             mementoCareTaker.push(deleteSceneOperation, scene.createMemento());
-            return (Scene) deleteSceneOperation.execute(scene).get(0);
+            return (Scene) deleteSceneOperation.execute(scene);
         }
         return null;
     }
@@ -86,7 +86,7 @@ public class SceneService {
         CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
         CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
-        if (isPresent(getConditionOperation.execute(condition.getName()).get(0)))
+        if (isPresent(getConditionOperation.execute(condition.getName())))
             return null;
         Scene scene = (Scene) getSceneOperation.execute(sceneName);
         Device device = (Device) getDeviceOperation.execute(deviceName);

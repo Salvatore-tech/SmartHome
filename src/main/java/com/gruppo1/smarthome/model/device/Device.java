@@ -1,7 +1,10 @@
-package com.gruppo1.smarthome.model;
+package com.gruppo1.smarthome.model.device;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
+import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
