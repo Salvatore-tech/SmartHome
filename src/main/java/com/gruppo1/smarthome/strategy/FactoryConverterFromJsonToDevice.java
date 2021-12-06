@@ -1,10 +1,8 @@
 package com.gruppo1.smarthome.strategy;
 
-import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class FactoryConverterFromJsonToDevice {
 
     private static Map<String, ConverterFromJsonToDevice> converters = new HashMap<>();

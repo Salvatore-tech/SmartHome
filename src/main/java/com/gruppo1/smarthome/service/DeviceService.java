@@ -4,7 +4,11 @@ import com.gruppo1.smarthome.beans.DeviceFactory;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Room;
+import com.gruppo1.smarthome.model.Scene;
+import com.gruppo1.smarthome.model.SmartHomeItem;
+import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.RoomRepo;
@@ -25,7 +29,6 @@ import java.util.Objects;
 @Transactional
 public class DeviceService {
     private final DeviceFactory deviceFactory;
-    private final FactoryConverterFromJsonToDevice factoryConverter;
     private final MementoCareTaker mementoCareTaker;
     private final ConditionService conditionService;
 
@@ -35,9 +38,8 @@ public class DeviceService {
     private final RoomRepo roomRepo;
 
     @Autowired
-    public DeviceService(DeviceFactory deviceFactory, FactoryConverterFromJsonToDevice factoryConverter, MementoCareTaker mementoCareTaker, ConditionService conditionService, DeviceRepo deviceRepo, SceneRepo sceneRepo, ConditionRepo conditionRepo, RoomRepo roomRepo) {
+    public DeviceService(DeviceFactory deviceFactory, MementoCareTaker mementoCareTaker, ConditionService conditionService, DeviceRepo deviceRepo, SceneRepo sceneRepo, ConditionRepo conditionRepo, RoomRepo roomRepo) {
         this.deviceFactory = deviceFactory;
-        this.factoryConverter = factoryConverter;
         this.mementoCareTaker = mementoCareTaker;
         this.conditionService = conditionService;
         this.deviceRepo = deviceRepo;
@@ -53,14 +55,14 @@ public class DeviceService {
         String typeDevice = deviceJson.get("type").toString().toLowerCase();
         Device newDevice = deviceFactory.create(typeDevice);
         if (isPresent(newDevice)) {
-            ConverterFromJsonToDevice converter = factoryConverter.getInstance(typeDevice);
+            ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(typeDevice);
             converter.convert(deviceJson, newDevice);
             Room room = validateRoom(deviceJson);
             newDevice.setRoom(room);
 
             mementoCareTaker.push(operationToPerform, newDevice.createMemento());
 
-            return (Device) operationToPerform.execute(newDevice).get(0);
+            return operationToPerform.execute(newDevice);
 
         }
         return null;
@@ -75,21 +77,21 @@ public class DeviceService {
     public Device findDeviceByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
         mementoCareTaker.push(operationToPerform, null); //TODO SS
-        return (Device) operationToPerform.execute(name).get(0);
+        return (Device) operationToPerform.execute(name);
     }
 
     public Device updateDevice(String deviceNameToUpdate, JSONObject deviceJson) throws JSONException {
         CrudOperation operationToPerform = new UpdateOperationImpl(deviceRepo);
         CrudOperation getByNameOperation = new GetByNameOperationImpl(deviceRepo);
 
-        Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate).get(0);
+        Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate);
         if (validateUpdate(deviceJson, oldDevice)) {
-            ConverterFromJsonToDevice converter = factoryConverter.getInstance(oldDevice.getType().toLowerCase());
+            ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(oldDevice.getType().toLowerCase());
             converter.convert(deviceJson, oldDevice);
             Room room = validateRoom(deviceJson);
             mementoCareTaker.push(operationToPerform, oldDevice.createMemento()); // TODO SS
             oldDevice.setRoom(room);
-            return (Device) operationToPerform.execute(oldDevice).get(0);
+            return (Device) operationToPerform.execute(oldDevice);
         }
         return null;
     }
@@ -98,10 +100,10 @@ public class DeviceService {
         CrudOperation getByNameOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation operationToPerform = new DeleteOperationImpl(deviceRepo);
 
-        List<SmartHomeItem> device = getByNameOperation.execute(name);
-        if (!device.isEmpty()) {
-            mementoCareTaker.push(operationToPerform, device.get(0).createMemento());
-            return operationToPerform.executeDelete(device.get(0));
+        Device device = getByNameOperation.execute(name);
+        if (Objects.nonNull(device)) {
+            mementoCareTaker.push(operationToPerform, device.createMemento());
+            return operationToPerform.execute(device);
         }
         return 0;
     }
@@ -157,7 +159,7 @@ public class DeviceService {
         CrudOperation operationToPerform = new GetByNameOperationImpl(roomRepo);
         Room room;
         if (deviceJson.has("room_name")) {
-            room = (Room) operationToPerform.execute(deviceJson.get("room_name").toString()).get(0);
+            room = (Room) operationToPerform.execute(deviceJson.get("room_name").toString());
             if (!isPresent(room)) {
                 room = (Room) operationToPerform.execute("Default");
             }
@@ -174,7 +176,7 @@ public class DeviceService {
             return false;
         if (deviceJson.has("name")) {
             CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
-            Device deviceDB = (Device) operationToPerform.execute(deviceJson.get("name").toString()).get(0);
+            Device deviceDB = (Device) operationToPerform.execute(deviceJson.get("name").toString());
             return !isPresent(deviceDB) || deviceDB.getName().equalsIgnoreCase(oldDevice.getName());
         }
         return true;

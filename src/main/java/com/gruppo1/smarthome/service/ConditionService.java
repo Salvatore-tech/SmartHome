@@ -33,7 +33,7 @@ public class ConditionService {
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
         if (!isPresent((Condition) getConditionOperation.execute(condition.getName()))) {
             mementoCareTaker.push(addConditionOperation, condition.createMemento());
-            return (Condition) addConditionOperation.execute(condition).get(0);
+            return (Condition) addConditionOperation.execute(condition);
         }
         return null;
     }
@@ -57,7 +57,7 @@ public class ConditionService {
         Condition condition = (Condition) getConditionOperation.execute(conditionName);
         mementoCareTaker.push(deleteConditionOperation, condition.createMemento());
         if (isPresent(condition))
-            return (Condition) deleteConditionOperation.execute(condition).get(0);
+            return (Condition) deleteConditionOperation.execute(condition);
         return null;
     }
 
