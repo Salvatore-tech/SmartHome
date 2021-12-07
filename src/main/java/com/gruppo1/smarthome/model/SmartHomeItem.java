@@ -11,8 +11,6 @@ public abstract class SmartHomeItem implements Serializable {
     public void setName(String name) {
     }
 
-    ;
-
     public abstract Memento createMemento();
 
 }

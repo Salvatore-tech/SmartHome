@@ -1,15 +1,18 @@
 package com.gruppo1.smarthome.beans;
 
+import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Scene;
 import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ConditionExecutor {
@@ -30,14 +33,54 @@ public class ConditionExecutor {
 
         conditionList.forEach(
                 condition -> {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    LocalDateTime now = LocalDateTime.now();
-                    if (condition.getThreshold() > rand.nextInt(20) || condition.getActivationDate().toString().contains(dtf.format(now))) {
-                        Device device = condition.getDevice();
-                        actionExecutor.execute(device, condition.getAction());
+                    Scene scene = condition.getScene();
+                    Device device = condition.getDevice();
+                    Date date = condition.getActivationDate();
+                    Integer threshold = condition.getThreshold();
+                    String period = scene.getPeriod();
+                    if (Objects.nonNull(scene.getStatus())) {
+                        long currentMillisecond = System.currentTimeMillis();
+                        if(controlExecute(date, threshold, currentMillisecond))
+                            actionExecutor.execute(device, condition.getAction());
+                        if (Objects.nonNull(period))
+                            setRoutine(condition, currentMillisecond, period);
                     }
                 }
         );
+    }
+
+    private Boolean controlExecute(Date date, Integer threshold, long currentMillisecond){
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        if(Objects.nonNull(date)){
+            if (threshold == rand.nextInt(30)) {
+                return true;
+            }
+        }else if(Objects.nonNull(threshold)){
+            if (date.toString().contains(dateFormatter.format(currentMillisecond))) {
+                return true;
+            }
+        } else{
+            if (threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setRoutine(Condition condition, long currentMillisecond, String period) {
+        if (period.equalsIgnoreCase("daily")) {
+            long day = TimeUnit.DAYS.toMillis(1);
+            condition.setActivationDate(new Date(currentMillisecond + day));
+            conditionRepo.save(condition);
+        } else if (period.equalsIgnoreCase("weekly")) {
+            long week = TimeUnit.DAYS.toMillis(7);
+            condition.setActivationDate(new Date(currentMillisecond + week));
+            conditionRepo.save(condition);
+        } else if (period.equalsIgnoreCase("monthly")) {
+            long month = TimeUnit.DAYS.toMillis(30);
+            condition.setActivationDate(new Date(currentMillisecond + month));
+            conditionRepo.save(condition);
+        }
     }
 }
 

@@ -41,6 +41,7 @@ CREATE TABLE scene
     id     VARCHAR(50),
     name   VARCHAR(20) UNIQUE NOT NULL,
     status BOOLEAN DEFAULT FALSE,
+    period          VARCHAR(20),
     CONSTRAINT pk_scene PRIMARY KEY (id)
 );
 
@@ -50,7 +51,6 @@ CREATE TABLE condition
     device_id       VARCHAR(50)        NOT NULL,
     scene_id        VARCHAR(50)        NOT NULL,
     activation_date TIMESTAMP(0),
-    period          VARCHAR(20),
     threshold       FLOAT,
     name            VARCHAR(50) UNIQUE NOT NULL,
     CONSTRAINT pk_condition PRIMARY KEY (id),

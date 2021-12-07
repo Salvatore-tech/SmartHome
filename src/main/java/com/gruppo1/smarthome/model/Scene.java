@@ -17,22 +17,21 @@ public class Scene extends SmartHomeItem implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
-
     @Column(nullable = false, unique = true)
     private String name;
-
     @Column(nullable = false)
     private Boolean status;
-
+    private String period;
     @JsonIgnore
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
     private List<Condition> conditions;
 
     public Scene() {}
 
-    public Scene(String name) {
+    public Scene(String name, Boolean status, String period) {
         this.name = name;
-        this.status = false;
+        this.status = status;
+        this.period = period;
     }
 
     public String getId() {
@@ -66,6 +65,14 @@ public class Scene extends SmartHomeItem implements Serializable {
         this.status = status;
     }
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
     public List<Condition> getConditions() {
         return this.conditions;
     }
@@ -82,6 +89,7 @@ public class Scene extends SmartHomeItem implements Serializable {
     public String toString() {
         return "Scene{" +
                 "name='" + name + '\'' +
+                ", period='" + period + '\'' +
                 ", status=" + status +
                 '}';
     }
@@ -90,6 +98,7 @@ public class Scene extends SmartHomeItem implements Serializable {
         private String memId;
         private String memName;
         private Boolean memStatus;
+        private String memPeriod;
         private List<Condition> memConditions;
 
 
@@ -97,6 +106,7 @@ public class Scene extends SmartHomeItem implements Serializable {
             this.memId = id;
             this.memName = name;
             this.memStatus = status;
+            this.memPeriod = period;
             this.memConditions = conditions;
         }
 

@@ -5,7 +5,6 @@ import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.model.device.Device;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -18,10 +17,9 @@ public class Condition extends SmartHomeItem implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(nullable = false, updatable = false)
     private String id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date activationDate;
-    private String period;
-    private Double threshold;
+    private Integer threshold;
     private String name;
     private Actions action;
 
@@ -40,14 +38,13 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.name = name;
     }
 
-    public Condition(String name, Actions action, Date activationDate, Double threshold, Device device, Scene scene, String period) {
+    public Condition(String name, Actions action, Date activationDate, Integer threshold, Device device, Scene scene) {
         this.name = name;
         this.action = action;
         this.activationDate = activationDate;
         this.threshold = threshold;
         this.device = device;
         this.scene = scene;
-        this.period = period;
     }
 
     public Date getActivationDate() {
@@ -58,11 +55,11 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.activationDate = activation;
     }
 
-    public Double getThreshold() {
+    public Integer getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(Double threshold) {
+    public void setThreshold(Integer threshold) {
         this.threshold = threshold;
     }
 
@@ -97,14 +94,6 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.scene = scene;
     }
 
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
     public Actions getAction() {
         return action;
     }
@@ -121,7 +110,6 @@ public class Condition extends SmartHomeItem implements Serializable {
                 ", device=" + device.getName() +
                 ", scene=" + scene.getName() +
                 ", action=" + action +
-                ", period=" + period +
                 ", activation date=" + activationDate +
                 '}';
     }
@@ -130,10 +118,9 @@ public class Condition extends SmartHomeItem implements Serializable {
 
         private String memId;
         private String memName;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
         private Date memActivationDate;
-        private String memPeriod;
-        private Double memThreshold;
+        private Integer memThreshold;
         private Actions memAction;
         private Device memDevice;
         private Scene memScene;
@@ -142,7 +129,6 @@ public class Condition extends SmartHomeItem implements Serializable {
             this.memId = id;
             this.memName = name;
             this.memActivationDate = activationDate;
-            this.memPeriod = period;
             this.memThreshold = threshold;
             this.memAction = action;
             this.memDevice = device;

@@ -13,9 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-
 import javax.transaction.Transactional;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +29,6 @@ public class DataGenerator {
     private final List<Device> devices;
     private final List<Scene> scenes;
     private final List<Condition> conditions;
-
     private final ProfileRepo profileRepo;
     private final RoomRepo roomRepo;
     private final DeviceRepo deviceRepo;
@@ -85,6 +82,7 @@ public class DataGenerator {
         CrudOperation addDeviceOperation = new AddOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetOperationImpl(roomRepo);
         final List<Room> rooms = (List<Room>) (List<?>) getRoomOperation.execute();
+        //TODO: How to manage the time (alarm clock)?
         devices.add(new AlarmClock("Spongebob block", "Alarm clock", "7:00 AM", "Workday", "Rain drops"));
         devices.add(new Conditioner("Samsung air", "Conditioner", 20, "Default"));
         devices.add(new Conditioner("Dyson", "Conditioner", 30, "Sun"));
@@ -107,11 +105,11 @@ public class DataGenerator {
     @Bean("generateScenes")
     public List<Scene> generateScenes() {
         CrudOperation addSceneOperation = new AddOperationImpl(sceneRepo);
-        scenes.add(new Scene("Work"));
-        scenes.add(new Scene("Rest"));
-        scenes.add(new Scene("Birthday reminder"));
-        scenes.add(new Scene("Weekends wake up"));
-        scenes.add(new Scene("General shutdown"));
+        scenes.add(new Scene("Daily routine", false, "Daily"));
+        scenes.add(new Scene("Week routine", false, "Weekly"));
+        scenes.add(new Scene("Month routine", false, "Monthly"));
+        scenes.add(new Scene("Weekends routine", false, null));
+        scenes.add(new Scene("General routine", false, null));
         //save a few scenes
         scenes.forEach(addSceneOperation::execute);
         return scenes;
@@ -120,29 +118,21 @@ public class DataGenerator {
     @Bean("generateConditions")
     @DependsOn({"generateDevices", "generateScenes"})
     public List<Condition> generateConditions(ConditionRepo conditionRepo, DeviceRepo deviceRepo, SceneRepo sceneRepo) {
-        Random rand = new Random();
-
         CrudOperation addConditionOperation = new AddOperationImpl(conditionRepo);
         CrudOperation getDeviceOperation = new GetOperationImpl(deviceRepo);
         CrudOperation getSceneOperation = new GetOperationImpl(sceneRepo);
 
         final List<Device> devices = (List<Device>) (List<?>) getDeviceOperation.execute();
         final List<Scene> scenes = (List<Scene>) (List<?>) getSceneOperation.execute();
+        final Random rand = new Random();
 
-        int noScenes = scenes.size();
-        int noDevices = devices.size();
+        conditions.add(new Condition("SpongeBob block power on", Actions.POWER_ON, new Date(System.currentTimeMillis()+120000), rand.nextInt(30), devices.get(0), scenes.get(0)));
+        conditions.add(new Condition("Samsung Air warmer", Actions.WARMER, new Date(System.currentTimeMillis()+240000), rand.nextInt(30), devices.get(1), scenes.get(1)));
+        conditions.add(new Condition("Desk lamp colder", Actions.COLDER, new Date(System.currentTimeMillis()+360000), rand.nextInt(30), devices.get(3), scenes.get(2)));
+        conditions.add(new Condition("Soundbar raise volume up", Actions.RAISE_VOLUME_UP, new Date(System.currentTimeMillis()+480000), rand.nextInt(30), devices.get(7), scenes.get(3)));
+        conditions.add(new Condition("Woofer kit lower volume down", Actions.LOWER_VOLUME_DOWN, new Date(System.currentTimeMillis()+600000), rand.nextInt(30), devices.get(5), scenes.get(1)));
+        conditions.add(new Condition("Tv living power on", Actions.POWER_ON, new Date(System.currentTimeMillis()+720000), rand.nextInt(30), devices.get(9), scenes.get(4)));
 
-
-//        conditions.add(new Condition("Test", Actions.WARMER, new Date(System.currentTimeMillis()), 15.0, new Device(), new Scene(), "NONE"));
-//        conditions.add(new Condition("One", devices.get(0), scenes.get(rand.nextInt(noScenes)), Actions.POWER_ON, 10.0));
-        conditions.add(new Condition("Test", Actions.WARMER, new Date(System.currentTimeMillis()), 15.0, devices.get(1), scenes.get(rand.nextInt(noScenes)), "NONE"));
-//        conditions.add(new Condition("Four", devices.get(4), scenes.get(rand.nextInt(noScenes)), Actions.POWER_ON, 10.0));
-//        conditions.add(new Condition("Five", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
-//        conditions.add(new Condition("Six", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
-//        conditions.add(new Condition("Seven", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
-//        conditions.add(new Condition("Eight", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
-//        conditions.add(new Condition("Nine", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
-//        conditions.add(new Condition("Ten", devices.get(rand.nextInt(noDevices)), scenes.get(rand.nextInt(noScenes)), null, 10.0));
 
         conditions.forEach(addConditionOperation::execute);
         return conditions;
@@ -150,7 +140,7 @@ public class DataGenerator {
 
     @Bean
     @DependsOn({"generateProfiles", "generateRooms", "generateDevices", "generateScenes", "generateConditions"})
-    public CommandLineRunner insertData() throws ParseException {
+    public CommandLineRunner insertData() {
         final Logger log = LoggerFactory.getLogger(DataGenerator.class);
         AtomicInteger rowNum = new AtomicInteger();
 
