@@ -12,7 +12,6 @@ import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +144,7 @@ public class SceneService {
     public List<Condition> findConditionsInScene(String sceneName) {
         CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         List<Condition> conditions = new ArrayList<>();
-        Scene scene = (Scene) getSceneOperation.execute(sceneName);
+        Scene scene = getSceneOperation.execute(sceneName);
         if (isPresent(scene))
             conditions = scene.getConditions();
         return conditions;
@@ -178,5 +177,6 @@ public class SceneService {
     private void setScene(Scene oldScene, Scene updatedScene) {
         oldScene.setName(updatedScene.getName());
         oldScene.setStatus(updatedScene.getStatus());
+        oldScene.setPeriod((updatedScene.getPeriod()));
     }
 }
