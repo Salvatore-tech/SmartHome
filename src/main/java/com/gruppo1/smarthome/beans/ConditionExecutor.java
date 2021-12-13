@@ -38,12 +38,13 @@ public class ConditionExecutor {
                     Date date = condition.getActivationDate();
                     Integer threshold = condition.getThreshold();
                     String period = scene.getPeriod();
-                    if (Objects.nonNull(scene.getStatus())) {
+                    if (scene.getStatus()) {
                         long currentMillisecond = System.currentTimeMillis();
-                        if(controlExecute(date, threshold, currentMillisecond))
+                        if(controlExecute(date, threshold, currentMillisecond)){
                             actionExecutor.execute(device, condition.getAction());
-                        if (Objects.nonNull(period))
-                            setRoutine(condition, currentMillisecond, period);
+                            if (Objects.nonNull(period))
+                                setRoutine(condition, currentMillisecond, period);
+                        }
                     }
                 }
         );
@@ -51,16 +52,16 @@ public class ConditionExecutor {
 
     private Boolean controlExecute(Date date, Integer threshold, long currentMillisecond){
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        if(Objects.nonNull(date)){
-            if (threshold == rand.nextInt(30)) {
+        if(Objects.nonNull(date) && Objects.nonNull(threshold)){
+            if (threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond))) {
                 return true;
             }
-        }else if(Objects.nonNull(threshold)){
+        }else if(Objects.isNull(threshold)){
             if (date.toString().contains(dateFormatter.format(currentMillisecond))) {
                 return true;
             }
         } else{
-            if (threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond))) {
+            if (threshold == rand.nextInt(30)) {
                 return true;
             }
         }

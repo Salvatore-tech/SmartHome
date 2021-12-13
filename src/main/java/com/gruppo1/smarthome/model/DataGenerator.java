@@ -83,13 +83,13 @@ public class DataGenerator {
         CrudOperation getRoomOperation = new GetOperationImpl(roomRepo);
         final List<Room> rooms = (List<Room>) (List<?>) getRoomOperation.execute();
         //TODO: How to manage the time (alarm clock)?
-        devices.add(new AlarmClock("Spongebob block", "Alarm clock", "7:00 AM", "Workday", "Rain drops"));
+        devices.add(new AlarmClock("Spongebob block", "AlarmClock", "7:00 AM", "Workday", "Rain drops"));
         devices.add(new Conditioner("Samsung air", "Conditioner", 20, "Default"));
         devices.add(new Conditioner("Dyson", "Conditioner", 30, "Sun"));
-        devices.add(new LightBulb("Desk lamp", "Lightbulb", 50, "Normal"));
-        devices.add(new LightBulb("Studio lights", "Lightbulb", 75, "Cold"));
-        devices.add(new LightBulb("Bedroom 1 ambient", "Lightbulb", 35, "Warm"));
-        devices.add(new LightBulb("Living rgb", "Lightbulb", 65, "Variable"));
+        devices.add(new LightBulb("Desk lamp", "LightBulb", 50, "Normal"));
+        devices.add(new LightBulb("Studio lights", "LightBulb", 75, "Cold"));
+        devices.add(new LightBulb("Bedroom 1 ambient", "LightBulb", 35, "Warm"));
+        devices.add(new LightBulb("Living rgb", "LightBulb", 65, "Variable"));
         devices.add(new Speaker("Soundbar", "Speaker", 100, "Bose", "SCS-2021"));
         devices.add(new Speaker("Woofer kit", "Speaker", 20, "Aiwa", "XR-76"));
         devices.add(new Television("Tv living", "Television", "Samsung", "TGKSLS09", 15, 0));
@@ -105,11 +105,11 @@ public class DataGenerator {
     @Bean("generateScenes")
     public List<Scene> generateScenes() {
         CrudOperation addSceneOperation = new AddOperationImpl(sceneRepo);
-        scenes.add(new Scene("Daily routine", false, "Daily"));
-        scenes.add(new Scene("Week routine", false, "Weekly"));
-        scenes.add(new Scene("Month routine", false, "Monthly"));
-        scenes.add(new Scene("Weekends routine", false, null));
-        scenes.add(new Scene("General routine", false, null));
+        scenes.add(new Scene("Daily routine", true, "Daily"));
+        scenes.add(new Scene("Weekly routine", true, "Weekly"));
+        scenes.add(new Scene("Monthly routine", true, "Monthly"));
+        scenes.add(new Scene("Party", false, null));
+        scenes.add(new Scene("Favourite TV program", false, null));
         //save a few scenes
         scenes.forEach(addSceneOperation::execute);
         return scenes;
