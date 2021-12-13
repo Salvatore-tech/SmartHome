@@ -53,10 +53,18 @@ public class MementoCareTaker {
         List<ImmutablePair<String, String>> output = new ArrayList<>();
         mementoCommandList.forEach(
                 element -> {
+                    String pathOperation = element.getOperation().toString();
+                    String operation = pathOperation.substring(pathOperation.lastIndexOf(".")+1, pathOperation.indexOf("@"));
+                    String stringToStamp = StringUtils.join(
+                            StringUtils.splitByCharacterTypeCamelCase(operation),
+                            ' '
+                    );
+                    String pathClass = element.getOperation().getRepository().getClass().getInterfaces()[0].getName();
+                    stringToStamp += " Of "+ pathClass.substring(pathClass.lastIndexOf(".")+1,pathClass.indexOf("Repo"));
                     if (Objects.nonNull(element.getMemento())) {
-                        output.add(new ImmutablePair(element.getMemento().getName(), element.getOperation().toString()));
+                        output.add(new ImmutablePair(element.getMemento().getName(), stringToStamp));
                     } else {
-                        output.add(new ImmutablePair(StringUtils.EMPTY, element.getOperation().toString()));
+                        output.add(new ImmutablePair(StringUtils.EMPTY, stringToStamp));
                     }
                 }
         );
