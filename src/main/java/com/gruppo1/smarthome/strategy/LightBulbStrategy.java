@@ -18,7 +18,7 @@ public class LightBulbStrategy extends ConverterFromJsonToDevice {
             lightBulb.setBrightness((Integer) deviceJson.get("brightness"));
         }
         if (deviceJson.has("colorTemp")) {
-            lightBulb.setColorTemp((String) deviceJson.get("colorTemp"));
+            lightBulb.setColorTemperature((String) deviceJson.get("colorTemp"));
         }
     }
 }

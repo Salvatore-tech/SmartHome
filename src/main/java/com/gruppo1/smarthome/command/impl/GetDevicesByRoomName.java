@@ -20,9 +20,7 @@ public class GetDevicesByRoomName implements CrudOperation {
     public List<SmartHomeItem> execute(String roomName) {
         if (Objects.isNull(repository))
             return null;
-        List<SmartHomeItem> devicesInTheRoom = repository.findDevicesByRoomName(roomName);
-        return Objects.nonNull(devicesInTheRoom) ?
-                devicesInTheRoom : null;
+        return repository.findDevicesByRoomName(roomName);
     }
 
     @Override

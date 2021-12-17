@@ -76,10 +76,10 @@ public class ActionExecutor {
                 lightBulb.setStatus(true);
                 break;
             case WARMER:
-                lightBulb.setColorTemp("Warm");
+                lightBulb.setColorTemperature("Warm");
                 break;
             case COLDER:
-                lightBulb.setColorTemp("Cold");
+                lightBulb.setColorTemperature("Cold");
             default:
                 System.out.println("Invalid action on " + lightBulb.toString());
         }

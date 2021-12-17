@@ -70,15 +70,15 @@ public class SceneService {
         return null;
     }
 
-    public Scene deleteScene(String sceneName) {
+    public Integer deleteScene(String sceneName) {
         CrudOperation deleteSceneOperation = new DeleteOperationImpl(sceneRepo);
         CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
         Scene scene = (Scene) getSceneOperation.execute(sceneName);
         if (isPresent(scene)) {
             mementoCareTaker.push(deleteSceneOperation, scene.createMemento());
-            return (Scene) deleteSceneOperation.execute(scene);
+            return deleteSceneOperation.execute(scene);
         }
-        return null;
+        return 0;
     }
 
     public Condition addDeviceToScene(String sceneName, String deviceName, Condition condition) {

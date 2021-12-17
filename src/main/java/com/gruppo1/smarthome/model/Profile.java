@@ -14,12 +14,6 @@ import java.io.Serializable;
 @Entity
 public class Profile extends SmartHomeItem implements Serializable {
 
-    @JsonIgnore
-    @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = false)
-    private String id;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
