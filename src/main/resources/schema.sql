@@ -1,7 +1,7 @@
 DROP TABLE profile;
-DROP TABLE alarm_clock;
+DROP TABLE alarmclock;
 DROP TABLE conditioner;
-DROP TABLE light_bulb;
+DROP TABLE lightbulb;
 DROP TABLE speaker;
 DROP TABLE television;
 DROP TABLE condition;
@@ -58,16 +58,16 @@ CREATE TABLE condition
     FOREIGN KEY (scene_id) REFERENCES scene (id)
 );
 
-CREATE TABLE alarm_clock
+CREATE TABLE alarmclock
 (
-    id      VARCHAR(255)        NOT NULL,
-    time    VARCHAR(255),
-    frequency    VARCHAR(255),
-    song    VARCHAR(255),
-    room_id VARCHAR(255),
+    id        VARCHAR(255) NOT NULL,
+    time      VARCHAR(255),
+    frequency VARCHAR(255),
+    song      VARCHAR(255),
+    room_id   VARCHAR(255),
     CONSTRAINT pk_device PRIMARY KEY (id),
     FOREIGN KEY (room_id) REFERENCES room (id),
-    FOREIGN KEY (id) REFERENCES device(id)
+    FOREIGN KEY (id) REFERENCES device (id)
 );
 
 CREATE TABLE conditioner
@@ -81,15 +81,15 @@ CREATE TABLE conditioner
     FOREIGN KEY (id) REFERENCES device(id)
 );
 
-CREATE TABLE light_bulb
+CREATE TABLE lightbulb
 (
-    id         VARCHAR(255)        NOT NULL,
+    id         VARCHAR(255) NOT NULL,
     brightness INTEGER,
     colortemp  INTEGER,
     room_id    VARCHAR(255),
     CONSTRAINT pk_device PRIMARY KEY (id),
     FOREIGN KEY (room_id) REFERENCES room (id),
-    FOREIGN KEY (id) REFERENCES device(id)
+    FOREIGN KEY (id) REFERENCES device (id)
 );
 
 CREATE TABLE speaker
