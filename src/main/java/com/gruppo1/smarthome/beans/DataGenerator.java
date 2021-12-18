@@ -1,10 +1,10 @@
-package com.gruppo1.smarthome.model;
+package com.gruppo1.smarthome.beans;
 
 import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.AddOperationImpl;
 import com.gruppo1.smarthome.command.impl.GetOperationImpl;
-import com.gruppo1.smarthome.model.device.*;
+import com.gruppo1.smarthome.model.*;
 import com.gruppo1.smarthome.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,17 +84,17 @@ public class DataGenerator {
         CrudOperation getRoomOperation = new GetOperationImpl(roomRepo);
         final List<Room> rooms = (List<Room>) (List<?>) getRoomOperation.execute();
         //TODO: How to manage the time (alarm clock)?
-        devices.add(new AlarmClock("Spongebob block", "AlarmClock", "7:00 AM", "Workday", "Rain drops"));
-        devices.add(new Conditioner("Samsung air", "Conditioner", 20, "Default"));
-        devices.add(new Conditioner("Dyson", "Conditioner", 30, "Sun"));
-        devices.add(new LightBulb("Desk lamp", "LightBulb", 50, "Normal"));
-        devices.add(new LightBulb("Studio lights", "LightBulb", 75, "Cold"));
-        devices.add(new LightBulb("Bedroom 1 ambient", "LightBulb", 35, "Warm"));
-        devices.add(new LightBulb("Living rgb", "LightBulb", 65, "Variable"));
-        devices.add(new Speaker("Soundbar", "Speaker", 100, "Bose", "SCS-2021"));
-        devices.add(new Speaker("Woofer kit", "Speaker", 20, "Aiwa", "XR-76"));
-        devices.add(new Television("Tv living", "Television", "Samsung", "TGKSLS09", 15, 0));
-        devices.add(new Television("Tv kitchen", "Television", "LG", "TGKSLS09", 30, 8));
+        devices.add(new AlarmClock("Spongebob block", "Alarm clock", false, "7:00 AM", "Workday", "Rain drops"));
+        devices.add(new Conditioner("Samsung air", "Conditioner", true, 20, "Default"));
+        devices.add(new Conditioner("Dyson", "Conditioner", true, 30, "Sun"));
+        devices.add(new LightBulb("Desk lamp", "Lightbulb", false, 50, "Normal"));
+        devices.add(new LightBulb("Studio lights", "Lightbulb", false, 75, "Cold"));
+        devices.add(new LightBulb("Bedroom 1 ambient", "Lightbulb", false, 35, "Warm"));
+        devices.add(new LightBulb("Living rgb", "Lightbulb", false, 65, "Variable"));
+        devices.add(new Speaker("Soundbar", "Speaker", false, 100, "Bose", "SCS-2021"));
+        devices.add(new Speaker("Woofer kit", "Speaker", false, 20, "Aiwa", "XR-76"));
+        devices.add(new Television("Tv living", "Television", false, "Samsung", "TGKSLS09", 15, 0));
+        devices.add(new Television("Tv kitchen", "Television", false, "LG", "TGKSLS09", 30, 8));
         // save a few devices
         devices.forEach(device -> {
             device.setRoom(rooms.get(rand.nextInt(rooms.size())));

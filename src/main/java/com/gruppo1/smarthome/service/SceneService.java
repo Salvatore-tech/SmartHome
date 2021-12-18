@@ -2,16 +2,13 @@ package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.Condition;
-import com.gruppo1.smarthome.model.Scene;
-import com.gruppo1.smarthome.model.SmartHomeItem;
-import com.gruppo1.smarthome.model.device.Device;
+import com.gruppo1.smarthome.model.*;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.SceneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +70,7 @@ public class SceneService {
     public Integer deleteScene(String sceneName) {
         CrudOperation deleteSceneOperation = new DeleteOperationImpl(sceneRepo);
         CrudOperation getSceneOperation = new GetByNameOperationImpl(sceneRepo);
-        Scene scene = (Scene) getSceneOperation.execute(sceneName);
+        Scene scene = getSceneOperation.execute(sceneName);
         if (isPresent(scene)) {
             mementoCareTaker.push(deleteSceneOperation, scene.createMemento());
             return deleteSceneOperation.execute(scene);

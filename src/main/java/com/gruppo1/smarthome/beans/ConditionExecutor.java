@@ -1,13 +1,13 @@
 package com.gruppo1.smarthome.beans;
 
-import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
-import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;

@@ -2,66 +2,38 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
-import com.gruppo1.smarthome.model.device.Device;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
 public class Room extends SmartHomeItem implements Serializable {
 
     @JsonIgnore
-    @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = false)
-    private String id;
-
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private List<Device> devices;
 
-    public Room() {}
+    public Room() {
+    }
 
     public Room(String name) {
         this.name = name;
-    }
-
-    public String getId(){
-        return id;
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Memento createMemento() {
-        return new MementoRoom();
     }
 
     public List<Device> getDevices() {
         return this.devices;
     }
 
-    public void addDevice(Device device) {
-        this.devices.add(device);
+    public void addDevice(List<Device> devices) {
+        if (Objects.isNull(devices) || devices.isEmpty())
+            return;
+        devices.forEach(device -> this.devices.add(device));
     }
 
     public void removeDevice(Device device) {
@@ -75,23 +47,33 @@ public class Room extends SmartHomeItem implements Serializable {
                 '}';
     }
 
+    @Override
+    public Memento createMemento() {
+        return new MementoRoom(id, name, devices);
+    }
+
+    @Override
+    public SmartHomeItem restore(Memento memento) {
+        MementoRoom mementoRoom = (MementoRoom) memento;
+        Room room = new Room();
+        room.id = mementoRoom.getId();
+        room.name = mementoRoom.getName();
+        room.devices = mementoRoom.devices;
+        return room;
+    }
 
     class MementoRoom extends Memento {
 
-        private String memId;
-        private String memName;
-        private List<Device> memDevices;
+        private List<Device> devices;
 
         public MementoRoom() {
-            this.memId = id;
-            this.memName = name;
-            this.memDevices = devices;
+            // do not remove
         }
 
-        @Override
-        public String getName() {
-            return memName;
+        public MementoRoom(String id, String name, List<Device> devices) {
+            this.id = id;
+            this.name = name;
+            this.devices = devices;
         }
-
     }
 }

@@ -1,6 +1,6 @@
 package com.gruppo1.smarthome;
 
-import com.gruppo1.smarthome.model.DataGenerator;
+import com.gruppo1.smarthome.beans.DataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

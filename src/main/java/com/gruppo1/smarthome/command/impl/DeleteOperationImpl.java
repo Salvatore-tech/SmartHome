@@ -15,6 +15,13 @@ public class DeleteOperationImpl implements CrudOperation {
     }
 
     @Override
+    public Integer execute(String homeItemName) {
+        if (Objects.nonNull(repository))
+            return repository.deleteByName(homeItemName);
+        return 0;
+    }
+
+    @Override
     public Integer execute(SmartHomeItem homeItem) {
         if (Objects.nonNull(repository))
             return repository.deleteByName(homeItem.getName());

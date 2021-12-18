@@ -2,23 +2,17 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 public class Scene extends SmartHomeItem implements Serializable {
 
-    @JsonIgnore
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = false)
-    private String id;
-    @Column(nullable = false, unique = true)
-    private String name;
     @Column(nullable = false)
     private Boolean status;
     private String period;
@@ -26,7 +20,8 @@ public class Scene extends SmartHomeItem implements Serializable {
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
     private List<Condition> conditions;
 
-    public Scene() {}
+    public Scene() {
+    }
 
     public Scene(String name, Boolean status, String period) {
         this.name = name;
@@ -50,11 +45,6 @@ public class Scene extends SmartHomeItem implements Serializable {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Memento createMemento() {
-        return new MementoScene();
     }
 
     public Boolean getStatus() {
@@ -94,25 +84,34 @@ public class Scene extends SmartHomeItem implements Serializable {
                 '}';
     }
 
+    @Override
+    public Memento createMemento() {
+        return new MementoScene(id, name, status, period, conditions);
+    }
+
+    @Override
+    public SmartHomeItem restore(Memento memento) {
+        Scene scene = new Scene();
+        MementoScene mementoScene = (MementoScene) memento;
+        scene.id = mementoScene.getId();
+        scene.name = mementoScene.getName();
+        scene.status = mementoScene.status;
+        scene.period = mementoScene.period;
+        scene.conditions = mementoScene.conditions;
+        return scene;
+    }
+
     class MementoScene extends Memento {
-        private String memId;
-        private String memName;
-        private Boolean memStatus;
-        private String memPeriod;
-        private List<Condition> memConditions;
+        private final Boolean status;
+        private final String period;
+        private final List<Condition> conditions;
 
-
-        public MementoScene() {
-            this.memId = id;
-            this.memName = name;
-            this.memStatus = status;
-            this.memPeriod = period;
-            this.memConditions = conditions;
-        }
-
-        @Override
-        public String getName() {
-            return memName;
+        public MementoScene(String id, String name, Boolean status, String period, List<Condition> conditions) {
+            this.id = id;
+            this.name = name;
+            this.status = status;
+            this.period = period;
+            this.conditions = conditions;
         }
     }
 }

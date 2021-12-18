@@ -3,20 +3,16 @@ package com.gruppo1.smarthome.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.memento.Memento;
-import com.gruppo1.smarthome.model.device.Device;
-import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 public class Condition extends SmartHomeItem implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(nullable = false, updatable = false)
-    private String id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date activationDate;
     private Integer threshold;
@@ -32,10 +28,7 @@ public class Condition extends SmartHomeItem implements Serializable {
     private Scene scene;
 
     public Condition() {
-    }
-
-    public Condition(String name) {
-        this.name = name;
+        // do not remove
     }
 
     public Condition(String name, Actions action, Date activationDate, Integer threshold, Device device, Scene scene) {
@@ -61,21 +54,6 @@ public class Condition extends SmartHomeItem implements Serializable {
 
     public void setThreshold(Integer threshold) {
         this.threshold = threshold;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Memento createMemento() {
-        return null;
     }
 
     public Device getDevice() {
@@ -114,30 +92,40 @@ public class Condition extends SmartHomeItem implements Serializable {
                 '}';
     }
 
-    private class MementoCondition extends Memento {
+    @Override
+    public Memento createMemento() {
+        return new MementoCondition(id, name, scene, device, action, threshold, activationDate);
+    }
 
-        private String memId;
-        private String memName;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-        private Date memActivationDate;
-        private Integer memThreshold;
-        private Actions memAction;
-        private Device memDevice;
-        private Scene memScene;
+    @Override
+    public SmartHomeItem restore(Memento memento) {
+        Condition condition = new Condition();
+        MementoCondition mementoCondition = (MementoCondition) memento;
+        condition.id = mementoCondition.getId(); // TODO
+        condition.name = mementoCondition.getName(); // TODO
+        condition.scene = mementoCondition.scene;
+        condition.device = mementoCondition.device;
+        condition.action = mementoCondition.action;
+        condition.threshold = mementoCondition.threshold;
+        condition.activationDate = mementoCondition.activationDate;
+        return condition;
+    }
 
-        public MementoCondition() {
-            this.memId = id;
-            this.memName = name;
-            this.memActivationDate = activationDate;
-            this.memThreshold = threshold;
-            this.memAction = action;
-            this.memDevice = device;
-            this.memScene = scene;
-        }
+    class MementoCondition extends Memento {
+        private final Scene scene;
+        private final Device device;
+        private final Actions action;
+        private final Integer threshold;
+        private final Date activationDate;
 
-        @Override
-        public String getName() {
-            return null;
+        public MementoCondition(String id, String name, Scene scene, Device device, Actions action, Integer threshold, Date activationDate) {
+            this.id = id;
+            this.name = name;
+            this.scene = scene;
+            this.device = device;
+            this.action = action;
+            this.threshold = threshold;
+            this.activationDate = activationDate;
         }
     }
 }

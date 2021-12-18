@@ -3,12 +3,7 @@ package com.gruppo1.smarthome.service;
 import com.gruppo1.smarthome.beans.DeviceFactory;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.MementoCareTaker;
-import com.gruppo1.smarthome.model.Condition;
-import com.gruppo1.smarthome.model.Room;
-import com.gruppo1.smarthome.model.Scene;
-import com.gruppo1.smarthome.model.SmartHomeItem;
-import com.gruppo1.smarthome.model.device.Device;
+import com.gruppo1.smarthome.model.*;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.RoomRepo;
@@ -85,12 +80,12 @@ public class DeviceService {
 
         Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate);
         if (validateUpdate(deviceJson, oldDevice)) {
-            ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(oldDevice.getType().toLowerCase());
-            converter.convert(deviceJson, oldDevice);
-            Room room = validateRoom(deviceJson);
             mementoCareTaker.push(operationToPerform, oldDevice.createMemento()); // TODO SS
+            ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(oldDevice.getType().toLowerCase());
+            converter.convert(deviceJson, oldDevice); // Aggiorna i valori
+            Room room = validateRoom(deviceJson); // Setta la room
             oldDevice.setRoom(room);
-            return (Device) operationToPerform.execute(oldDevice);
+            return operationToPerform.execute(oldDevice);
         }
         return null;
     }

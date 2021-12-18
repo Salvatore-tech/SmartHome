@@ -1,13 +1,9 @@
 package com.gruppo1.smarthome.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 
@@ -23,7 +19,8 @@ public class Profile extends SmartHomeItem implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    public Profile() {}
+    public Profile() {
+    }
 
     public Profile(String email, String name, String surname, String password) {
         this.email = email;
@@ -58,11 +55,6 @@ public class Profile extends SmartHomeItem implements Serializable {
         this.name = name;
     }
 
-    @Override
-    public Memento createMemento() {
-        return null;
-    }
-
     public String getSurname() {
         return surname;
     }
@@ -88,32 +80,34 @@ public class Profile extends SmartHomeItem implements Serializable {
                 '}';
     }
 
-    class MementoProfile extends Memento {
-        private String memId;
-        private String memEmail;
-        private String memName;
-        private String memSurname;
-        private String memPassword;
-
-
-        public MementoProfile() {
-            this.memId = id;
-            this.memEmail = email;
-            this.memName = name;
-            this.memSurname = surname;
-            this.memPassword = password;
-        }
-
-        @Override
-        public String getName() {
-            return memName;
-        }
-
-        @Override
-        public void setName(String name) {
-
-        }
+    @Override
+    public Memento createMemento() {
+        return new MementoProfile(id, name, surname, email, password);
     }
 
+    @Override
+    public SmartHomeItem restore(Memento memento) {
+        Profile profile = new Profile();
+        MementoProfile mementoProfile = (MementoProfile) memento;
+        profile.id = mementoProfile.getId();
+        profile.name = mementoProfile.getName();
+        profile.surname = mementoProfile.surname;
+        profile.email = mementoProfile.email;
+        profile.password = mementoProfile.password;
+        return profile;
+    }
 
+    class MementoProfile extends Memento {
+        private final String email;
+        private final String surname;
+        private final String password;
+
+        public MementoProfile(String id, String name, String surname, String email, String password) {
+            this.id = id;
+            this.name = name;
+            this.surname = surname;
+            this.email = email;
+            this.password = password;
+        }
+    }
 }

@@ -2,10 +2,10 @@ package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.MementoCareTaker;
+import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.MementoCareTaker;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.model.SmartHomeItem;
-import com.gruppo1.smarthome.model.device.Device;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,20 +65,25 @@ public class RoomService {
         return (Room) operationToPerform.execute(oldRoom);
     }
 
-    public SmartHomeItem deleteRoom(String roomName) {
+    public Integer deleteRoom(String roomName) {
         CrudOperation deleteOperation = new DeleteOperationImpl(roomRepo);
-        CrudOperation getOperation = new GetOperationImpl(roomRepo);
+        CrudOperation getDevicesOperation = new GetDevicesByRoomName(deviceRepo);
+        CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
         if (!isUpdatable(roomName))
             return null;
 
-//        mementoCareTaker.push(deleteOperation, roo); // TODO SS!!!
+        Room roomToDelete = getRoomOperation.execute(roomName);
+        if (Objects.isNull(roomToDelete))
+            return null;
 
-        List<Device> devices = (List<Device>) (List<?>) getOperation.execute(roomName);
+        mementoCareTaker.push(deleteOperation, roomToDelete.createMemento());
+
+        List<Device> devices = getDevicesOperation.execute(roomName);
         if (Objects.nonNull(devices)) {
-            Room defaultRoom = (Room) getOperation.execute("Default");
+            Room defaultRoom = (Room) getRoomOperation.execute("Default");
             devices.forEach(device -> device.setRoom(defaultRoom));
         }
-        return deleteOperation.execute(roomName);
+        return deleteOperation.execute(roomToDelete);
     }
 
 

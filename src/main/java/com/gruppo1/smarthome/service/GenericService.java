@@ -1,6 +1,6 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.memento.MementoCareTaker;
+import com.gruppo1.smarthome.model.MementoCareTaker;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

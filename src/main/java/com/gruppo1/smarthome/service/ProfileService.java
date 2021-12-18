@@ -2,7 +2,7 @@ package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.memento.MementoCareTaker;
+import com.gruppo1.smarthome.model.MementoCareTaker;
 import com.gruppo1.smarthome.model.Profile;
 import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.repository.ProfileRepo;
@@ -62,7 +62,7 @@ public class ProfileService {
     public SmartHomeItem deleteProfile(String profileName) {
         CrudOperation deleteOperation = new DeleteOperationImpl(profileRepo);
         CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
-        Profile profile = (Profile) getOperation.execute(profileName);
+        Profile profile = getOperation.execute(profileName);
         if (isPresent(profile)) {
             mementoCareTaker.push(deleteOperation, null); // TODO SS
             return deleteOperation.execute(profileName);
