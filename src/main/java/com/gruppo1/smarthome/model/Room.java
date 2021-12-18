@@ -3,16 +3,13 @@ package com.gruppo1.smarthome.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-
 @Entity
+@Table(name = "room")
 public class Room extends SmartHomeItem implements Serializable {
 
     @JsonIgnore

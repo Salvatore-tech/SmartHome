@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "device")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Device extends SmartHomeItem implements Serializable {
 

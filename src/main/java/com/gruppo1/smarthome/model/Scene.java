@@ -3,14 +3,12 @@ package com.gruppo1.smarthome.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "scene")
 public class Scene extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)

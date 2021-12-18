@@ -4,10 +4,12 @@ import com.gruppo1.smarthome.memento.Memento;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 
 @Entity
+@Table(name = "profile")
 public class Profile extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)

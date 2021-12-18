@@ -5,9 +5,11 @@ import com.gruppo1.smarthome.memento.MementoDevice;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "speaker")
 public class Speaker extends Device {
 
     private Integer power;

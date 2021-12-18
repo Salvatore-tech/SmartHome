@@ -5,10 +5,13 @@ import com.gruppo1.smarthome.memento.MementoDevice;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "conditioner")
 public class Conditioner extends Device {
+
     private Integer temperature;
     private String settings;
 

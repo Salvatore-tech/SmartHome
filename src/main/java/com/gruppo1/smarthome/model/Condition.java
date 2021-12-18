@@ -7,10 +7,12 @@ import com.gruppo1.smarthome.memento.Memento;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name = "condition")
 public class Condition extends SmartHomeItem implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
