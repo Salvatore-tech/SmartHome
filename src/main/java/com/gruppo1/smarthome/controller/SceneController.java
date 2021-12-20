@@ -17,7 +17,7 @@ import java.util.Objects;
 
 
 @RestController
-@Api(value = "Scene", description = "Rest API for Scene", tags = {"Room"})
+@Api(value = "Scene", description = "Rest API to manage the scenes", tags = {"Scene"})
 @RequestMapping("/scene")
 public class SceneController {
     private final SceneService sceneService;
@@ -29,7 +29,7 @@ public class SceneController {
 
     @GetMapping("/all")
     @ApiOperation(value = "List all scenes", tags = {"Scene"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scenes"),
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "List of scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<String> getAllScenes() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -38,10 +38,10 @@ public class SceneController {
     }
 
     @GetMapping("/find/{name}")
-    @ApiOperation(value = "Find scene by ID", tags = {"Scene"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return scene"),
+    @ApiOperation(value = "Find scene by its name", tags = {"Scene"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene data"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<Scene> getSceneById(@PathVariable("name") String name) {
+    public ResponseEntity<Scene> getSceneById(@ApiParam(value = "Name of a valid scene", required = true) @PathVariable("name") String name) {
         Scene scene = sceneService.findSceneByName(name);
         return Objects.nonNull(scene) ? new ResponseEntity<>(scene, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -62,7 +62,7 @@ public class SceneController {
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Scene Added"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Scene> addScene(@RequestBody Scene scene) {
+    public ResponseEntity<Scene> addScene(@ApiParam(value = "Scene data", required = true) @RequestBody Scene scene) {
         Scene newScene = sceneService.addScene(scene);
         return Objects.nonNull(newScene) ? new ResponseEntity<>(newScene, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -72,26 +72,26 @@ public class SceneController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Scene deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<?> deleteScene(@PathVariable("name") String name) {
+    public ResponseEntity<?> deleteScene(@ApiParam(value = "Name of a valid scene", required = true) @PathVariable("name") String name) {
         return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @ApiOperation(value = "Add device in scene", tags = {"Scene"})
+    @ApiOperation(value = "Add device to the scene", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device Added"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @PostMapping("/addDevice/{sceneName}/{deviceName}")
-    public ResponseEntity<Condition> addDevice(@PathVariable("sceneName") String sceneName,
-                                               @PathVariable("deviceName") String deviceName,
-                                               @RequestBody Condition condition) {
+    public ResponseEntity<Condition> addDevice(@ApiParam(value = "Name of a valid scene", required = true) @PathVariable("sceneName") String sceneName,
+                                               @ApiParam(value = "Name of a valid device", required = true) @PathVariable("deviceName") String deviceName,
+                                               @ApiParam(value = "Automation's condition", required = true) @RequestBody Condition condition) {
         Condition newCondition = sceneService.addDeviceToScene(sceneName, deviceName, condition);
         return Objects.nonNull(newCondition) ?
                 new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @ApiOperation(value = "Remove device in scene", tags = {"Scene"})
+    @ApiOperation(value = "Remove device from the scene", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device removed"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -129,13 +129,13 @@ public class SceneController {
     }
 
     @DeleteMapping("/deleteCondition/{sceneName}/{conditionName}")
-    @ApiOperation(value = "Delete condition by scene name and condition name", tags = {"Scene"})
+    @ApiOperation(value = "Delete automation's condition", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Condition deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<?> deleteCondition(@ApiParam(value = "Scene name", required = true)
+    public ResponseEntity<?> deleteCondition(@ApiParam(value = "Name of a valid scene", required = true)
                                              @PathVariable("sceneName") String sceneName,
-                                             @ApiParam(value = "Condition name", required = true)
+                                             @ApiParam(value = "Name of a valid automation's condition", required = true)
                                              @PathVariable("conditionName") String conditionName) {
         return sceneService.deleteConditionsInScene(sceneName, conditionName).equals(1) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);

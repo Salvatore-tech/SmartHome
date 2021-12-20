@@ -103,7 +103,7 @@ public class RoomController {
                 new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/deleteDevice/{deviceName}")
+    @DeleteMapping("/deleteDevice/{roomName}/{deviceName}")
     @ApiOperation(value = "Delete device from a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),

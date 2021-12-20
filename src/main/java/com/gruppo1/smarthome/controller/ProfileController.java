@@ -3,7 +3,6 @@ package com.gruppo1.smarthome.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Profile;
-import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.service.ProfileService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 
 @RestController
-@Api(value = "Profile", description = "Rest API for Profile", tags = {"Profile"})
+@Api(value = "Profile", description = "Rest API to manage the profiles", tags = {"Profile"})
 @RequestMapping("/profile")
 public class ProfileController {
     private final ProfileService profileService;
@@ -28,8 +27,8 @@ public class ProfileController {
 
     @GetMapping("/all")
     @ApiOperation(value = "Profile", tags = {"Profile"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "return profile"),
-            @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "List of profiles"),
+            @ApiResponse(code = 404, message = "Not Found - the user has not added a profile yet")})
     public ResponseEntity<String> getAllProfile() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Profile> profiles = profileService.findAllProfile();
@@ -38,10 +37,10 @@ public class ProfileController {
 
     @GetMapping("/find/{name}")
     @ApiOperation(value = "Find profile", tags = {"Profile"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Return profile"),
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Profile data"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<SmartHomeItem> getProfileByName(@ApiParam(value = "Profile Name", required = true)
-                                                          @PathVariable("name") String name) {
+    public ResponseEntity<Profile> getProfileByName(@ApiParam(value = "Name of a valid profile", required = true)
+                                                    @PathVariable("name") String name) {
         Profile profile = profileService.findProfileByName(name);
         return Objects.nonNull(profile) ? new ResponseEntity(profile, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -51,7 +50,8 @@ public class ProfileController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Profile updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Profile> updateDevice(@PathVariable("name") String name, @RequestBody Profile updatedProfile) {
+    public ResponseEntity<Profile> updateDevice(@ApiParam(value = "Name of a valid profile", required = true) @PathVariable("name") String name,
+                                                @ApiParam(value = "Updated data for the profile", required = true) @RequestBody Profile updatedProfile) {
 
         Profile result = profileService.updateProfile(name, updatedProfile);
 
@@ -65,7 +65,7 @@ public class ProfileController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Profile> addProfile(@RequestBody Profile profile) {
+    public ResponseEntity<Profile> addProfile(@ApiParam(value = "Profile data to add", required = true) @RequestBody Profile profile) {
         Profile newProfile = profileService.addProfile(profile);
         return Objects.nonNull(newProfile) ? new ResponseEntity<>(newProfile, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -75,7 +75,7 @@ public class ProfileController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Profile deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<?> deleteProfile(@ApiParam(value = "Profile name", required = true)
+    public ResponseEntity<?> deleteProfile(@ApiParam(value = "Name of a valid profile", required = true)
                                            @PathVariable("name") String name) {
         return profileService.deleteProfile(name).equals(1) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);

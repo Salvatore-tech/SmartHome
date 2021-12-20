@@ -80,7 +80,7 @@ public class DeviceService {
 
         Device oldDevice = getByNameOperation.execute(deviceNameToUpdate);
         if (validateUpdate(deviceJson, oldDevice)) {
-            mementoCareTaker.push(operationToPerform, oldDevice.createMemento()); // TODO SS
+            mementoCareTaker.push(operationToPerform, oldDevice.createMemento());
             ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(oldDevice.getType().toLowerCase());
             converter.convert(deviceJson, oldDevice); // Aggiorna i valori
             Room room = validateRoom(deviceJson); // Setta la room

@@ -100,6 +100,9 @@ public class RoomService {
         return null;
     }
 
+    // Bedroom -> A TODO
+    // Se A non è in Bedroom => non lo elimina
+
     public Device deleteDeviceFromRoom(String deviceName) {
         CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
