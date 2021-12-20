@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,10 +32,10 @@ public class RoomService {
 
     public Room addRoom(Room room) {
         CrudOperation addOperation = new AddOperationImpl(roomRepo);
-        CrudOperation getOperation = new GetOperationImpl(roomRepo);
-        if (!isPresent((Room) getOperation.execute(room.getName()))) {
+        CrudOperation getOperation = new GetByNameOperationImpl(roomRepo);
+        if (!isPresent(getOperation.execute(room.getName()))) {
             mementoCareTaker.push(addOperation, room.createMemento());
-            return (Room) addOperation.execute(room);
+            return addOperation.execute(room);
         }
         return null;
     }
@@ -48,7 +49,7 @@ public class RoomService {
     public Room findRoomByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(roomRepo);
         mementoCareTaker.push(operationToPerform, null); // TODO SS
-        return (Room) operationToPerform.execute(name);
+        return operationToPerform.execute(name);
     }
 
     public Room updateRoom(String roomNameToUpdate, Room updatedRoom) {
@@ -57,12 +58,12 @@ public class RoomService {
             return null;
         }
         CrudOperation getByNameOperation = new GetByNameOperationImpl(roomRepo);
-        Room oldRoom = (Room) getByNameOperation.execute(roomNameToUpdate);
+        Room oldRoom = getByNameOperation.execute(roomNameToUpdate);
         if (!validateUpdate(oldRoom, updatedRoom))
             return null;
         mementoCareTaker.push(operationToPerform, oldRoom.createMemento());
         oldRoom.setName(updatedRoom.getName());
-        return (Room) operationToPerform.execute(oldRoom);
+        return operationToPerform.execute(oldRoom);
     }
 
     public Integer deleteRoom(String roomName) {
@@ -70,17 +71,17 @@ public class RoomService {
         CrudOperation getDevicesOperation = new GetDevicesByRoomName(deviceRepo);
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
         if (!isUpdatable(roomName))
-            return null;
+            return 0;
 
         Room roomToDelete = getRoomOperation.execute(roomName);
         if (Objects.isNull(roomToDelete))
-            return null;
+            return 0;
 
         mementoCareTaker.push(deleteOperation, roomToDelete.createMemento());
 
         List<Device> devices = getDevicesOperation.execute(roomName);
         if (Objects.nonNull(devices)) {
-            Room defaultRoom = (Room) getRoomOperation.execute("Default");
+            Room defaultRoom = getRoomOperation.execute("Default");
             devices.forEach(device -> device.setRoom(defaultRoom));
         }
         return deleteOperation.execute(roomToDelete);
@@ -90,34 +91,34 @@ public class RoomService {
     public Device addDeviceToRoom(String deviceName, String roomName) {
         CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
-        Device device = (Device) getDeviceOperation.execute(deviceName);
-        Room room = (Room) getRoomOperation.execute(roomName);
+        Device device = getDeviceOperation.execute(deviceName);
+        Room room = getRoomOperation.execute(roomName);
         if (validateDeviceAndRoom(device, room)) {
             device.setRoom(room);
+            return device;
         }
-        return device;
+        return null;
     }
 
-    public Device deleteDeviceFromRoom(String roomName, String deviceName) {
+    public Device deleteDeviceFromRoom(String deviceName) {
         CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
-        Device device = (Device) getDeviceOperation.execute(deviceName);
-        Room room = (Room) getRoomOperation.execute(roomName);
-        if (validateDeviceAndRoom(device, room)) {
-            Room defaultRoom = (Room) getRoomOperation.execute("Default");
+        Device device = getDeviceOperation.execute(deviceName);
+        if (isPresent(device)) {
+            Room defaultRoom = getRoomOperation.execute("Default");
             device.setRoom(defaultRoom);
         }
         return device;
     }
 
     public List<Device> findDevicesInRoom(String roomName) {
-        CrudOperation getRoomOperation = new GetByNameOperationImpl(deviceRepo);
+        CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
         CrudOperation getDevicesInRoom = new GetDevicesByRoomName(deviceRepo);
-        List<Device> devices = null; // = new ArrayList<>();
+        List<Device> devices = new ArrayList<>();
 
-        Room room = (Room) getRoomOperation.execute(roomName);
+        Room room = getRoomOperation.execute(roomName);
         if (isPresent(room)) {
-            devices = (List<Device>) (List<?>) getDevicesInRoom.execute(roomName);
+            devices = getDevicesInRoom.execute(roomName);
         }
         return devices;
     }
@@ -138,7 +139,7 @@ public class RoomService {
         if (!isPresent(oldRoom)) // No room to update
             return false;
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
-        Room persistentRoom = (Room) getRoomOperation.execute(updatedRoom.getName());
+        Room persistentRoom = getRoomOperation.execute(updatedRoom.getName());
         return !isPresent(persistentRoom) || persistentRoom.getName().equalsIgnoreCase(updatedRoom.getName()); // Check if the new name violates unique constraint
     }
 

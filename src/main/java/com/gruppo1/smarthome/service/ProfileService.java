@@ -30,7 +30,7 @@ public class ProfileService {
         CrudOperation getOperation = new GetOperationImpl(profileRepo);
         mementoCareTaker.push(addOperation, profile.createMemento());
         if (!isPresent(getOperation.execute(profile.getName()))) {
-            return (Profile) addOperation.execute(profile);
+            return addOperation.execute(profile);
         }
         return null;
     }
@@ -44,30 +44,30 @@ public class ProfileService {
     public Profile findProfileByName(String name) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(profileRepo);
         mementoCareTaker.push(operationToPerform, null); // TODO SS
-        return (Profile) operationToPerform.execute(name);
+        return operationToPerform.execute(name);
     }
 
     public Profile updateProfile(String profileNameToUpdate, Profile updatedProfile) {
         CrudOperation updateOperation = new UpdateOperationImpl(profileRepo);
-        CrudOperation getOperation = new GetOperationImpl(profileRepo);
-        Profile oldProfile = (Profile) getOperation.execute(profileNameToUpdate);
+        CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
+        Profile oldProfile = getOperation.execute(profileNameToUpdate);
         if (validateUpdate(oldProfile, updatedProfile)) {
             mementoCareTaker.push(updateOperation, oldProfile.createMemento());
             setProfile(oldProfile, updatedProfile);
-            return (Profile) updateOperation.execute(oldProfile);
+            return updateOperation.execute(oldProfile);
         }
         return null;
     }
 
-    public SmartHomeItem deleteProfile(String profileName) {
+    public Integer deleteProfile(String profileName) {
         CrudOperation deleteOperation = new DeleteOperationImpl(profileRepo);
         CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
         Profile profile = getOperation.execute(profileName);
         if (isPresent(profile)) {
-            mementoCareTaker.push(deleteOperation, null); // TODO SS
+            mementoCareTaker.push(deleteOperation, profile.createMemento()); // TODO SS
             return deleteOperation.execute(profileName);
         }
-        return null;
+        return 0;
     }
 
     private boolean isPresent(SmartHomeItem item) {
@@ -78,7 +78,7 @@ public class ProfileService {
         CrudOperation getOperation = new GetOperationImpl(profileRepo);
         if (!isPresent(oldProfile)) // No profile to update
             return false;
-        Profile persistentProfile = (Profile) getOperation.execute(updatedProfile.getName());
+        Profile persistentProfile = getOperation.execute(updatedProfile.getName());
         return !isPresent(persistentProfile) || persistentProfile.getName().equalsIgnoreCase(updatedProfile.getName()); // Check if the new name violates unique constraint
     }
 

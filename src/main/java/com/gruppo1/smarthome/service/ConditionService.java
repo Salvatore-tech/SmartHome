@@ -31,9 +31,9 @@ public class ConditionService {
     public Condition addCondition(Condition condition) {
         CrudOperation addConditionOperation = new AddOperationImpl(conditionRepo);
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
-        if (!isPresent((Condition) getConditionOperation.execute(condition.getName()))) {
+        if (!isPresent(getConditionOperation.execute(condition.getName()))) {
             mementoCareTaker.push(addConditionOperation, condition.createMemento());
-            return (Condition) addConditionOperation.execute(condition);
+            return addConditionOperation.execute(condition);
         }
         return null;
     }
@@ -44,21 +44,21 @@ public class ConditionService {
         return (List<Condition>) (List<?>) getAllConditionsOperation.execute();
     }
 
-    public Condition findConditionsByName(String name) {
+    public Condition findConditionByName(String name) {
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
-        Condition result = (Condition) getConditionOperation.execute(name);
+        Condition result = getConditionOperation.execute(name);
         mementoCareTaker.push(getConditionOperation, null); //TODO SS
         return result;
     }
 
-    public Condition deleteCondition(String conditionName) {
+    public Integer deleteCondition(String conditionName) {
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
         CrudOperation deleteConditionOperation = new DeleteOperationImpl(conditionRepo);
-        Condition condition = (Condition) getConditionOperation.execute(conditionName);
+        Condition condition = getConditionOperation.execute(conditionName);
         mementoCareTaker.push(deleteConditionOperation, condition.createMemento());
         if (isPresent(condition))
-            return (Condition) deleteConditionOperation.execute(condition);
-        return null;
+            return deleteConditionOperation.execute(condition);
+        return 0;
     }
 
     private boolean isPresent(SmartHomeItem item) {

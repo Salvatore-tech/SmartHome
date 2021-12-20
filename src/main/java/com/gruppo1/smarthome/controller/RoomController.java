@@ -103,15 +103,15 @@ public class RoomController {
                 new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/deleteDevice/{roomName}/{deviceName}")
+    @DeleteMapping("/deleteDevice/{deviceName}")
     @ApiOperation(value = "Delete device from a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Device deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
-        Device device = roomService.deleteDeviceFromRoom(roomName, deviceName);
+    public ResponseEntity<Device> deleteDevice(@PathVariable("deviceName") String deviceName) {
+        Device device = roomService.deleteDeviceFromRoom(deviceName);
         return Objects.nonNull(device) ?
                 new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

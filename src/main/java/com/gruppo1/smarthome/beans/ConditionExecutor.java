@@ -38,7 +38,7 @@ public class ConditionExecutor {
                     Date date = condition.getActivationDate();
                     Integer threshold = condition.getThreshold();
                     String period = scene.getPeriod();
-                    if (scene.getStatus()) {
+                    if (scene.getStatus() && device.getStatus()) {
                         long currentMillisecond = System.currentTimeMillis();
                         if(controlExecute(date, threshold, currentMillisecond)){
                             actionExecutor.execute(device, condition.getAction());
