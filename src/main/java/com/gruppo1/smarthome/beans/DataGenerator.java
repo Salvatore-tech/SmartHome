@@ -120,11 +120,6 @@ public class DataGenerator {
     @DependsOn({"generateDevices", "generateScenes"})
     public List<Condition> generateConditions(ConditionRepo conditionRepo, DeviceRepo deviceRepo, SceneRepo sceneRepo) {
         CrudOperation addConditionOperation = new AddOperationImpl(conditionRepo);
-        CrudOperation getDeviceOperation = new GetOperationImpl(deviceRepo);
-        CrudOperation getSceneOperation = new GetOperationImpl(sceneRepo);
-
-        final List<Device> devices = (List<Device>) (List<?>) getDeviceOperation.execute();
-        final List<Scene> scenes = (List<Scene>) (List<?>) getSceneOperation.execute();
         final Random rand = new Random();
 
         conditions.add(new Condition("SpongeBob block power on", Actions.POWER_ON, new Date(System.currentTimeMillis()+120000), rand.nextInt(30), devices.get(0), scenes.get(0)));

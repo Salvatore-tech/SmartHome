@@ -18,7 +18,6 @@ public class Condition extends SmartHomeItem implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date activationDate;
     private Integer threshold;
-    private String name;
     private Actions action;
 
     @ManyToOne
@@ -40,6 +39,16 @@ public class Condition extends SmartHomeItem implements Serializable {
         this.threshold = threshold;
         this.device = device;
         this.scene = scene;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getActivationDate() {

@@ -78,7 +78,7 @@ public class DeviceService {
         CrudOperation operationToPerform = new UpdateOperationImpl(deviceRepo);
         CrudOperation getByNameOperation = new GetByNameOperationImpl(deviceRepo);
 
-        Device oldDevice = (Device) getByNameOperation.execute(deviceNameToUpdate);
+        Device oldDevice = getByNameOperation.execute(deviceNameToUpdate);
         if (validateUpdate(deviceJson, oldDevice)) {
             mementoCareTaker.push(operationToPerform, oldDevice.createMemento()); // TODO SS
             ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(oldDevice.getType().toLowerCase());
@@ -105,12 +105,12 @@ public class DeviceService {
     public Condition addConditionByDeviceName(String deviceName, String sceneName, Condition condition) {
         CrudOperation getDevicesByNameOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getScenesByNameOperation = new GetByNameOperationImpl(sceneRepo);
-        List<SmartHomeItem> device = getDevicesByNameOperation.execute(deviceName);
-        List<SmartHomeItem> scene = getScenesByNameOperation.execute(sceneName);
-        Condition conditionToAdd = conditionService.findConditionsByName(condition.getName());
-        if (!device.isEmpty() && !scene.isEmpty() && !isPresent(conditionToAdd)) {
-            condition.setDevice((Device) device.get(0));
-            condition.setScene((Scene) scene.get(0));
+        Device device = getDevicesByNameOperation.execute(deviceName);
+        Scene scene = getScenesByNameOperation.execute(sceneName);
+        Condition conditionToAdd = conditionService.findConditionByName(condition.getName());
+        if (Objects.nonNull(device) && Objects.nonNull(scene) && !isPresent(conditionToAdd)) {
+            condition.setDevice((device));
+            condition.setScene(scene);
             return conditionService.addCondition(condition);
         }
         return null;
@@ -118,27 +118,24 @@ public class DeviceService {
 
     //TODO: TO FIX
     public List<Condition> findConditionsInDevice(String deviceName) {
-        CrudOperation operationToPerform = new GetByNameOperationImpl(conditionRepo);
+        CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
         List<Condition> conditions = new ArrayList<>();
-        Device device = (Device) operationToPerform.execute(deviceName);
+        Device device = operationToPerform.execute(deviceName);
         if (isPresent(device))
             conditions = device.getConditions();
 
         return conditions;
     }
 
-    public Condition deleteConditionsInDevice(String deviceName, String conditionName) {
-        CrudOperation getConditionsByDeviceNameOperation = new GetByNameOperationImpl(conditionRepo);
-
-
-        Device device = (Device) getConditionsByDeviceNameOperation.execute(deviceName);
-//        Device device = (Device) operationExecutor.execute(new GetByNameOperationImpl(deviceRepo), deviceName, this);
-        Condition condition = conditionService.findConditionsByName(conditionName);
+    public Integer deleteConditionsInDevice(String deviceName, String conditionName) {
+        CrudOperation operationToPerform  = new GetByNameOperationImpl(deviceRepo);
+        Device device = operationToPerform.execute(deviceName);
+        Condition condition = conditionService.findConditionByName(conditionName);
         if (isPresent(device) && isPresent(condition)) {
             if (device.equals(condition.getDevice()))
                 return conditionService.deleteCondition(conditionName);
         }
-        return null;
+        return 0;
     }
 
     private Boolean isPresent(SmartHomeItem item) {
@@ -154,12 +151,12 @@ public class DeviceService {
         CrudOperation operationToPerform = new GetByNameOperationImpl(roomRepo);
         Room room;
         if (deviceJson.has("room_name")) {
-            room = (Room) operationToPerform.execute(deviceJson.get("room_name").toString());
+            room = operationToPerform.execute(deviceJson.get("room_name").toString());
             if (!isPresent(room)) {
-                room = (Room) operationToPerform.execute("Default");
+                room = operationToPerform.execute("Default");
             }
         } else {
-            room = (Room) operationToPerform.execute("Default");
+            room = operationToPerform.execute("Default");
         }
         return room;
     }
@@ -171,7 +168,7 @@ public class DeviceService {
             return false;
         if (deviceJson.has("name")) {
             CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
-            Device deviceDB = (Device) operationToPerform.execute(deviceJson.get("name").toString());
+            Device deviceDB = operationToPerform.execute(deviceJson.get("name").toString());
             return !isPresent(deviceDB) || deviceDB.getName().equalsIgnoreCase(oldDevice.getName());
         }
         return true;
