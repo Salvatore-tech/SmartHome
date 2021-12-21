@@ -84,17 +84,17 @@ public class DataGenerator {
         CrudOperation getRoomOperation = new GetOperationImpl(roomRepo);
         final List<Room> rooms = (List<Room>) (List<?>) getRoomOperation.execute();
         //TODO: How to manage the time (alarm clock)?
-        devices.add(new AlarmClock("Spongebob block", "Alarm clock", false, "7:00 AM", "Workday", "Rain drops"));
-        devices.add(new Conditioner("Samsung air", "Conditioner", true, 20, "Default"));
+        devices.add(new AlarmClock("Spongebob_clock", "Alarmclock", false, "7:00 AM", "Workday", "Rain drops"));
+        devices.add(new Conditioner("Samsung_air", "Conditioner", true, 20, "Default"));
         devices.add(new Conditioner("Dyson", "Conditioner", true, 30, "Sun"));
-        devices.add(new LightBulb("Desk lamp", "Lightbulb", false, 50, "Normal"));
-        devices.add(new LightBulb("Studio lights", "Lightbulb", false, 75, "Cold"));
-        devices.add(new LightBulb("Bedroom 1 ambient", "Lightbulb", false, 35, "Warm"));
-        devices.add(new LightBulb("Living rgb", "Lightbulb", false, 65, "Variable"));
+        devices.add(new LightBulb("Desk_lamp", "Lightbulb", false, 50, "Normal"));
+        devices.add(new LightBulb("Studio_lights", "Lightbulb", false, 75, "Cold"));
+        devices.add(new LightBulb("Bedroom_1_ambient", "Lightbulb", false, 35, "Warm"));
+        devices.add(new LightBulb("Living_rgb", "Lightbulb", false, 65, "Variable"));
         devices.add(new Speaker("Soundbar", "Speaker", false, 100, "Bose", "SCS-2021"));
-        devices.add(new Speaker("Woofer kit", "Speaker", false, 20, "Aiwa", "XR-76"));
-        devices.add(new Television("Tv living", "Television", false, "Samsung", "TGKSLS09", 15, 0));
-        devices.add(new Television("Tv kitchen", "Television", false, "LG", "TGKSLS09", 30, 8));
+        devices.add(new Speaker("Woofer_kit", "Speaker", false, 20, "Aiwa", "XR-76"));
+        devices.add(new Television("Tv_living", "Television", false, "Samsung", "TGKSLS09", 15, 0));
+        devices.add(new Television("Tv_kitchen", "Television", false, "LG", "TGKSLS09", 30, 8));
         // save a few devices
         devices.forEach(device -> {
             device.setRoom(rooms.get(rand.nextInt(rooms.size())));
@@ -106,11 +106,11 @@ public class DataGenerator {
     @Bean("generateScenes")
     public List<Scene> generateScenes() {
         CrudOperation addSceneOperation = new AddOperationImpl(sceneRepo);
-        scenes.add(new Scene("Daily routine", true, "Daily"));
-        scenes.add(new Scene("Weekly routine", true, "Weekly"));
-        scenes.add(new Scene("Monthly routine", true, "Monthly"));
+        scenes.add(new Scene("Daily_routine", true, "Daily"));
+        scenes.add(new Scene("Weekly_routine", true, "Weekly"));
+        scenes.add(new Scene("Monthly_routine", true, "Monthly"));
         scenes.add(new Scene("Party", false, null));
-        scenes.add(new Scene("Favourite TV program", false, null));
+        scenes.add(new Scene("Favourite_TV_program", false, null));
         //save a few scenes
         scenes.forEach(addSceneOperation::execute);
         return scenes;
@@ -122,12 +122,12 @@ public class DataGenerator {
         CrudOperation addConditionOperation = new AddOperationImpl(conditionRepo);
         final Random rand = new Random();
 
-        conditions.add(new Condition("SpongeBob block power on", Actions.POWER_ON, new Date(System.currentTimeMillis()+120000), rand.nextInt(30), devices.get(0), scenes.get(0)));
-        conditions.add(new Condition("Samsung Air warmer", Actions.WARMER, new Date(System.currentTimeMillis()+240000), rand.nextInt(30), devices.get(1), scenes.get(1)));
-        conditions.add(new Condition("Desk lamp colder", Actions.COLDER, new Date(System.currentTimeMillis()+360000), rand.nextInt(30), devices.get(3), scenes.get(2)));
-        conditions.add(new Condition("Soundbar raise volume up", Actions.RAISE_VOLUME_UP, new Date(System.currentTimeMillis()+480000), rand.nextInt(30), devices.get(7), scenes.get(3)));
-        conditions.add(new Condition("Woofer kit lower volume down", Actions.LOWER_VOLUME_DOWN, new Date(System.currentTimeMillis()+600000), rand.nextInt(30), devices.get(5), scenes.get(1)));
-        conditions.add(new Condition("Tv living power on", Actions.POWER_ON, new Date(System.currentTimeMillis()+720000), rand.nextInt(30), devices.get(9), scenes.get(4)));
+        conditions.add(new Condition("SpongeBob_clock_power_on", Actions.POWER_ON, new Date(System.currentTimeMillis() + 120000), rand.nextInt(30), devices.get(0), scenes.get(0)));
+        conditions.add(new Condition("Samsung_Air_warmer", Actions.WARMER, new Date(System.currentTimeMillis() + 240000), rand.nextInt(30), devices.get(1), scenes.get(1)));
+        conditions.add(new Condition("Desk_lamp_colder", Actions.COLDER, new Date(System.currentTimeMillis() + 360000), rand.nextInt(30), devices.get(3), scenes.get(2)));
+        conditions.add(new Condition("Soundbar_raise_volume_up", Actions.RAISE_VOLUME_UP, new Date(System.currentTimeMillis() + 480000), rand.nextInt(30), devices.get(7), scenes.get(3)));
+        conditions.add(new Condition("Woofer_kit_lower_volume_down", Actions.LOWER_VOLUME_DOWN, new Date(System.currentTimeMillis() + 600000), rand.nextInt(30), devices.get(5), scenes.get(1)));
+        conditions.add(new Condition("Tv_living_power_on", Actions.POWER_ON, new Date(System.currentTimeMillis() + 720000), rand.nextInt(30), devices.get(9), scenes.get(4)));
 
 
         conditions.forEach(addConditionOperation::execute);
