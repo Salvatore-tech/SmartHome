@@ -5,19 +5,27 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
 import java.util.List;
 
-public interface CrudOperation {
-    default List<SmartHomeItem> execute() {
+public abstract class CrudOperation {
+    protected final BaseSmartHomeRepository repository;
+
+    public CrudOperation(BaseSmartHomeRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<SmartHomeItem> execute() {
         return null;
     }
 
-    default <Any> Any execute(String homeItemName) {
+    public <Any> Any execute(String homeItemName) {
         return null;
     }
 
-    default <Any> Any execute(SmartHomeItem homeItem) {
+    public <Any> Any execute(SmartHomeItem homeItem) {
         return null;
     }
 
-    BaseSmartHomeRepository getRepository();
+    public BaseSmartHomeRepository getRepository() {
+        return repository;
+    }
 
 }

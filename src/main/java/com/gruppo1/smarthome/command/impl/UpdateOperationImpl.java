@@ -6,12 +6,10 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
 import java.util.Objects;
 
-public class UpdateOperationImpl implements CrudOperation {
-
-    private BaseSmartHomeRepository repository;
+public class UpdateOperationImpl extends CrudOperation {
 
     public UpdateOperationImpl(BaseSmartHomeRepository repository) {
-        this.repository = repository;
+        super(repository);
     }
 
     @Override
@@ -19,10 +17,4 @@ public class UpdateOperationImpl implements CrudOperation {
         return (Objects.nonNull(repository)) ?
                 (SmartHomeItem) repository.save(homeItem) : null;
     }
-
-    @Override
-    public BaseSmartHomeRepository getRepository() {
-        return repository;
-    }
-
 }

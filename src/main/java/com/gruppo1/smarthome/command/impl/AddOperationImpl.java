@@ -7,25 +7,17 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 import java.util.Objects;
 
 
-public class AddOperationImpl implements CrudOperation {
-
-    private final BaseSmartHomeRepository repository;
+public class AddOperationImpl extends CrudOperation {
 
     public AddOperationImpl(BaseSmartHomeRepository repository) {
-        this.repository = repository;
+        super(repository);
     }
 
     @Override
     public SmartHomeItem execute(SmartHomeItem homeItem) {
         if (Objects.isNull(repository))
             return null;
-
         return (Objects.nonNull(repository)) ?
                 (SmartHomeItem) repository.save(homeItem) : null;
-    }
-
-    @Override
-    public BaseSmartHomeRepository getRepository() {
-        return repository;
     }
 }

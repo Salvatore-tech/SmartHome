@@ -6,12 +6,10 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 
 import java.util.Objects;
 
-public class GetByNameOperationImpl implements CrudOperation {
-
-    private BaseSmartHomeRepository repository;
+public class GetByNameOperationImpl extends CrudOperation {
 
     public GetByNameOperationImpl(BaseSmartHomeRepository repository) {
-        this.repository = repository;
+        super(repository);
     }
 
     @Override
@@ -20,17 +18,6 @@ public class GetByNameOperationImpl implements CrudOperation {
             return null;
         return (repository.findByName(homeItemName).isPresent()) ? (SmartHomeItem) repository.findByName(homeItemName).get() : null;
     }
-
-    @Override
-    public BaseSmartHomeRepository getRepository() {
-        return repository;
-    }
 }
 
-//    @Override
-//    public SmartHomeItem execute(Object item, String name) {
-//        BaseSmartHomeRepository repository = ApplicationContextProvider.getRepository(item);
-//        assert repository != null;
-//        return repository.findByName(name).isPresent() ? (SmartHomeItem) repository.findByName(name).get() : null;
-//    }
 
