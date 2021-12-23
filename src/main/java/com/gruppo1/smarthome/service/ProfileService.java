@@ -27,7 +27,7 @@ public class ProfileService {
 
     public Profile addProfile(Profile profile) {
         CrudOperation addOperation = new AddOperationImpl(profileRepo);
-        CrudOperation getOperation = new GetOperationImpl(profileRepo);
+        CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
         mementoCareTaker.push(addOperation, profile.createMemento());
         if (!isPresent(getOperation.execute(profile.getName()))) {
             return addOperation.execute(profile);
@@ -75,7 +75,7 @@ public class ProfileService {
     }
 
     private Boolean validateUpdate(Profile oldProfile, Profile updatedProfile) {
-        CrudOperation getOperation = new GetOperationImpl(profileRepo);
+        CrudOperation getOperation = new GetByNameOperationImpl(profileRepo);
         if (!isPresent(oldProfile)) // No profile to update
             return false;
         Profile persistentProfile = getOperation.execute(updatedProfile.getName());

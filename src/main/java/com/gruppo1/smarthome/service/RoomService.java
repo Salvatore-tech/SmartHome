@@ -103,15 +103,18 @@ public class RoomService {
     // Bedroom -> A TODO
     // Se A non è in Bedroom => non lo elimina
 
-    public Device deleteDeviceFromRoom(String deviceName) {
+    public Boolean deleteDeviceFromRoom(String roomName, String deviceName) {
         CrudOperation getDeviceOperation = new GetByNameOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetByNameOperationImpl(roomRepo);
+
+        Room room = getRoomOperation.execute(roomName);
         Device device = getDeviceOperation.execute(deviceName);
-        if (isPresent(device)) {
+        if (isPresent(room) && isPresent(device)) {
             Room defaultRoom = getRoomOperation.execute("Default");
             device.setRoom(defaultRoom);
+            return true;
         }
-        return device;
+        return false;
     }
 
     public List<Device> findDevicesInRoom(String roomName) {

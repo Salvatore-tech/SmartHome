@@ -110,10 +110,9 @@ public class RoomController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> deleteDevice(@PathVariable("deviceName") String deviceName) {
-        Device device = roomService.deleteDeviceFromRoom(deviceName);
-        return Objects.nonNull(device) ?
-                new ResponseEntity(device, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Device> deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
+        return roomService.deleteDeviceFromRoom(roomName, deviceName) ?
+                new ResponseEntity(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

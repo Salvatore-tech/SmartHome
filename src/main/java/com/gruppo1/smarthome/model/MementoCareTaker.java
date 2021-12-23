@@ -105,6 +105,7 @@ public class MementoCareTaker {
             return null;
 
         SmartHomeItem originator = mappings.get(lastMemento.getClass().toString());
+        mementoCommandList.add(new MementoCommand(null, null));
         return operationReverted.execute(originator.restore(lastMemento));
     }
 }
