@@ -76,9 +76,9 @@ public class Conditioner extends Device {
         return conditioner;
     }
 
-    class MementoConditioner extends MementoDevice {
-        private Integer temperature;
-        private String settings;
+    static class MementoConditioner extends MementoDevice {
+        private final Integer temperature;
+        private final String settings;
 
         public MementoConditioner(String id, String name, Boolean status, String type, Room room, Integer temperature, String settings) {
             super(id, name, status, type, room);

@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.memento;
 
-// TODO SS
 public abstract class Memento {
     protected String id;
     protected String name;

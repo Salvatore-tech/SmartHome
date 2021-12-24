@@ -100,7 +100,7 @@ public class Television extends Device {
         return television;
     }
 
-    class MementoTelevision extends MementoDevice {
+    static class MementoTelevision extends MementoDevice {
         private final String brand;
         private final String model;
         private final Integer volume;

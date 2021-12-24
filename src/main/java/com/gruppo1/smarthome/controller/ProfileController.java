@@ -50,8 +50,8 @@ public class ProfileController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Profile updated"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Profile> updateDevice(@ApiParam(value = "Name of a valid profile", required = true) @PathVariable("name") String name,
-                                                @ApiParam(value = "Updated data for the profile", required = true) @RequestBody Profile updatedProfile) {
+    public ResponseEntity<Profile> updateProfile(@ApiParam(value = "Name of a valid profile", required = true) @PathVariable("name") String name,
+                                                 @ApiParam(value = "Updated data for the profile", required = true) @RequestBody Profile updatedProfile) {
 
         Profile result = profileService.updateProfile(name, updatedProfile);
 

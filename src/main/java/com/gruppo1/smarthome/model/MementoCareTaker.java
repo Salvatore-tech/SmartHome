@@ -20,8 +20,8 @@ public class MementoCareTaker {
     private final List<MementoCommand> mementoCommandList = new ArrayList<>();
 
     private static class MementoCommand {
-        CrudOperation operation;
-        Memento memento;
+        final CrudOperation operation;
+        final Memento memento;
 
         public MementoCommand(CrudOperation operation, Memento memento) {
             this.operation = operation;
@@ -73,11 +73,11 @@ public class MementoCareTaker {
                     );
                     String pathClass = element.getOperation().getRepository().getClass().getInterfaces()[0].getName();
                     stringToStamp += " Of " + pathClass.substring(pathClass.lastIndexOf(".") + 1, pathClass.indexOf("Repo"));
-//                    if (Objects.nonNull(element.getMemento())) {
-//                        output.add(new ImmutablePair(element.getMemento().getName(), stringToStamp));
-//                    } else {
-//                        output.add(new ImmutablePair(StringUtils.EMPTY, stringToStamp));
-//                    }
+                    if (Objects.nonNull(element.getMemento())) {
+                        output.add(new ImmutablePair(element.getMemento().getName(), stringToStamp));
+                    } else {
+                        output.add(new ImmutablePair(StringUtils.EMPTY, stringToStamp));
+                    }
                 }
         );
         return output;

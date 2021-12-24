@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/home")
 public class BaseController {
 
-    private GenericService genericService;
+    private final GenericService genericService;
 
     @Autowired
     public BaseController(GenericService genericService) {

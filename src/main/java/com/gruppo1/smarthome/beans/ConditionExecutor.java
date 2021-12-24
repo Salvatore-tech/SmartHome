@@ -53,19 +53,12 @@ public class ConditionExecutor {
     private Boolean controlExecute(Date date, Integer threshold, long currentMillisecond){
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if(Objects.nonNull(date) && Objects.nonNull(threshold)){
-            if (threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond))) {
-                return true;
-            }
+            return threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond));
         }else if(Objects.isNull(threshold)){
-            if (date.toString().contains(dateFormatter.format(currentMillisecond))) {
-                return true;
-            }
-        } else{
-            if (threshold == rand.nextInt(30)) {
-                return true;
-            }
+            return date.toString().contains(dateFormatter.format(currentMillisecond));
+        } else {
+            return threshold == rand.nextInt(30);
         }
-        return false;
     }
 
     private void setRoutine(Condition condition, long currentMillisecond, String period) {

@@ -122,7 +122,7 @@ public class Condition extends SmartHomeItem implements Serializable {
         return condition;
     }
 
-    class MementoCondition extends Memento {
+    static class MementoCondition extends Memento {
         private final Scene scene;
         private final Device device;
         private final Actions action;

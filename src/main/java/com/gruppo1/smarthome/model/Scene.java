@@ -98,7 +98,7 @@ public class Scene extends SmartHomeItem implements Serializable {
         return scene;
     }
 
-    class MementoScene extends Memento {
+    static class MementoScene extends Memento {
         private final Boolean status;
         private final String period;
 

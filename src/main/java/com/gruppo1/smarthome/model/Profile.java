@@ -99,7 +99,7 @@ public class Profile extends SmartHomeItem implements Serializable {
         return profile;
     }
 
-    class MementoProfile extends Memento {
+    static class MementoProfile extends Memento {
         private final String email;
         private final String surname;
         private final String password;

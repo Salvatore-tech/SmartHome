@@ -30,7 +30,7 @@ public class Room extends SmartHomeItem implements Serializable {
     public void addDevice(List<Device> devices) {
         if (Objects.isNull(devices) || devices.isEmpty())
             return;
-        devices.forEach(device -> this.devices.add(device));
+        this.devices.addAll(devices);
     }
 
     public void removeDevice(Device device) {
@@ -59,7 +59,7 @@ public class Room extends SmartHomeItem implements Serializable {
         return room;
     }
 
-    class MementoRoom extends Memento {
+    static class MementoRoom extends Memento {
 
         private List<Device> devices;
 

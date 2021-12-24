@@ -88,7 +88,7 @@ public class AlarmClock extends Device {
         return alarmClock;
     }
 
-    class MementoAlarmClock extends MementoDevice {
+    static class MementoAlarmClock extends MementoDevice {
         private final String time;
         private final String frequency;
         private final String song;

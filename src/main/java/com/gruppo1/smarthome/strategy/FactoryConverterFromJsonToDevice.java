@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class FactoryConverterFromJsonToDevice {
 
-    private static Map<String, ConverterFromJsonToDevice> converters = new HashMap<>();
+    private static final Map<String, ConverterFromJsonToDevice> converters = new HashMap<>();
 
     static {
         converters.put("alarmclock",

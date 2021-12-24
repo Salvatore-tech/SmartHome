@@ -4,9 +4,9 @@ import com.gruppo1.smarthome.model.Room;
 
 public abstract class MementoDevice extends Memento {
 
-    protected String type;
-    protected Boolean status;
-    protected Room room;
+    protected final String type;
+    protected final Boolean status;
+    protected final Room room;
 
     public MementoDevice(String id, String name, Boolean status, String type, Room room) {
         this.id = id;

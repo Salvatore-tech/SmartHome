@@ -86,7 +86,7 @@ public class Speaker extends Device {
         return speaker;
     }
 
-    class MementoSpeaker extends MementoDevice {
+    static class MementoSpeaker extends MementoDevice {
         private final Integer power;
         private final String brand;
         private final String model;

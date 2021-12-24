@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public class GenericService {
 
-    private MementoCareTaker mementoCareTaker;
+    private final MementoCareTaker mementoCareTaker;
 
     @Autowired
     public GenericService(MementoCareTaker mementoCareTaker) {

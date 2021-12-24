@@ -76,7 +76,7 @@ public class LightBulb extends Device {
         return lightBulb;
     }
 
-    class MementoLightBulb extends MementoDevice {
+    static class MementoLightBulb extends MementoDevice {
         private final Integer brightness;
         private final String colorTemperature;
 

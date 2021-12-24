@@ -9,9 +9,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class SmartHomeApplication {
+    final DataGenerator dataGenerator;
 
     @Autowired
-    DataGenerator dataGenerator;
+    public SmartHomeApplication(DataGenerator dataGenerator) {
+        this.dataGenerator = dataGenerator;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(SmartHomeApplication.class, args);
