@@ -17,6 +17,7 @@ public class Conditioner extends Device {
 
     public Conditioner() {
         // do not remove
+        super();
     }
 
     public Conditioner(String type) {
@@ -59,7 +60,7 @@ public class Conditioner extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoConditioner(id, name, status, type, room, temperature, settings);
+        return new MementoConditioner(id, label, name, status, type, room, temperature, settings);
     }
 
     @Override
@@ -80,8 +81,8 @@ public class Conditioner extends Device {
         private final Integer temperature;
         private final String settings;
 
-        public MementoConditioner(String id, String name, Boolean status, String type, Room room, Integer temperature, String settings) {
-            super(id, name, status, type, room);
+        public MementoConditioner(String id, String label, String name, Boolean status, String type, Room room, Integer temperature, String settings) {
+            super(id, label, name, status, type, room);
             this.temperature = temperature;
             this.settings = settings;
         }

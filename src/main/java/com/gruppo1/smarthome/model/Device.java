@@ -26,9 +26,11 @@ public abstract class Device extends SmartHomeItem implements Serializable {
 
     public Device() {
         // do not remove
+        this.label = "Device";
     }
 
     public Device(String name, String type, Boolean status) {
+        this.label = "Device";
         this.name = name;
         this.status = status;
         this.type = type;

@@ -18,6 +18,7 @@ public class AlarmClock extends Device {
 
     public AlarmClock() {
         // do not remove
+        super();
     }
 
     public AlarmClock(String type) {
@@ -70,7 +71,7 @@ public class AlarmClock extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoAlarmClock(id, name, status, type, room, time, frequency, song);
+        return new MementoAlarmClock(id, label, name, status, type, room, time, frequency, song);
     }
 
     @Override
@@ -93,8 +94,8 @@ public class AlarmClock extends Device {
         private final String frequency;
         private final String song;
 
-        public MementoAlarmClock(String id, String name, Boolean status, String type, Room room, String time, String frequency, String song) {
-            super(id, name, status, type, room);
+        public MementoAlarmClock(String id, String label, String name, Boolean status, String type, Room room, String time, String frequency, String song) {
+            super(id, label, name, status, type, room);
             this.time = time;
             this.frequency = frequency;
             this.song = song;

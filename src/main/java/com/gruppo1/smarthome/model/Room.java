@@ -17,9 +17,11 @@ public class Room extends SmartHomeItem implements Serializable {
     private List<Device> devices;
 
     public Room() {
+        this.label = "Room";
     }
 
     public Room(String name) {
+        this.label = "Room";
         this.name = name;
     }
 
@@ -46,7 +48,7 @@ public class Room extends SmartHomeItem implements Serializable {
 
     @Override
     public Memento createMemento() {
-        return new MementoRoom(id, name, devices);
+        return new MementoRoom(id, label, name, devices);
     }
 
     @Override
@@ -63,12 +65,9 @@ public class Room extends SmartHomeItem implements Serializable {
 
         private List<Device> devices;
 
-        public MementoRoom() {
-            // do not remove
-        }
-
-        public MementoRoom(String id, String name, List<Device> devices) {
+        public MementoRoom(String id, String label, String name, List<Device> devices) {
             this.id = id;
+            this.label = label;
             this.name = name;
             this.devices = devices;
         }

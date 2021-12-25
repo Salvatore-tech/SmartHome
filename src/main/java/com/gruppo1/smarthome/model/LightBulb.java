@@ -17,6 +17,7 @@ public class LightBulb extends Device {
 
     public LightBulb() {
         // do not remove
+        super();
     }
 
     public LightBulb(String type) {
@@ -59,7 +60,7 @@ public class LightBulb extends Device {
 
     @Override
     public MementoLightBulb createMemento() {
-        return new MementoLightBulb(id, name, status, type, room, brightness, colorTemperature);
+        return new MementoLightBulb(id, label, name, status, type, room, brightness, colorTemperature);
     }
 
     @Override
@@ -80,8 +81,8 @@ public class LightBulb extends Device {
         private final Integer brightness;
         private final String colorTemperature;
 
-        public MementoLightBulb(String id, String name, Boolean status, String type, Room room, Integer brightness, String colorTemperature) {
-            super(id, name, status, type, room);
+        public MementoLightBulb(String id, String label, String name, Boolean status, String type, Room room, Integer brightness, String colorTemperature) {
+            super(id, label, name, status, type, room);
             this.brightness = brightness;
             this.colorTemperature = colorTemperature;
         }

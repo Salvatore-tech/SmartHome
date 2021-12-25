@@ -30,9 +30,11 @@ public class Condition extends SmartHomeItem implements Serializable {
 
     public Condition() {
         // do not remove
+        this.label = "Condition";
     }
 
     public Condition(String name, Actions action, Date activationDate, Integer threshold, Device device, Scene scene) {
+        this.label = "Condition";
         this.name = name;
         this.action = action;
         this.activationDate = activationDate;
@@ -105,7 +107,7 @@ public class Condition extends SmartHomeItem implements Serializable {
 
     @Override
     public Memento createMemento() {
-        return new MementoCondition(id, name, scene, device, action, threshold, activationDate);
+        return new MementoCondition(id, label, name, scene, device, action, threshold, activationDate);
     }
 
     @Override
@@ -129,8 +131,9 @@ public class Condition extends SmartHomeItem implements Serializable {
         private final Integer threshold;
         private final Date activationDate;
 
-        public MementoCondition(String id, String name, Scene scene, Device device, Actions action, Integer threshold, Date activationDate) {
+        public MementoCondition(String id, String label, String name, Scene scene, Device device, Actions action, Integer threshold, Date activationDate) {
             this.id = id;
+            this.label = label;
             this.name = name;
             this.scene = scene;
             this.device = device;

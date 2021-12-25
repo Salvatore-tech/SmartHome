@@ -22,6 +22,7 @@ public class Television extends Device {
     }
 
     public Television(String type) {
+        super();
         this.type = type;
     }
 
@@ -81,7 +82,7 @@ public class Television extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoTelevision(id, name, status, type, room, brand, model, volume, channel);
+        return new MementoTelevision(id, label, name, status, type, room, brand, model, volume, channel);
     }
 
     @Override
@@ -106,8 +107,8 @@ public class Television extends Device {
         private final Integer volume;
         private final Integer channel;
 
-        public MementoTelevision(String id, String name, Boolean status, String type, Room room, String brand, String model, Integer volume, Integer channel) {
-            super(id, name, status, type, room);
+        public MementoTelevision(String id, String label, String name, Boolean status, String type, Room room, String brand, String model, Integer volume, Integer channel) {
+            super(id, label, name, status, type, room);
             this.brand = brand;
             this.model = model;
             this.volume = volume;

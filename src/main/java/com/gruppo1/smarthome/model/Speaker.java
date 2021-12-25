@@ -18,9 +18,11 @@ public class Speaker extends Device {
 
     public Speaker() {
         // do not remove
+        super();
     }
 
     public Speaker(String type) {
+        super();
         this.type = type;
     }
 
@@ -68,7 +70,7 @@ public class Speaker extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoSpeaker(id, name, status, type, room, power, brand, model);
+        return new MementoSpeaker(id, label, name, status, type, room, power, brand, model);
     }
 
     @Override
@@ -91,8 +93,8 @@ public class Speaker extends Device {
         private final String brand;
         private final String model;
 
-        public MementoSpeaker(String id, String name, Boolean status, String type, Room room, Integer power, String brand, String model) {
-            super(id, name, status, type, room);
+        public MementoSpeaker(String id, String label, String name, Boolean status, String type, Room room, Integer power, String brand, String model) {
+            super(id, label, name, status, type, room);
             this.power = power;
             this.brand = brand;
             this.model = model;
