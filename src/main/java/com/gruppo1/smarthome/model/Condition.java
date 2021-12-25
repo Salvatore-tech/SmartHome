@@ -112,16 +112,15 @@ public class Condition extends SmartHomeItem implements Serializable {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Condition condition = new Condition();
         MementoCondition mementoCondition = (MementoCondition) memento;
-        condition.id = mementoCondition.getId(); // TODO
-        condition.name = mementoCondition.getName(); // TODO
-        condition.scene = mementoCondition.scene;
-        condition.device = mementoCondition.device;
-        condition.action = mementoCondition.action;
-        condition.threshold = mementoCondition.threshold;
-        condition.activationDate = mementoCondition.activationDate;
-        return condition;
+        this.id = mementoCondition.getId(); // TODO
+        this.name = mementoCondition.getName(); // TODO
+        this.scene = mementoCondition.scene;
+        this.device = mementoCondition.device;
+        this.action = mementoCondition.action;
+        this.threshold = mementoCondition.threshold;
+        this.activationDate = mementoCondition.activationDate;
+        return this;
     }
 
     static class MementoCondition extends Memento {

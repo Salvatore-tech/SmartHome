@@ -87,18 +87,17 @@ public class Television extends Device {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Television television = new Television();
         MementoTelevision mementoTelevision = (MementoTelevision) memento;
-        television.id = mementoTelevision.getId();
-        television.name = mementoTelevision.getName();
-        television.status = mementoTelevision.getStatus();
-        television.type = mementoTelevision.getType();
-        television.room = mementoTelevision.getRoom();
-        television.brand = mementoTelevision.brand;
-        television.model = mementoTelevision.model;
-        television.volume = mementoTelevision.volume;
-        television.channel = mementoTelevision.channel;
-        return television;
+        this.id = mementoTelevision.getId();
+        this.name = mementoTelevision.getName();
+        this.status = mementoTelevision.getStatus();
+        this.type = mementoTelevision.getType();
+        this.room = mementoTelevision.getRoom();
+        this.brand = mementoTelevision.brand;
+        this.model = mementoTelevision.model;
+        this.volume = mementoTelevision.volume;
+        this.channel = mementoTelevision.channel;
+        return this;
     }
 
     static class MementoTelevision extends MementoDevice {

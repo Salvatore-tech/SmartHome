@@ -76,16 +76,15 @@ public class Speaker extends Device {
     @Override
     public SmartHomeItem restore(Memento memento) {
         MementoSpeaker mementoSpeaker = (MementoSpeaker) memento;
-        Speaker speaker = new Speaker();
-        speaker.id = mementoSpeaker.getId();
-        speaker.name = mementoSpeaker.getName();
-        speaker.status = mementoSpeaker.getStatus();
-        speaker.type = mementoSpeaker.getType();
-        speaker.room = mementoSpeaker.getRoom();
-        speaker.power = mementoSpeaker.power;
-        speaker.brand = mementoSpeaker.brand;
-        speaker.model = mementoSpeaker.model;
-        return speaker;
+        this.id = mementoSpeaker.getId();
+        this.name = mementoSpeaker.getName();
+        this.status = mementoSpeaker.getStatus();
+        this.type = mementoSpeaker.getType();
+        this.room = mementoSpeaker.getRoom();
+        this.power = mementoSpeaker.power;
+        this.brand = mementoSpeaker.brand;
+        this.model = mementoSpeaker.model;
+        return this;
     }
 
     static class MementoSpeaker extends MementoDevice {

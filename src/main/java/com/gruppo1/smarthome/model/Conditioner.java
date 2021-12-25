@@ -65,16 +65,15 @@ public class Conditioner extends Device {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Conditioner conditioner = new Conditioner();
         MementoConditioner mementoConditioner = (MementoConditioner) memento;
-        conditioner.id = mementoConditioner.getId(); // TODO
-        conditioner.name = mementoConditioner.getName();
-        conditioner.status = mementoConditioner.getStatus();
-        conditioner.type = mementoConditioner.getType();
-        conditioner.room = mementoConditioner.getRoom();
-        conditioner.temperature = mementoConditioner.temperature;
-        conditioner.settings = mementoConditioner.settings;
-        return conditioner;
+        this.id = mementoConditioner.getId(); // TODO
+        this.name = mementoConditioner.getName();
+        this.status = mementoConditioner.getStatus();
+        this.type = mementoConditioner.getType();
+        this.room = mementoConditioner.getRoom();
+        this.temperature = mementoConditioner.temperature;
+        this.settings = mementoConditioner.settings;
+        return this;
     }
 
     static class MementoConditioner extends MementoDevice {

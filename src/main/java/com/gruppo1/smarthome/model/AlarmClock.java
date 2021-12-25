@@ -76,17 +76,16 @@ public class AlarmClock extends Device {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        AlarmClock alarmClock = new AlarmClock();
         MementoAlarmClock mementoAlarmClock = (MementoAlarmClock) memento;
-        alarmClock.id = mementoAlarmClock.getId();
-        alarmClock.name = mementoAlarmClock.getName();
-        alarmClock.status = mementoAlarmClock.getStatus();
-        alarmClock.type = mementoAlarmClock.getType();
-        alarmClock.room = mementoAlarmClock.getRoom();
-        alarmClock.time = mementoAlarmClock.time;
-        alarmClock.frequency = mementoAlarmClock.frequency;
-        alarmClock.song = mementoAlarmClock.song;
-        return alarmClock;
+        this.id = mementoAlarmClock.getId();
+        this.name = mementoAlarmClock.getName();
+        this.status = mementoAlarmClock.getStatus();
+        this.type = mementoAlarmClock.getType();
+        this.room = mementoAlarmClock.getRoom();
+        this.time = mementoAlarmClock.time;
+        this.frequency = mementoAlarmClock.frequency;
+        this.song = mementoAlarmClock.song;
+        return this;
     }
 
     static class MementoAlarmClock extends MementoDevice {

@@ -91,13 +91,12 @@ public class Scene extends SmartHomeItem implements Serializable {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Scene scene = new Scene();
         MementoScene mementoScene = (MementoScene) memento;
-        scene.id = mementoScene.getId();
-        scene.name = mementoScene.getName();
-        scene.status = mementoScene.status;
-        scene.period = mementoScene.period;
-        return scene;
+        this.id = mementoScene.getId();
+        this.name = mementoScene.getName();
+        this.status = mementoScene.status;
+        this.period = mementoScene.period;
+        return this;
     }
 
     static class MementoScene extends Memento {

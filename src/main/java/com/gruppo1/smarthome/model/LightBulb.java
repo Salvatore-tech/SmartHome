@@ -65,16 +65,15 @@ public class LightBulb extends Device {
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        LightBulb lightBulb = new LightBulb();
         MementoLightBulb mementoLightBulb = (MementoLightBulb) memento;
-        lightBulb.id = mementoLightBulb.getId();
-        lightBulb.name = mementoLightBulb.getName();
-        lightBulb.status = mementoLightBulb.getStatus();
-        lightBulb.type = mementoLightBulb.getType();
-        lightBulb.room = mementoLightBulb.getRoom();
-        lightBulb.brightness = mementoLightBulb.brightness;
-        lightBulb.colorTemperature = mementoLightBulb.colorTemperature;
-        return lightBulb;
+        this.id = mementoLightBulb.getId();
+        this.name = mementoLightBulb.getName();
+        this.status = mementoLightBulb.getStatus();
+        this.type = mementoLightBulb.getType();
+        this.room = mementoLightBulb.getRoom();
+        this.brightness = mementoLightBulb.brightness;
+        this.colorTemperature = mementoLightBulb.colorTemperature;
+        return this;
     }
 
     static class MementoLightBulb extends MementoDevice {

@@ -54,11 +54,10 @@ public class Room extends SmartHomeItem implements Serializable {
     @Override
     public SmartHomeItem restore(Memento memento) {
         MementoRoom mementoRoom = (MementoRoom) memento;
-        Room room = new Room();
-        room.id = mementoRoom.getId();
-        room.name = mementoRoom.getName();
-        room.devices = mementoRoom.devices;
-        return room;
+        this.id = mementoRoom.getId();
+        this.name = mementoRoom.getName();
+        this.devices = mementoRoom.devices;
+        return this;
     }
 
     static class MementoRoom extends Memento {
