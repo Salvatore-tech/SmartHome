@@ -2,7 +2,11 @@ package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
-import com.gruppo1.smarthome.model.*;
+import com.gruppo1.smarthome.memento.MementoCareTaker;
+import com.gruppo1.smarthome.model.Condition;
+import com.gruppo1.smarthome.model.Device;
+import com.gruppo1.smarthome.model.Scene;
+import com.gruppo1.smarthome.model.SmartHomeItem;
 import com.gruppo1.smarthome.repository.ConditionRepo;
 import com.gruppo1.smarthome.repository.DeviceRepo;
 import com.gruppo1.smarthome.repository.SceneRepo;

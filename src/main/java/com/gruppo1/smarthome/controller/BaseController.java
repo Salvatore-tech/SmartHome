@@ -1,11 +1,17 @@
 package com.gruppo1.smarthome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.gruppo1.smarthome.command.api.CrudOperation;
+import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.service.GenericService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,8 +46,37 @@ public class BaseController {
     @GetMapping("/history")
     @ApiOperation(value = "List the previous operations performed", tags = {"Generic"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Operations previously performed")})
-    public ResponseEntity<List<ImmutablePair<String, String>>> showHistory() {
-        return new ResponseEntity<>(genericService.getHistory(), HttpStatus.OK);
+    public ResponseEntity<List<JSONObject>> showHistory() throws JsonProcessingException {
 
+        List<ImmutablePair<CrudOperation, Memento>> history = genericService.getHistory();
+        return new ResponseEntity(serializeList(history), HttpStatus.OK);
+
+    }
+
+    public List<JSONObject> serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
+        List<JSONObject> output = new ArrayList<>();
+
+        mementoPairList.forEach(
+                element -> {
+                    String pathOperation = element.getLeft().toString();
+                    String operation = "Operation:" + pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
+                    String printableOperation = StringUtils.join(
+                            StringUtils.splitByCharacterTypeCamelCase(operation),
+                            ' '
+                    );
+
+
+                    String pathClass = element.getRight().getName();
+                    String printableItem = StringUtils.join("Item: " + pathClass);
+
+                    try {
+                        output.add(0, new JSONObject(printableOperation + "\n" + printableItem + "\n"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+        );
+        return output;
     }
 }
