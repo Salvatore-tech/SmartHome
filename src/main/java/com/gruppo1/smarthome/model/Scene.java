@@ -19,9 +19,11 @@ public class Scene extends SmartHomeItem implements Serializable {
     private List<Condition> conditions;
 
     public Scene() {
+        this.label = "Scene";
     }
 
     public Scene(String name, Boolean status, String period) {
+        this.label = "Scene";
         this.name = name;
         this.status = status;
         this.period = period;
@@ -84,26 +86,26 @@ public class Scene extends SmartHomeItem implements Serializable {
 
     @Override
     public Memento createMemento() {
-        return new MementoScene(id, name, status, period);
+        return new MementoScene(id, label, name, status, period);
     }
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Scene scene = new Scene();
         MementoScene mementoScene = (MementoScene) memento;
-        scene.id = mementoScene.getId();
-        scene.name = mementoScene.getName();
-        scene.status = mementoScene.status;
-        scene.period = mementoScene.period;
-        return scene;
+        this.id = mementoScene.getId();
+        this.name = mementoScene.getName();
+        this.status = mementoScene.status;
+        this.period = mementoScene.period;
+        return this;
     }
 
     static class MementoScene extends Memento {
         private final Boolean status;
         private final String period;
 
-        public MementoScene(String id, String name, Boolean status, String period) {
+        public MementoScene(String id, String label, String name, Boolean status, String period) {
             this.id = id;
+            this.label = label;
             this.name = name;
             this.status = status;
             this.period = period;

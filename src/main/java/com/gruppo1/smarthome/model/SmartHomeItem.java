@@ -23,7 +23,10 @@ public abstract class SmartHomeItem implements Serializable {
     @Column
     protected String name;
 
-    public SmartHomeItem() {
+    protected String label;
+
+    protected SmartHomeItem() {
+        this.label = "";
     }
 
     public String getName() {
@@ -33,6 +36,8 @@ public abstract class SmartHomeItem implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLabel() { return label; }
 
     public abstract Memento createMemento();
 

@@ -17,6 +17,7 @@ public class LightBulb extends Device {
 
     public LightBulb() {
         // do not remove
+        super();
     }
 
     public LightBulb(String type) {
@@ -59,29 +60,28 @@ public class LightBulb extends Device {
 
     @Override
     public MementoLightBulb createMemento() {
-        return new MementoLightBulb(id, name, status, type, room, brightness, colorTemperature);
+        return new MementoLightBulb(id, label, name, status, type, room, brightness, colorTemperature);
     }
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        LightBulb lightBulb = new LightBulb();
         MementoLightBulb mementoLightBulb = (MementoLightBulb) memento;
-        lightBulb.id = mementoLightBulb.getId();
-        lightBulb.name = mementoLightBulb.getName();
-        lightBulb.status = mementoLightBulb.getStatus();
-        lightBulb.type = mementoLightBulb.getType();
-        lightBulb.room = mementoLightBulb.getRoom();
-        lightBulb.brightness = mementoLightBulb.brightness;
-        lightBulb.colorTemperature = mementoLightBulb.colorTemperature;
-        return lightBulb;
+        this.id = mementoLightBulb.getId();
+        this.name = mementoLightBulb.getName();
+        this.status = mementoLightBulb.getStatus();
+        this.type = mementoLightBulb.getType();
+        this.room = mementoLightBulb.getRoom();
+        this.brightness = mementoLightBulb.brightness;
+        this.colorTemperature = mementoLightBulb.colorTemperature;
+        return this;
     }
 
     static class MementoLightBulb extends MementoDevice {
         private final Integer brightness;
         private final String colorTemperature;
 
-        public MementoLightBulb(String id, String name, Boolean status, String type, Room room, Integer brightness, String colorTemperature) {
-            super(id, name, status, type, room);
+        public MementoLightBulb(String id, String label, String name, Boolean status, String type, Room room, Integer brightness, String colorTemperature) {
+            super(id, label, name, status, type, room);
             this.brightness = brightness;
             this.colorTemperature = colorTemperature;
         }

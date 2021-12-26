@@ -22,9 +22,11 @@ public class Profile extends SmartHomeItem implements Serializable {
     private String password;
 
     public Profile() {
+        this.label = "Profile";
     }
 
     public Profile(String email, String name, String surname, String password) {
+        this.label = "Profile";
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -84,19 +86,18 @@ public class Profile extends SmartHomeItem implements Serializable {
 
     @Override
     public Memento createMemento() {
-        return new MementoProfile(id, name, surname, email, password);
+        return new MementoProfile(id, label, name, surname, email, password);
     }
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Profile profile = new Profile();
         MementoProfile mementoProfile = (MementoProfile) memento;
-        profile.id = mementoProfile.getId();
-        profile.name = mementoProfile.getName();
-        profile.surname = mementoProfile.surname;
-        profile.email = mementoProfile.email;
-        profile.password = mementoProfile.password;
-        return profile;
+        this.id = mementoProfile.getId();
+        this.name = mementoProfile.getName();
+        this.surname = mementoProfile.surname;
+        this.email = mementoProfile.email;
+        this.password = mementoProfile.password;
+        return this;
     }
 
     static class MementoProfile extends Memento {
@@ -104,8 +105,9 @@ public class Profile extends SmartHomeItem implements Serializable {
         private final String surname;
         private final String password;
 
-        public MementoProfile(String id, String name, String surname, String email, String password) {
+        public MementoProfile(String id, String label, String name, String surname, String email, String password) {
             this.id = id;
+            this.label = label;
             this.name = name;
             this.surname = surname;
             this.email = email;

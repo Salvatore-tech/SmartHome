@@ -17,6 +17,7 @@ public class Conditioner extends Device {
 
     public Conditioner() {
         // do not remove
+        super();
     }
 
     public Conditioner(String type) {
@@ -59,29 +60,28 @@ public class Conditioner extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoConditioner(id, name, status, type, room, temperature, settings);
+        return new MementoConditioner(id, label, name, status, type, room, temperature, settings);
     }
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Conditioner conditioner = new Conditioner();
         MementoConditioner mementoConditioner = (MementoConditioner) memento;
-        conditioner.id = mementoConditioner.getId(); // TODO
-        conditioner.name = mementoConditioner.getName();
-        conditioner.status = mementoConditioner.getStatus();
-        conditioner.type = mementoConditioner.getType();
-        conditioner.room = mementoConditioner.getRoom();
-        conditioner.temperature = mementoConditioner.temperature;
-        conditioner.settings = mementoConditioner.settings;
-        return conditioner;
+        this.id = mementoConditioner.getId(); // TODO
+        this.name = mementoConditioner.getName();
+        this.status = mementoConditioner.getStatus();
+        this.type = mementoConditioner.getType();
+        this.room = mementoConditioner.getRoom();
+        this.temperature = mementoConditioner.temperature;
+        this.settings = mementoConditioner.settings;
+        return this;
     }
 
     static class MementoConditioner extends MementoDevice {
         private final Integer temperature;
         private final String settings;
 
-        public MementoConditioner(String id, String name, Boolean status, String type, Room room, Integer temperature, String settings) {
-            super(id, name, status, type, room);
+        public MementoConditioner(String id, String label, String name, Boolean status, String type, Room room, Integer temperature, String settings) {
+            super(id, label, name, status, type, room);
             this.temperature = temperature;
             this.settings = settings;
         }

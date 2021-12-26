@@ -22,6 +22,7 @@ public class Television extends Device {
     }
 
     public Television(String type) {
+        super();
         this.type = type;
     }
 
@@ -81,23 +82,22 @@ public class Television extends Device {
 
     @Override
     public Memento createMemento() {
-        return new MementoTelevision(id, name, status, type, room, brand, model, volume, channel);
+        return new MementoTelevision(id, label, name, status, type, room, brand, model, volume, channel);
     }
 
     @Override
     public SmartHomeItem restore(Memento memento) {
-        Television television = new Television();
         MementoTelevision mementoTelevision = (MementoTelevision) memento;
-        television.id = mementoTelevision.getId();
-        television.name = mementoTelevision.getName();
-        television.status = mementoTelevision.getStatus();
-        television.type = mementoTelevision.getType();
-        television.room = mementoTelevision.getRoom();
-        television.brand = mementoTelevision.brand;
-        television.model = mementoTelevision.model;
-        television.volume = mementoTelevision.volume;
-        television.channel = mementoTelevision.channel;
-        return television;
+        this.id = mementoTelevision.getId();
+        this.name = mementoTelevision.getName();
+        this.status = mementoTelevision.getStatus();
+        this.type = mementoTelevision.getType();
+        this.room = mementoTelevision.getRoom();
+        this.brand = mementoTelevision.brand;
+        this.model = mementoTelevision.model;
+        this.volume = mementoTelevision.volume;
+        this.channel = mementoTelevision.channel;
+        return this;
     }
 
     static class MementoTelevision extends MementoDevice {
@@ -106,8 +106,8 @@ public class Television extends Device {
         private final Integer volume;
         private final Integer channel;
 
-        public MementoTelevision(String id, String name, Boolean status, String type, Room room, String brand, String model, Integer volume, Integer channel) {
-            super(id, name, status, type, room);
+        public MementoTelevision(String id, String label, String name, Boolean status, String type, Room room, String brand, String model, Integer volume, Integer channel) {
+            super(id, label, name, status, type, room);
             this.brand = brand;
             this.model = model;
             this.volume = volume;

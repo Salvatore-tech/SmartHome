@@ -9,14 +9,12 @@ import com.gruppo1.smarthome.repository.BaseSmartHomeRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 @Component
 public class MementoCareTaker {
 
     private final Map<String, SmartHomeItem> mappings = new HashMap<>();
-
     private final List<MementoCommand> mementoCommandList = new ArrayList<>();
 
     private static class MementoCommand {
@@ -71,8 +69,8 @@ public class MementoCareTaker {
                             StringUtils.splitByCharacterTypeCamelCase(operation),
                             ' '
                     );
-                    String pathClass = element.getOperation().getRepository().getClass().getInterfaces()[0].getName();
-                    stringToStamp += " Of " + pathClass.substring(pathClass.lastIndexOf(".") + 1, pathClass.indexOf("Repo"));
+                    String pathClass = element.getMemento().getLabel();
+                    stringToStamp += " Of " + pathClass;
                     if (Objects.nonNull(element.getMemento())) {
                         output.add(new ImmutablePair(element.getMemento().getName(), stringToStamp));
                     } else {
@@ -105,7 +103,8 @@ public class MementoCareTaker {
             return null;
 
         SmartHomeItem originator = mappings.get(lastMemento.getClass().toString());
-        mementoCommandList.add(new MementoCommand(null, null));
-        return operationReverted.execute(originator.restore(lastMemento));
+        SmartHomeItem restoredItem = originator.restore(lastMemento);
+        mementoCommandList.add(new MementoCommand(operationReverted, restoredItem.createMemento()));
+        return operationReverted.execute(restoredItem);
     }
 }

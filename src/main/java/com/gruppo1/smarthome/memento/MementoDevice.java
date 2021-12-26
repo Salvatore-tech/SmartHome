@@ -8,8 +8,9 @@ public abstract class MementoDevice extends Memento {
     protected final Boolean status;
     protected final Room room;
 
-    public MementoDevice(String id, String name, Boolean status, String type, Room room) {
+    public MementoDevice(String id, String label, String name, Boolean status, String type, Room room) {
         this.id = id;
+        this.label = label;
         this.name = name;
         this.status = status;
         this.type = type;
