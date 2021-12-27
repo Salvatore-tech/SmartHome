@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,37 +47,38 @@ public class BaseController {
     @GetMapping("/history")
     @ApiOperation(value = "List the previous operations performed", tags = {"Generic"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Operations previously performed")})
-    public ResponseEntity<List<JSONObject>> showHistory() throws JsonProcessingException {
+    public ResponseEntity<List<String>> showHistory(){
 
         List<ImmutablePair<CrudOperation, Memento>> history = genericService.getHistory();
         return new ResponseEntity(serializeList(history), HttpStatus.OK);
 
     }
 
-    public List<JSONObject> serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
+    //TODO: where to place this method?
+    public String serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
         List<JSONObject> output = new ArrayList<>();
-
         mementoPairList.forEach(
+
                 element -> {
                     String pathOperation = element.getLeft().toString();
-                    String operation = "Operation:" + pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
-                    String printableOperation = StringUtils.join(
-                            StringUtils.splitByCharacterTypeCamelCase(operation),
+                    String operationCamelCase = pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
+                    String operation = StringUtils.join(
+                            StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
                             ' '
                     );
-
-
-                    String pathClass = element.getRight().getName();
-                    String printableItem = StringUtils.join("Item: " + pathClass);
-
+                    operation += " Of "+ element.getRight().getLabel();
+                    JSONObject obj = new JSONObject();
                     try {
-                        output.add(0, new JSONObject(printableOperation + "\n" + printableItem + "\n"));
+                        obj.put("Operation",operation);
+                        obj.put("item",element.getRight().getName());
+                        output.add(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
+
                 }
         );
-        return output;
+        return output.toString();
     }
 }
