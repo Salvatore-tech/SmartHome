@@ -47,7 +47,7 @@ public class BaseController {
     @GetMapping("/history")
     @ApiOperation(value = "List the previous operations performed", tags = {"Generic"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Operations previously performed")})
-    public ResponseEntity<List<String>> showHistory(){
+    public ResponseEntity<String> showHistory(){
 
         List<ImmutablePair<CrudOperation, Memento>> history = genericService.getHistory();
         return new ResponseEntity(serializeList(history), HttpStatus.OK);
