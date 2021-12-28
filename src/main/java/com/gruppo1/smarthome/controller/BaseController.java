@@ -66,7 +66,7 @@ public class BaseController {
                             StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
                             ' '
                     );
-                    operation += " Of "+ element.getRight().getLabel();
+                    operation = operation.replace("Impl", "") + "Of A "+ element.getRight().getLabel();
                     JSONObject obj = new JSONObject();
                     try {
                         obj.put("Operation",operation);
