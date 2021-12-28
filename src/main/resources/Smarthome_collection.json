@@ -1,0 +1,5575 @@
+{
+  "info": {
+    "_postman_id": "3dcca78d-c458-4c3e-bd3c-59746a752a5d",
+    "name": "Smarthome collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Device",
+      "item": [
+        {
+          "name": "Find All Devices",
+          "item": [
+            {
+              "name": "FindAllDevicesSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "all"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "All Devices",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/all",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "all"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "1136"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 15:31:14 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Samsung air\",\n        \"type\": \"Conditioner\",\n        \"status\": true,\n        \"temperature\": 20,\n        \"settings\": \"Default\"\n    },\n    {\n        \"name\": \"Dyson\",\n        \"type\": \"Conditioner\",\n        \"status\": true,\n        \"temperature\": 30,\n        \"settings\": \"Sun\"\n    },\n    {\n        \"name\": \"Spongebob block\",\n        \"type\": \"Alarm clock\",\n        \"status\": false,\n        \"time\": \"7:00 AM\",\n        \"frequency\": \"Workday\",\n        \"song\": \"Rain drops\"\n    },\n    {\n        \"name\": \"Studio lights\",\n        \"type\": \"Lightbulb\",\n        \"status\": false,\n        \"brightness\": 75,\n        \"colorTemperature\": \"Cold\"\n    },\n    {\n        \"name\": \"Soundbar\",\n        \"type\": \"Speaker\",\n        \"status\": false,\n        \"power\": 100,\n        \"brand\": \"Bose\",\n        \"model\": \"SCS-2021\"\n    },\n    {\n        \"name\": \"Woofer kit\",\n        \"type\": \"Speaker\",\n        \"status\": false,\n        \"power\": 20,\n        \"brand\": \"Aiwa\",\n        \"model\": \"XR-76\"\n    },\n    {\n        \"name\": \"Tv living\",\n        \"type\": \"Television\",\n        \"status\": false,\n        \"brand\": \"Samsung\",\n        \"model\": \"TGKSLS09\",\n        \"volume\": 15,\n        \"channel\": 0\n    },\n    {\n        \"name\": \"Desk lamp\",\n        \"type\": \"Lightbulb\",\n        \"status\": false,\n        \"brightness\": 50,\n        \"colorTemperature\": \"Normal\"\n    },\n    {\n        \"name\": \"Bedroom 1 ambient\",\n        \"type\": \"Lightbulb\",\n        \"status\": false,\n        \"brightness\": 35,\n        \"colorTemperature\": \"Warm\"\n    },\n    {\n        \"name\": \"Living rgb\",\n        \"type\": \"Lightbulb\",\n        \"status\": false,\n        \"brightness\": 65,\n        \"colorTemperature\": \"Variable\"\n    },\n    {\n        \"name\": \"Tv kitchen\",\n        \"type\": \"Television\",\n        \"status\": false,\n        \"brand\": \"LG\",\n        \"model\": \"TGKSLS09\",\n        \"volume\": 30,\n        \"channel\": 8\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "NotFound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/urlFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "urlFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Url",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/urlFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "urlFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Method"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Headers"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:00:38 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T15:00:38.526+00:00\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"path\": \"/device/urlFail\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Device By Name",
+          "item": [
+            {
+              "name": "FindDeviceByNameSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Return a device\", () => {",
+                      "  const responseJson = pm.response.json();",
+                      "  pm.expect(responseJson.name).to.eql(\"Soundbar\");",
+                      "  pm.expect(responseJson.type).to.eql(\"Speaker\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/find/Soundbar",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "find",
+                    "Soundbar"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Device",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/find/Soundbar",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "find",
+                        "Soundbar"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 15:35:11 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Soundbar\",\n    \"type\": \"Speaker\",\n    \"status\": false,\n    \"power\": 100,\n    \"brand\": \"Bose\",\n    \"model\": \"SCS-2021\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "NotFound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/find/Television",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "find",
+                    "Television"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/find/Television",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "find",
+                        "Television"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:02:51 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Update Device",
+          "item": [
+            {
+              "name": "UpdateDeviceSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Return a device\", () => {",
+                      "  const responseJson = pm.response.json();",
+                      "  pm.expect(responseJson.name).to.eql(\"Dyson_EDT\");",
+                      "  pm.expect(responseJson.type).to.eql(\"Conditioner\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Dyson_EDT\",\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Hall\",\r\n    \"temperature\": 30,\r\n    \"settings\": \"Aria calda\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "text"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/update/Dyson",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "update",
+                    "Dyson"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Device",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Dyson_EDT\",\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Hall\",\r\n    \"temperature\": 30,\r\n    \"settings\": \"Aria calda\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "text"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/update/Dyson",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "update",
+                        "Dyson"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:07:08 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Dyson_EDT\",\n    \"type\": \"Conditioner\",\n    \"status\": true,\n    \"temperature\": 30,\n    \"settings\": \"Aria calda\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "UpdateDeviceFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/update/DysonFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "update",
+                    "DysonFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/update/DysonFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "update",
+                        "DysonFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:06:25 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T15:06:25.936+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/device/update/DysonFail\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Device",
+          "item": [
+            {
+              "name": "AddDeviceSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Return a device\", () => {",
+                      "  const responseJson = pm.response.json();",
+                      "  pm.expect(responseJson.name).to.eql(\"Hyunday_leaf\");",
+                      "  pm.expect(responseJson.type).to.eql(\"Conditioner\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Hyunday_leaf\",\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Living room\",\r\n    \"temperature\": 15,\r\n    \"settings\": \"Aria fredda\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/device/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "device",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Add Device",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Hyunday leaf\",\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Living room\",\r\n    \"temperature\": 15,\r\n    \"settings\": \"Aria fredda\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "text"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:8080/device/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8080",
+                      "path": [
+                        "device",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 20:39:23 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Hyunday leaf\",\n    \"type\": \"Conditioner\",\n    \"status\": true,\n    \"temperature\": 15,\n    \"settings\": \"Aria fredda\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "InvalidBody",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Living\",\r\n    \"temperature\": 20,\r\n    \"settings\": \"Aria fredda\"\r\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8080/device/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "device",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "InvalidBody",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"status\": true,\r\n    \"type\": \"Conditioner\",\r\n    \"room_name\": \"Living\",\r\n    \"temperature\": 20,\r\n    \"settings\": \"Aria fredda\"\r\n}"
+                    },
+                    "url": {
+                      "raw": "http://localhost:8080/device/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8080",
+                      "path": [
+                        "device",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 20:40:26 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Device",
+          "item": [
+            {
+              "name": "DeleteDeviceSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/delete/Bedroom_1_ambient",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "delete",
+                    "Bedroom_1_ambient"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Device",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/delete/Soundbar",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "delete",
+                        "Soundbar"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:18:59 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "WrongName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/delete/SoundbarFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "delete",
+                    "SoundbarFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/delete/SoundbarFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "delete",
+                        "SoundbarFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:20:13 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Conditions In Device",
+          "item": [
+            {
+              "name": "FindConditionsInDeviceSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/findConditions/Samsung_air",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "findConditions",
+                    "Samsung_air"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Conditions In Device",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/findConditions/Samsung air",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "findConditions",
+                        "Samsung air"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "274"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:23:27 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Samsung Air warmer\",\n        \"activationDate\": \"27-12-2021 11:10:53\",\n        \"threshold\": 28,\n        \"action\": \"WARMER\",\n        \"device\": {\n            \"name\": \"Samsung air\",\n            \"type\": \"Conditioner\",\n            \"status\": true,\n            \"temperature\": 21,\n            \"settings\": \"Default\"\n        },\n        \"scene\": {\n            \"name\": \"Weekly routine\",\n            \"status\": true,\n            \"period\": \"Weekly\"\n        }\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "FindConditionsInDeviceFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/findConditions/SamsungFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "findConditions",
+                    "SamsungFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/findConditions/SamsungFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "findConditions",
+                        "SamsungFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:22:34 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Condition By Device And Condition Name",
+          "item": [
+            {
+              "name": "DeleteConditionByDeviceSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/deleteCondition/Samsung_air/Samsung_Air_warmer",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "deleteCondition",
+                    "Samsung_air",
+                    "Samsung_Air_warmer"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Condition By Device And Condition Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/deleteCondition/Samsung air/Samsung Air warmer",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "deleteCondition",
+                        "Samsung air",
+                        "Samsung Air warmer"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:24:09 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "WrongConditionName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/deleteCondition/Samsung_air/SamsungFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "deleteCondition",
+                    "Samsung_air",
+                    "SamsungFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Condition Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/deleteCondition/Samsung air/SamsungFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "deleteCondition",
+                        "Samsung air",
+                        "SamsungFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:26:18 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Condition By Device Name",
+          "item": [
+            {
+              "name": "AddConditionByDeviceNameSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"activationDate\": \"28-11-2021 20:30:00\",\r\n    \"period\": \"Daily\",\r\n    \"threshold\": 30,\r\n    \"name\": \"conditionTest\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/addCondition/Soundbar/Party",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "addCondition",
+                    "Soundbar",
+                    "Party"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Add Condition By Device Name",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"activationDate\": \"28-11-2021 20:30:00\",\r\n    \"period\": \"Daily\",\r\n    \"threshold\": 30,\r\n    \"name\": \"conditionTest\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/addCondition/Soundbar/Party",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "addCondition",
+                        "Soundbar",
+                        "Party"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 19 Dec 2021 22:06:33 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"conditionTest\",\n    \"activationDate\": \"28-11-2021 20:30:00\",\n    \"threshold\": 30,\n    \"action\": null,\n    \"device\": {\n        \"name\": \"Soundbar\",\n        \"type\": \"Speaker\",\n        \"status\": false,\n        \"power\": 100,\n        \"brand\": \"Bose\",\n        \"model\": \"SCS-2021\"\n    },\n    \"scene\": {\n        \"name\": \"Party\",\n        \"status\": false,\n        \"period\": null\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "AddConditionWithWrongDeviceName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/device/addCondition/SoundbarFail/Party",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "device",
+                    "addCondition",
+                    "SoundbarFail",
+                    "Party"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Device Name",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/device/addCondition/SoundbarFail/Party",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "device",
+                        "addCondition",
+                        "SoundbarFail",
+                        "Party"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:28:55 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T15:28:55.412+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/device/addCondition/SoundbarFail/Party\"\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Room",
+      "item": [
+        {
+          "name": "Find All Rooms",
+          "item": [
+            {
+              "name": "FindAllRoomsSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "all"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "All Rooms",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/all",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "all"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "159"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:03:47 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Hall\"\n    },\n    {\n        \"name\": \"Bathroom\"\n    },\n    {\n        \"name\": \"Default\"\n    },\n    {\n        \"name\": \"Bedroom 2\"\n    },\n    {\n        \"name\": \"Kitchen\"\n    },\n    {\n        \"name\": \"Studio\"\n    },\n    {\n        \"name\": \"Living room\"\n    },\n    {\n        \"name\": \"Guest room\"\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "NotFound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/wrongUrl",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "wrongUrl"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Url",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/wrongUrl",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "wrongUrl"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Method"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Headers"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:39:37 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T15:39:37.279+00:00\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"path\": \"/room/wrongUrl\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Room By Name",
+          "item": [
+            {
+              "name": "FindRoomByNameSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/find/Studio",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "find",
+                    "Studio"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Room",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/find/Studio",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "find",
+                        "Studio"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:04:54 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Studio\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "NotFound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/find/RoomFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "find",
+                    "RoomFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/find/RoomFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "find",
+                        "RoomFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:41:14 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Update Room",
+          "item": [
+            {
+              "name": "UpdateRoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Hall_UPT\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/update/Hall",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "update",
+                    "Hall"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Room",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"Hall_UPT\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/update/Hall",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "update",
+                        "Hall"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:29:05 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Hall_UPT\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "UpdateRoomFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/update/HallFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "update",
+                    "HallFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/update/HallFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "update",
+                        "HallFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:42:58 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T15:42:58.698+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/room/update/HallFail\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Room",
+          "item": [
+            {
+              "name": "AddRoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"living room\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Add Room",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"living room\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:44:17 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"living room\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "DuplicatedName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Studio\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Name Already Exists",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"Studio\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:45:24 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Room",
+          "item": [
+            {
+              "name": "DeleteRoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/delete/Bathroom",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "delete",
+                    "Bathroom"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Room",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/delete/Bathroom",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "delete",
+                        "Bathroom"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 22:15:07 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "WrongName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/delete/HallFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "delete",
+                    "HallFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/delete/HallFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "delete",
+                        "HallFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:47:12 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Device To Room",
+          "item": [
+            {
+              "name": "AddDeviceToRoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/addDevice/Kitchen/Desk_lamp",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "addDevice",
+                    "Kitchen",
+                    "Desk_lamp"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Add Device To Room",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/addDevice/Hall/Desk lamp",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "addDevice",
+                        "Hall",
+                        "Desk lamp"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:57:42 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Desk lamp\",\n    \"type\": \"Lightbulb\",\n    \"status\": false,\n    \"brightness\": 50,\n    \"colorTemperature\": \"Normal\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "AddDeviceToRoomFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/addDevice/Hall/DeviceFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "addDevice",
+                    "Hall",
+                    "DeviceFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Device Name",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/addDevice/Hall/DeviceFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "addDevice",
+                        "Hall",
+                        "DeviceFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:48:41 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find All Devices In A Room",
+          "item": [
+            {
+              "name": "FindAllDeviceInARoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/findDevices/Hall_UPT",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "findDevices",
+                    "Hall_UPT"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "FindAllDeviceInARoomSuccess",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/findDevices/Bathroom",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "findDevices",
+                        "Bathroom"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=ISO-8859-1"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "493"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 21 Dec 2021 20:50:58 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[{\"name\":\"Samsung air\",\"type\":\"Conditioner\",\"status\":true,\"temperature\":20,\"settings\":\"Default\"},{\"name\":\"Dyson\",\"type\":\"Conditioner\",\"status\":true,\"temperature\":30,\"settings\":\"Sun\"},{\"name\":\"Desk lamp\",\"type\":\"Lightbulb\",\"status\":false,\"brightness\":50,\"colorTemperature\":\"Normal\"},{\"name\":\"Soundbar\",\"type\":\"Speaker\",\"status\":false,\"power\":100,\"brand\":\"Bose\",\"model\":\"SCS-2021\"},{\"name\":\"Tv kitchen\",\"type\":\"Television\",\"status\":false,\"brand\":\"LG\",\"model\":\"TGKSLS09\",\"volume\":30,\"channel\":8}]"
+                }
+              ]
+            },
+            {
+              "name": "NotFound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/findDevices/RoomFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "findDevices",
+                    "RoomFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Room",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/findDevices/RoomFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "findDevices",
+                        "RoomFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:51:08 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Device From A Room",
+          "item": [
+            {
+              "name": "DeleteDeviceFromARoomSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/deleteDevice/Kitchen/Living_rgb",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "deleteDevice",
+                    "Kitchen",
+                    "Living_rgb"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Device From A Room",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/deleteDevice/Dyson",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "deleteDevice",
+                        "Dyson"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:52:32 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Dyson\",\n    \"type\": \"Conditioner\",\n    \"status\": true,\n    \"temperature\": 30,\n    \"settings\": \"Sun\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "DeleteDeviceFromARoomFakeName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/room/deleteDevice/DeviceFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "room",
+                    "deleteDevice",
+                    "DeviceFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Device Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/room/deleteDevice/DeviceFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "room",
+                        "deleteDevice",
+                        "DeviceFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 15:53:21 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Scene",
+      "item": [
+        {
+          "name": "Find All Scenes",
+          "item": [
+            {
+              "name": "FindAllScenesSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "all"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "All Scenes",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/all",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "all"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "282"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:16:29 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Daily routine\",\n        \"status\": true,\n        \"period\": \"Daily\"\n    },\n    {\n        \"name\": \"Weekly routine\",\n        \"status\": true,\n        \"period\": \"Weekly\"\n    },\n    {\n        \"name\": \"Monthly routine\",\n        \"status\": true,\n        \"period\": \"Monthly\"\n    },\n    {\n        \"name\": \"Party\",\n        \"status\": false,\n        \"period\": null\n    },\n    {\n        \"name\": \"Favourite TV program\",\n        \"status\": false,\n        \"period\": null\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "FindAllScenesWrongUrl",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/wrongUrl",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "wrongUrl"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Url",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/wrongUrl",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "wrongUrl"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Method"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Headers"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:19:54 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T16:19:54.503+00:00\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"path\": \"/scene/wrongUrl\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Scene By Name",
+          "item": [
+            {
+              "name": "FindSceneByNameSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/find/Party",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "find",
+                    "Party"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Scene",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/find/Party",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "find",
+                        "Party"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:17:02 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Party\",\n    \"status\": false,\n    \"period\": null\n}"
+                }
+              ]
+            },
+            {
+              "name": "FindSceneByNameWrongName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/find/SceneFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "find",
+                    "SceneFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/find/SceneFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "find",
+                        "SceneFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:21:23 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Update Scene",
+          "item": [
+            {
+              "name": "UpdateSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": " {\r\n        \"name\": \"Start_party\",\r\n        \"status\": true\r\n    }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/update/Party",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "update",
+                    "Party"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Scene",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": " {\r\n        \"name\": \"Start party\",\r\n        \"status\": true\r\n    }",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/update/Party",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "update",
+                        "Party"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:17:56 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Start party\",\n    \"status\": true,\n    \"period\": null\n}"
+                }
+              ]
+            },
+            {
+              "name": "UpdateSceneWrongName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/update/SceneFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "update",
+                    "SceneFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/update/SceneFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "update",
+                        "SceneFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:22:42 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T16:22:42.847+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/scene/update/SceneFail\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Scene",
+          "item": [
+            {
+              "name": "AddSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "  {\r\n        \"name\": \"NewCommandScene\",\r\n        \"status\": true \r\n  }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Add Scene",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "  {\r\n        \"name\": \"NewCommandScene\",\r\n        \"status\": true \r\n  }",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:23:36 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"NewCommandScene\",\n    \"status\": true,\n    \"period\": null\n}"
+                }
+              ]
+            },
+            {
+              "name": "AddSceneDuplicatedName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "  {\r\n        \"name\": \"Start_party\",\r\n        \"status\": false \r\n  }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Name Already Exists",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "  {\r\n        \"name\": \"Party\",\r\n        \"status\": false \r\n  }",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 21 Dec 2021 10:39:18 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Scene",
+          "item": [
+            {
+              "name": "DeleteSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/deleteScene/Daily_routine",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "deleteScene",
+                    "Daily_routine"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Scene",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/deleteScene/Daily routine",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "deleteScene",
+                        "Daily routine"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sat, 18 Dec 2021 16:20:23 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "DeleteSceneWrongName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/deleteScene/SceneFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "deleteScene",
+                    "SceneFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/deleteScene/SceneFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "deleteScene",
+                        "SceneFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:26:29 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Device To Scene",
+          "item": [
+            {
+              "name": "AddDeviceToSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"activationDate\": \"20-11-2020 20:00:00\",\n    \"threshold\": 52,\n    \"action\": 1,\n    \"name\": \"test3124\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/addDevice/Monthly_routine/Tv_kitchen",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "addDevice",
+                    "Monthly_routine",
+                    "Tv_kitchen"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "AddDeviceToScene",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"activationDate\": \"20-11-2020 20:00:00\",\n    \"threshold\": 52,\n    \"action\": 1,\n    \"name\": \"test3124\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/addDevice/Daily routine/Dyson",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "addDevice",
+                        "Daily routine",
+                        "Dyson"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:51:34 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"test3124\",\n    \"activationDate\": \"20-11-2020 20:00:00\",\n    \"threshold\": 52,\n    \"action\": \"LOWER_VOLUME_DOWN\",\n    \"device\": {\n        \"name\": \"Dyson\",\n        \"type\": \"Conditioner\",\n        \"status\": true,\n        \"temperature\": 30,\n        \"settings\": \"Sun\"\n    },\n    \"scene\": {\n        \"name\": \"Daily routine\",\n        \"status\": true,\n        \"period\": \"Daily\"\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "AddDeviceToSceneFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/addDevice/Daily_routine/Dyson",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "addDevice",
+                    "Daily_routine",
+                    "Dyson"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Name Already Exists",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/addDevice/Daily routine/Dyson",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "addDevice",
+                        "Daily routine",
+                        "Dyson"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:28:03 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T16:28:03.538+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/scene/addDevice/Daily%20routine/Dyson\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Remove Device From Scene",
+          "item": [
+            {
+              "name": "RemoveDeviceToSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/removeDevice/Monthly_routine/Desk_lamp",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "removeDevice",
+                    "Monthly_routine",
+                    "Desk_lamp"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Remove Device To Scene",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/removeDevice/Monthly routine/Desk lamp",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "removeDevice",
+                        "Monthly routine",
+                        "Desk lamp"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:54:19 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "RemoveDeviceToSceneFail",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/removeDevice/Monthly_routine/DeviceFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "removeDevice",
+                    "Monthly_routine",
+                    "DeviceFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Device Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/removeDevice/Monthly routine/DeviceFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "removeDevice",
+                        "Monthly routine",
+                        "DeviceFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:29:35 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Device In Scene",
+          "item": [
+            {
+              "name": "FindDeviceInSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/findDevices/Monthly_routine",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "findDevices",
+                    "Monthly_routine"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Device In Scene",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/findDevices/Weekly routine",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "findDevices",
+                        "Weekly routine"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "106"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:55:58 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Bedroom 1 ambient\",\n        \"type\": \"Lightbulb\",\n        \"status\": false,\n        \"brightness\": 35,\n        \"colorTemperature\": \"Warm\"\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "FindDeviceInSceneFakeName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/findDevices/SceneFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "findDevices",
+                    "SceneFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Scene Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/findDevices/SceneFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "findDevices",
+                        "SceneFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:31:08 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Conditions In Scene",
+          "item": [
+            {
+              "name": "FindConditionInSceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/findConditions/Monthly_routine",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "findConditions",
+                    "Monthly_routine"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Conditions In Scene",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/findConditions/Weekly routine",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "findConditions",
+                        "Weekly routine"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "304"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:58:00 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n    {\n        \"name\": \"Woofer kit lower volume down\",\n        \"activationDate\": \"20-12-2021 11:16:52\",\n        \"threshold\": 17,\n        \"action\": \"LOWER_VOLUME_DOWN\",\n        \"device\": {\n            \"name\": \"Bedroom 1 ambient\",\n            \"type\": \"Lightbulb\",\n            \"status\": false,\n            \"brightness\": 35,\n            \"colorTemperature\": \"Warm\"\n        },\n        \"scene\": {\n            \"name\": \"Weekly routine\",\n            \"status\": true,\n            \"period\": \"Weekly\"\n        }\n    }\n]"
+                }
+              ]
+            },
+            {
+              "name": "FindConditionsInSceneNotValid",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/findConditions/WeeklyFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "findConditions",
+                    "WeeklyFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Scene Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/findConditions/WeeklyFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "findConditions",
+                        "WeeklyFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:32:15 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Condition By A Scene",
+          "item": [
+            {
+              "name": "DeleteConditionByASceneSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/deleteCondition/Favourite_TV_program/Tv_living_power_on",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "deleteCondition",
+                    "Favourite_TV_program",
+                    "Tv_living_power_on"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Condition By SceneAnd Condition",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/deleteCondition/Favourite TV program/Tv living power on",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "deleteCondition",
+                        "Favourite TV program",
+                        "Tv living power on"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 11:59:21 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "DeleteConditionWithWrongConditionName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/scene/deleteCondition/Favourite_TV_program/ConditionFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "scene",
+                    "deleteCondition",
+                    "Favourite_TV_program",
+                    "ConditionFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Condition Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/scene/deleteCondition/Favourite TV program/ConditionFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "scene",
+                        "deleteCondition",
+                        "Favourite TV program",
+                        "ConditionFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:33:48 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Find All Profiles",
+          "item": [
+            {
+              "name": "FindAllProfilesSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "all"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "All Profiles",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/all",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "all"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain;charset=UTF-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "171"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Sun, 05 Dec 2021 14:23:56 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[{\"email\":\"sextence0@fc2.com\",\"name\":\"Nancy\",\"surname\":\"Jones\",\"password\":\"pluto88\"},{\"email\":\"mariorossi@n2o.com\",\"name\":\"Guest\",\"surname\":\"account\",\"password\":\"tomato\"}]"
+                }
+              ]
+            },
+            {
+              "name": "FindAllProfilesInvalidUrl",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/wrongUrl",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "wrongUrl"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Url",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/wrongUrl",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "wrongUrl"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Method"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Access-Control-Request-Headers"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:41:53 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T16:41:53.237+00:00\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"path\": \"/profile/wrongUrl\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Find Profile By Name",
+          "item": [
+            {
+              "name": "FindProfileByNameSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/find/Nancy",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "find",
+                    "Nancy"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Find Profile By Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/find/Nancy",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "find",
+                        "Nancy"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 16 Nov 2021 17:08:24 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Nancy\",\n    \"desc\": null,\n    \"email\": \"sextence0@fc2.com\",\n    \"surname\": \"Jones\",\n    \"password\": \"pluto88\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "FindIProfileFakeName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(404);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/find/NameFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "find",
+                    "NameFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Name",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/find/NameFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "find",
+                        "NameFail"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:42:52 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Add Profile",
+          "item": [
+            {
+              "name": "AddProfileSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Return a device\", () => {",
+                      "  const responseJson = pm.response.json();",
+                      "  pm.expect(responseJson.name).to.eql(\"Harry\");",
+                      "  pm.expect(responseJson.surname).to.eql(\"Jacob\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"Harry\",\r\n    \"surname\":\"Jacob\",\r\n    \"email\":\"harry@gmail.com\",\r\n    \"password\":\"abc\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "add"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "AddProfile",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\":\"Harry\",\r\n    \"surname\":\"Jacob\",\r\n    \"email\":\"harry@gmail.com\",\r\n    \"password\":\"abc\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/add",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "add"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 12:02:40 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"Harry\",\n    \"email\": \"harry@gmail.com\",\n    \"surname\": \"Jacob\",\n    \"password\": \"abc\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "AddProfileWithInvalidName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"Nancy\",\r\n    \"surname\":\"Jones\",\r\n    \"email\":\"harry@gmail.com\",\r\n    \"password\":\"abc\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/add",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "add"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Update Profile",
+          "item": [
+            {
+              "name": "UpdateProfileSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Return a device\", () => {",
+                      "  const responseJson = pm.response.json();",
+                      "  pm.expect(responseJson.name).to.eql(\"James\");",
+                      "  pm.expect(responseJson.surname).to.eql(\"Brown\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"James\",\r\n    \"surname\":\"Brown\",\r\n    \"email\":\"james@gmail.com\",\r\n    \"password\":\"1234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/update/Nancy",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "update",
+                    "Nancy"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Update Profile",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"James\",\r\n    \"surname\":\"Brown\",\r\n    \"email\":\"james@gmail.com\",\r\n    \"password\":\"1234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/update/Nancy",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "update",
+                        "Nancy"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 12:04:49 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"name\": \"James\",\n    \"email\": \"james@gmail.com\",\n    \"surname\": \"Brown\",\n    \"password\": \"1234\"\n}"
+                }
+              ]
+            },
+            {
+              "name": "UpdateProfileWithFakeName",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/update/NameFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "update",
+                    "NameFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Profile Name",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/update/NameFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "update",
+                        "NameFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Transfer-Encoding",
+                      "value": "chunked"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:45:02 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"timestamp\": \"2021-12-20T16:45:02.797+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/profile/update/NameFail\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Delete Profile",
+          "item": [
+            {
+              "name": "DeleteProfileSuccess",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", () => {",
+                      "  pm.expect(pm.response.code).to.eql(200);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/deleteProfile/Guest",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "deleteProfile",
+                    "Guest"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Delete Profile",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/deleteProfile/Guest",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "deleteProfile",
+                        "Guest"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:49:18 GMT"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=60"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            },
+            {
+              "name": "DeleteProfileFakeName",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:{{Port}}/profile/deleteProfile/NameFail",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "{{Port}}",
+                  "path": [
+                    "profile",
+                    "deleteProfile",
+                    "NameFail"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Wrong Profile Name",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:{{Port}}/profile/deleteProfile/NameFail",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "{{Port}}",
+                      "path": [
+                        "profile",
+                        "deleteProfile",
+                        "NameFail"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "plain",
+                  "header": [
+                    {
+                      "key": "Content-Length",
+                      "value": "0"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Mon, 20 Dec 2021 16:46:32 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "close"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Undo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{Port}}/home/undo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "{{Port}}",
+          "path": [
+            "home",
+            "undo"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "whenLastOperationIsSearch",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:{{Port}}/home/undo",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "{{Port}}",
+              "path": [
+                "home",
+                "undo"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 09 Nov 2021 20:21:21 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{Port}}/home/test",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "{{Port}}",
+          "path": [
+            "home",
+            "test"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "whenLastOperationIsSearch",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:{{Port}}/home/undo",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "{{Port}}",
+              "path": [
+                "home",
+                "undo"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "plain",
+          "header": [
+            {
+              "key": "Content-Length",
+              "value": "0"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 09 Nov 2021 20:21:21 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:{{Port}}/home/history",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "{{Port}}",
+          "path": [
+            "home",
+            "history"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "History",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:{{Port}}/home/history",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "{{Port}}",
+              "path": [
+                "home",
+                "history"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 09 Nov 2021 22:05:56 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n    {\n        \"television\": \"Television5\",\n        \"operation\": \"com.gruppo1.smarthome.crud.impl.AddOperationImpl@424ad350\"\n    },\n    {\n        \"television\": \"Television7\",\n        \"operation\": \"com.gruppo1.smarthome.crud.impl.AddOperationImpl@6ab466ed\"\n    }\n]"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "Port",
+      "value": "8080"
+    }
+  ]
+}
