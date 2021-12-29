@@ -24,7 +24,7 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(getApiInfo());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
                 .title("SmartHome API")
                 .description("Set of APIs to manage a smarthome environment")

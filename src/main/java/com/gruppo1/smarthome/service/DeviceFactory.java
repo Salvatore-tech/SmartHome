@@ -1,12 +1,10 @@
-package com.gruppo1.smarthome.beans;
+package com.gruppo1.smarthome.service;
 
 import com.gruppo1.smarthome.model.*;
-import org.springframework.stereotype.Component;
 
-@Component
 public class DeviceFactory {
 
-    public Device create(String deviceType) {
+    public static Device create(String deviceType) {
         if (deviceType.isEmpty()) {
             return null;
         }

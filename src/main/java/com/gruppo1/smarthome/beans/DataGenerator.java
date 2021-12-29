@@ -118,18 +118,16 @@ public class DataGenerator {
 
     @Bean("generateConditions")
     @DependsOn({"generateDevices", "generateScenes"})
-    public List<Condition> generateConditions(ConditionRepo conditionRepo, DeviceRepo deviceRepo, SceneRepo sceneRepo) {
+    public List<Condition> generateConditions() {
         CrudOperation addConditionOperation = new AddOperationImpl(conditionRepo);
         final Random rand = new Random();
-
         conditions.add(new Condition("SpongeBob_clock_power_on", Actions.POWER_ON, new Date(System.currentTimeMillis() + 120000), rand.nextInt(30), devices.get(0), scenes.get(0)));
         conditions.add(new Condition("Samsung_Air_warmer", Actions.WARMER, new Date(System.currentTimeMillis() + 240000), rand.nextInt(30), devices.get(1), scenes.get(1)));
         conditions.add(new Condition("Desk_lamp_colder", Actions.COLDER, new Date(System.currentTimeMillis() + 360000), rand.nextInt(30), devices.get(3), scenes.get(2)));
         conditions.add(new Condition("Soundbar_raise_volume_up", Actions.RAISE_VOLUME_UP, new Date(System.currentTimeMillis() + 480000), rand.nextInt(30), devices.get(7), scenes.get(3)));
         conditions.add(new Condition("Woofer_kit_lower_volume_down", Actions.LOWER_VOLUME_DOWN, new Date(System.currentTimeMillis() + 600000), rand.nextInt(30), devices.get(5), scenes.get(1)));
         conditions.add(new Condition("Tv_living_power_on", Actions.POWER_ON, new Date(System.currentTimeMillis() + 720000), rand.nextInt(30), devices.get(9), scenes.get(4)));
-
-
+        //save a few conditions
         conditions.forEach(addConditionOperation::execute);
         return conditions;
     }

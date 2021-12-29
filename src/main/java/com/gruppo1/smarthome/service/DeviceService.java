@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.service;
 
-import com.gruppo1.smarthome.beans.DeviceFactory;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.command.impl.*;
 import com.gruppo1.smarthome.memento.MementoCareTaker;
@@ -24,7 +23,6 @@ import java.util.Objects;
 @Service
 @Transactional
 public class DeviceService {
-    private final DeviceFactory deviceFactory;
     private final MementoCareTaker mementoCareTaker;
     private final ConditionService conditionService;
 
@@ -34,8 +32,7 @@ public class DeviceService {
     private final RoomRepo roomRepo;
 
     @Autowired
-    public DeviceService(DeviceFactory deviceFactory, MementoCareTaker mementoCareTaker, ConditionService conditionService, DeviceRepo deviceRepo, SceneRepo sceneRepo, ConditionRepo conditionRepo, RoomRepo roomRepo) {
-        this.deviceFactory = deviceFactory;
+    public DeviceService(MementoCareTaker mementoCareTaker, ConditionService conditionService, DeviceRepo deviceRepo, SceneRepo sceneRepo, ConditionRepo conditionRepo, RoomRepo roomRepo) {
         this.mementoCareTaker = mementoCareTaker;
         this.conditionService = conditionService;
         this.deviceRepo = deviceRepo;
@@ -50,7 +47,7 @@ public class DeviceService {
             return null;
 
         String typeDevice = deviceJson.get("type").toString().toLowerCase();
-        Device newDevice = deviceFactory.create(typeDevice);
+        Device newDevice = DeviceFactory.create(typeDevice);
         if (isPresent(newDevice)) {
             ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(typeDevice);
             converter.convert(deviceJson, newDevice);
@@ -117,7 +114,6 @@ public class DeviceService {
         return null;
     }
 
-    //TODO: TO FIX
     public List<Condition> findConditionsInDevice(String deviceName) {
         CrudOperation operationToPerform = new GetByNameOperationImpl(deviceRepo);
         List<Condition> conditions = new ArrayList<>();
