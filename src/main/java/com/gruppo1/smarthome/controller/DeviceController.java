@@ -92,9 +92,9 @@ public class DeviceController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @PostMapping("/addCondition/{deviceName}/{sceneName}")
-    public ResponseEntity<Condition> addDevice(@ApiParam(value = "Name of a valid device", required = true) @PathVariable("deviceName") String deviceName,
-                                               @ApiParam(value = "Name of a valid scene", required = true) @PathVariable("sceneName") String sceneName,
-                                               @ApiParam(value = "Automation condition", required = true) @RequestBody Condition condition) {
+    public ResponseEntity<Condition> addCondition(@ApiParam(value = "Name of a valid device", required = true) @PathVariable("deviceName") String deviceName,
+                                                  @ApiParam(value = "Name of a valid scene", required = true) @PathVariable("sceneName") String sceneName,
+                                                  @ApiParam(value = "Automation condition", required = true) @RequestBody Condition condition) {
         Condition newCondition = deviceService.addConditionByDeviceName(deviceName, sceneName, condition);
         return Objects.nonNull(newCondition) ?
                 new ResponseEntity<>(newCondition, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);

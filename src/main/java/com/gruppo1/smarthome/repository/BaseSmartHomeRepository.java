@@ -15,6 +15,4 @@ public interface BaseSmartHomeRepository<SmartHomeItem, String>
 
     int deleteByName(String entityName);
 
-    long count();
-
 }
