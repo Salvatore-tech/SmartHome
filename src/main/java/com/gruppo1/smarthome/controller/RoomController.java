@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.service.RoomService;
@@ -29,10 +28,9 @@ public class RoomController {
     @ApiOperation(value = "List all rooms", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<String> getAllRooms() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Room>> getAllRooms() throws JsonProcessingException {
         List<Room> rooms = roomService.findAllRoom();
-        return rooms.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(rooms), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !rooms.isEmpty() ? ResponseEntity.ok(rooms) : (ResponseEntity<List<Room>>) ResponseEntity.notFound();
     }
 
 
@@ -60,9 +58,7 @@ public class RoomController {
     @PostMapping("/add")
     @ApiOperation(value = "Add new room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Room Added"),
-            @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 409, message = "Conflict"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     public ResponseEntity<Room> addRoom(@RequestBody Room room) {
         Room newRoom = roomService.addRoom(room);
@@ -75,7 +71,7 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Room deleted"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<?> deleteRoom(@ApiParam(value = "Room ID", required = true)
+    public ResponseEntity<?> deleteRoom(@ApiParam(value = "Name of a valid room to delete", required = true)
                                         @PathVariable("name") String name) {
         return roomService.deleteRoom(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -85,10 +81,9 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return list devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<String> findDevices(@PathVariable("roomName") String roomName) throws JsonProcessingException {
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("roomName") String roomName) throws JsonProcessingException {
         List<Device> devices = roomService.findDevicesInRoom(roomName);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }
 
     @PostMapping("/addDevice/{roomName}/{deviceName}")
@@ -110,9 +105,8 @@ public class RoomController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity<Device> deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
+    public ResponseEntity.BodyBuilder deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
         return roomService.deleteDeviceFromRoom(roomName, deviceName) ?
-                new ResponseEntity(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                ResponseEntity.ok() : ResponseEntity.badRequest();
     }
-
 }

@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
@@ -31,10 +30,9 @@ public class SceneController {
     @ApiOperation(value = "List all scenes", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "List of scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<String> getAllScenes() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Scene>> getAllScenes() throws JsonProcessingException {
         List<Scene> scenes = sceneService.findAllScene();
-        return scenes.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(scenes), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !scenes.isEmpty() ? ResponseEntity.ok(scenes) : (ResponseEntity<List<Scene>>) ResponseEntity.notFound();
     }
 
     @GetMapping("/find/{name}")
@@ -98,9 +96,9 @@ public class SceneController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @DeleteMapping("/removeDevice/{sceneName}/{deviceName}")
-    public ResponseEntity<Integer> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
+    public ResponseEntity<?> removeDevice(@PathVariable("sceneName") String sceneName, @PathVariable("deviceName") String deviceName) {
         Integer result = sceneService.removeDeviceToScene(sceneName, deviceName);
-        return result.equals(1) ?
+        return !result.equals(0) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
@@ -111,21 +109,19 @@ public class SceneController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @GetMapping("/findDevices/{sceneName}")
-    public ResponseEntity<String> findDevices(@PathVariable("sceneName") String sceneName) throws JsonProcessingException {
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName) throws JsonProcessingException {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }
 
     @GetMapping("/findConditions/{sceneName}")
     @ApiOperation(value = "Find conditions", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<String> getConditions(@ApiParam(value = "Scene name", required = true)
-                                                @PathVariable("sceneName") String sceneName) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Condition>> getConditions(@ApiParam(value = "Scene name", required = true)
+                                                         @PathVariable("sceneName") String sceneName) throws JsonProcessingException {
         List<Condition> conditions = sceneService.findConditionsInScene(sceneName);
-        return conditions.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : (ResponseEntity<List<Condition>>) ResponseEntity.notFound();
     }
 
     @DeleteMapping("/deleteCondition/{sceneName}/{conditionName}")

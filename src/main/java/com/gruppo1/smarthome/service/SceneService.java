@@ -115,7 +115,7 @@ public class SceneService {
                 conditionsDeleted.incrementAndGet();
             }
         });
-        return (conditionsDeleted.get() > 0) ? 1 : 0;
+        return conditionsDeleted.get();
     }
 
     public List<Device> findDevicesInScene(String sceneName) {

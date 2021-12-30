@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gruppo1.smarthome.command.api.CrudOperation;
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.service.GenericService;
@@ -10,7 +9,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +38,8 @@ public class BaseController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Undo performed correctly"),
             @ApiResponse(code = 400, message = "The previous operation is not undoable")
     })
-    public ResponseEntity undoLastOperation() {
-        return genericService.undo() == 1 ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity.BodyBuilder undoLastOperation() {
+        return genericService.undo() == 1 ? ResponseEntity.ok() : ResponseEntity.badRequest();
     }
 
     @GetMapping("/history")

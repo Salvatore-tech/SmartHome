@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Profile;
 import com.gruppo1.smarthome.service.ProfileService;
 import io.swagger.annotations.*;
@@ -29,10 +28,9 @@ public class ProfileController {
     @ApiOperation(value = "Profile", tags = {"Profile"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "List of profiles"),
             @ApiResponse(code = 404, message = "Not Found - the user has not added a profile yet")})
-    public ResponseEntity<String> getAllProfile() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Profile>> getAllProfile() throws JsonProcessingException {
         List<Profile> profiles = profileService.findAllProfile();
-        return profiles.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(profiles), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !profiles.isEmpty() ? ResponseEntity.ok(profiles) : (ResponseEntity<List<Profile>>) ResponseEntity.notFound();
     }
 
     @GetMapping("/find/{name}")

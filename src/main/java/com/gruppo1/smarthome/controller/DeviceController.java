@@ -1,7 +1,6 @@
 package com.gruppo1.smarthome.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.service.DeviceService;
@@ -34,10 +33,9 @@ public class DeviceController {
     @ApiOperation(value = "List all devices installed", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<String> getAllDevices() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Device>> getAllDevices() throws JsonProcessingException {
         List<Device> devices = deviceService.findAllDevices();
-        return devices.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(devices), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }
 
     @PostMapping("/add")
@@ -81,8 +79,7 @@ public class DeviceController {
     public ResponseEntity<Device> updateDevice(@ApiParam(value = "Name of a valid device") @PathVariable("name") String name, @RequestBody String deviceString) throws JSONException {
         JSONObject deviceJson = new JSONObject(deviceString);
         Device result = deviceService.updateDevice(name, deviceJson);
-        return Objects.nonNull(result) ?
-                new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return Objects.nonNull(result) ? ResponseEntity.ok(result) : (ResponseEntity<Device>) ResponseEntity.badRequest();
     }
 
     @ApiOperation(value = "Add automation's condition to a device", tags = {"Device"})
@@ -104,11 +101,10 @@ public class DeviceController {
     @ApiOperation(value = "Find conditions", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<String> getConditions(@ApiParam(value = "Name of a valid device", required = true)
-                                                @PathVariable("deviceName") String deviceName) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<List<Condition>> getConditions(@ApiParam(value = "Name of a valid device", required = true)
+                                                         @PathVariable("deviceName") String deviceName) throws JsonProcessingException {
         List<Condition> conditions = deviceService.findConditionsInDevice(deviceName);
-        return conditions.size() > 0 ? new ResponseEntity<>(objectMapper.writeValueAsString(conditions), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : (ResponseEntity<List<Condition>>) ResponseEntity.notFound();
     }
 
     @DeleteMapping("/deleteCondition/{deviceName}/{conditionName}")
