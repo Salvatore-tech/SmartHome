@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @Api(value = "Generic", description = "Rest API to manage generic requests", tags = {"Generic"})
@@ -45,7 +46,7 @@ public class BaseController {
     @GetMapping("/history")
     @ApiOperation(value = "List the previous operations performed", tags = {"Generic"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Operations previously performed")})
-    public ResponseEntity<String> showHistory(){
+    public ResponseEntity<String> showHistory() {
 
         List<ImmutablePair<CrudOperation, Memento>> history = genericService.getHistory();
         return new ResponseEntity(serializeList(history), HttpStatus.OK);
@@ -58,23 +59,25 @@ public class BaseController {
         mementoPairList.forEach(
 
                 element -> {
-                    String pathOperation = element.getLeft().toString();
-                    String operationCamelCase = pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
-                    String operation = StringUtils.join(
-                            StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
-                            ' '
-                    );
-                    operation = operation.replace("Impl", "") + "Of A "+ element.getRight().getLabel();
-                    JSONObject obj = new JSONObject();
-                    try {
-                        obj.put("Operation",operation);
-                        obj.put("item",element.getRight().getName());
-                        output.add(obj);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (Objects.nonNull(element.getLeft()) && Objects.nonNull(element.getRight())) {
+                        String pathOperation = element.getLeft().toString();
+                        String operationCamelCase = pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
+                        String operation = StringUtils.join(
+                                StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
+                                ' '
+                        );
+                        operation = operation.replace("Impl", "") + "Of A " + element.getRight().getLabel();
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("Operation", operation);
+                            obj.put("item", element.getRight().getName());
+                            output.add(obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
-
-
                 }
         );
         return output.toString();
