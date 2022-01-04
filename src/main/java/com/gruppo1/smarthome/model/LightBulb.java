@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoDevice;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
@@ -12,7 +13,10 @@ import java.util.Objects;
 @Table(name = "lightbulb")
 public class LightBulb extends Device {
 
+    @ApiModelProperty(value = "50",position = 13)
     private Integer brightness;
+
+    @ApiModelProperty(value = "Normal",position = 14)
     private String colorTemperature;
 
     public LightBulb() {

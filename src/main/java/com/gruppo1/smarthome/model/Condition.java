@@ -1,8 +1,10 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.command.api.Actions;
 import com.gruppo1.smarthome.memento.Memento;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,14 +18,21 @@ import java.util.Date;
 public class Condition extends SmartHomeItem implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @ApiModelProperty(value = "28-11-2021 20:30:00",position = 8)
     private Date activationDate;
+
+    @ApiModelProperty(value = "30",position = 9)
     private Integer threshold;
+
+    @ApiModelProperty(value = "POWER_ON",position = 10)
     private Actions action;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "device_id")
     private Device device;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "scene_id")
     private Scene scene;

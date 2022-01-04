@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,8 +13,12 @@ import java.util.List;
 public class Scene extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "true",position = 18)
     private Boolean status;
+
+    @ApiModelProperty(value = "Daily",position = 19)
     private String period;
+
     @JsonIgnore
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
     private List<Condition> conditions;

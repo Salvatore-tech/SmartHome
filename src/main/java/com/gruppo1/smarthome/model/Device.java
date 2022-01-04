@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,9 +13,13 @@ import java.util.List;
 public abstract class Device extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false, updatable = false)
+    @ApiModelProperty(value = "Conditioner",position = 11)
     protected String type;
+
     @Column
+    @ApiModelProperty(value = "true",position = 12)
     protected Boolean status;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = true)

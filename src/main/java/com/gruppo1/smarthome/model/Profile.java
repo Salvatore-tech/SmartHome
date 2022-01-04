@@ -1,6 +1,7 @@
 package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +14,15 @@ import java.io.Serializable;
 public class Profile extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "harry@gmail.com",position = 15)
     private String email;
+
     @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
+    @ApiModelProperty(value = "Jacob",position = 16)
     private String surname;
+
     @Column(nullable = false)
+    @ApiModelProperty(value = "abc",position = 17)
     private String password;
 
     public Profile() {
