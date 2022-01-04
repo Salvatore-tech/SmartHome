@@ -45,15 +45,14 @@ public class BaseController {
     @GetMapping("/history")
     @ApiOperation(value = "List the previous operations performed", tags = {"Generic"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Operations previously performed")})
-    public ResponseEntity<String> showHistory(){
+    public ResponseEntity<String> showHistory() {
 
         List<ImmutablePair<CrudOperation, Memento>> history = genericService.getHistory();
         return new ResponseEntity(serializeList(history), HttpStatus.OK);
 
     }
 
-    //TODO: where to place this method?
-    public String serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
+    private String serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
         List<JSONObject> output = new ArrayList<>();
         mementoPairList.forEach(
 
@@ -64,11 +63,11 @@ public class BaseController {
                             StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
                             ' '
                     );
-                    operation = operation.replace("Impl", "") + "Of A "+ element.getRight().getLabel();
+                    operation = operation.replace("Impl", "") + "Of A " + element.getRight().getLabel();
                     JSONObject obj = new JSONObject();
                     try {
-                        obj.put("Operation",operation);
-                        obj.put("item",element.getRight().getName());
+                        obj.put("Operation", operation);
+                        obj.put("item", element.getRight().getName());
                         output.add(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();

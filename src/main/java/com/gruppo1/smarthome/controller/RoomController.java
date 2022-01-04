@@ -55,6 +55,7 @@ public class RoomController {
                 new ResponseEntity<>(updatedRoom, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
     @ApiOperation(value = "Add new room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Room Added"),
@@ -86,6 +87,7 @@ public class RoomController {
         return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/addDevice/{roomName}/{deviceName}")
     @ApiOperation(value = "Add device in a room", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Device added"),
