@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoDevice;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
@@ -12,8 +13,13 @@ import java.util.Objects;
 @Table(name = "alarmclock")
 public class AlarmClock extends Device {
 
+    @ApiModelProperty(value = "7:00 AM",position = 5)
     private String time;
+
+    @ApiModelProperty(value = "Workday",position = 6)
     private String frequency;
+
+    @ApiModelProperty(value = "Rain drops",position = 7)
     private String song;
 
     public AlarmClock() {

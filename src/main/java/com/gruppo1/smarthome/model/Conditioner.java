@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoDevice;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
@@ -12,7 +13,10 @@ import java.util.Objects;
 @Table(name = "conditioner")
 public class Conditioner extends Device {
 
+    @ApiModelProperty(value = "15",position = 3)
     private Integer temperature;
+
+    @ApiModelProperty(value = "Aria fredda",position = 4)
     private String settings;
 
     public Conditioner() {
