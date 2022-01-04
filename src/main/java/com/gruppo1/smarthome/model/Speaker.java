@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoDevice;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
@@ -12,8 +13,13 @@ import java.util.Objects;
 @Table(name = "speaker")
 public class Speaker extends Device {
 
+    @ApiModelProperty(value = "100",position = 20)
     private Integer power;
+
+    @ApiModelProperty(value = "Bose",position = 21)
     private String brand;
+
+    @ApiModelProperty(value = "SCS-2021",position = 22)
     private String model;
 
     public Speaker() {

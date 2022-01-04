@@ -53,12 +53,12 @@ public class BaseController {
 
     }
 
-    //TODO: where to place this method?
-    public String serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
+    private String serializeList(List<ImmutablePair<CrudOperation, Memento>> mementoPairList) {
         List<JSONObject> output = new ArrayList<>();
         mementoPairList.forEach(
 
                 element -> {
+
                     if (Objects.nonNull(element.getLeft()) && Objects.nonNull(element.getRight())) {
                         String pathOperation = element.getLeft().toString();
                         String operationCamelCase = pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
@@ -75,6 +75,22 @@ public class BaseController {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                    String pathOperation = element.getLeft().toString();
+                    String operationCamelCase = pathOperation.substring(pathOperation.lastIndexOf(".") + 1, pathOperation.indexOf("@"));
+                    String operation = StringUtils.join(
+                            StringUtils.splitByCharacterTypeCamelCase(operationCamelCase),
+                            ' '
+                    );
+                    operation = operation.replace("Impl", "") + "Of A " + element.getRight().getLabel();
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("Operation", operation);
+                        obj.put("item", element.getRight().getName());
+                        output.add(obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
 
                     }

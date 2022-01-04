@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.gruppo1.smarthome.memento.Memento;
 import com.gruppo1.smarthome.memento.MementoDevice;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Entity;
@@ -12,9 +13,16 @@ import java.util.Objects;
 @Table(name = "television")
 public class Television extends Device {
 
+    @ApiModelProperty(value = "Samsung",position = 23)
     private String brand;
+
+    @ApiModelProperty(value = "TGKSLS09",position = 24)
     private String model;
+
+    @ApiModelProperty(value = "15",position = 25)
     private Integer volume;
+
+    @ApiModelProperty(value = "0",position = 26)
     private Integer channel;
 
     public Television() {

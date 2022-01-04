@@ -57,6 +57,7 @@ public class ProfileController {
                 new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
     @ApiOperation(value = "Add new profile", tags = {"Profile"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Profile added"),

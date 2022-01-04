@@ -55,6 +55,7 @@ public class SceneController {
         return Objects.nonNull(result) ? new ResponseEntity<>(result, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
     @ApiOperation(value = "Add new scene", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Scene Added"),
@@ -74,8 +75,9 @@ public class SceneController {
         return sceneService.deleteScene(name).equals(1) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Add device to the scene", tags = {"Scene"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Device Added"),
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Device Added"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
@@ -109,7 +111,7 @@ public class SceneController {
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @GetMapping("/findDevices/{sceneName}")
-    public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName) throws JsonProcessingException {
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName) {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
         return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }

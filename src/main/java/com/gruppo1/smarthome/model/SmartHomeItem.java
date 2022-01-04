@@ -2,6 +2,7 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -20,9 +21,11 @@ public abstract class SmartHomeItem implements Serializable {
     @Column(nullable = false, updatable = false)
     protected String id;
 
+    @ApiModelProperty(value = "The name of the item",position = 1)
     @Column
     protected String name;
 
+    @ApiModelProperty(value = "The name of the item",position = 2)
     protected String label;
 
     protected SmartHomeItem() {
