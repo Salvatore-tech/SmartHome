@@ -82,8 +82,9 @@ public class DeviceController {
         return Objects.nonNull(result) ? ResponseEntity.ok(result) : (ResponseEntity<Device>) ResponseEntity.badRequest();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Add automation's condition to a device", tags = {"Device"})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Condition Added"),
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Condition Added"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
