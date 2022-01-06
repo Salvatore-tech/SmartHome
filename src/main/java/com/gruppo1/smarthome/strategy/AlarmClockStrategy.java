@@ -11,14 +11,9 @@ public class AlarmClockStrategy extends ConverterFromJsonToDevice {
     public void convert(JSONObject deviceJson, Device device) throws JSONException {
 
         AlarmClock alarmClock = (AlarmClock) device;
-
         super.convert(deviceJson, device);
-
         if (deviceJson.has("time")) {
             alarmClock.setTime(deviceJson.get("time").toString());
-        }
-        if(deviceJson.has("frequency")){
-            alarmClock.setFrequency(deviceJson.get("frequency").toString());
         }
         if(deviceJson.has("song")){
             alarmClock.setSong(deviceJson.get("song").toString());

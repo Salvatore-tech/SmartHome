@@ -13,13 +13,10 @@ import java.util.Objects;
 @Table(name = "alarmclock")
 public class AlarmClock extends Device {
 
-    @ApiModelProperty(value = "7:00 AM",position = 5)
+    @ApiModelProperty(example = "7:00 AM", value = "Current time", position = 5)
     private String time;
 
-    @ApiModelProperty(value = "Workday",position = 6)
-    private String frequency;
-
-    @ApiModelProperty(value = "Rain drops",position = 7)
+    @ApiModelProperty(example = "Rain drops", value = "Song of the alarmclock", position = 7)
     private String song;
 
     public AlarmClock() {
@@ -31,10 +28,9 @@ public class AlarmClock extends Device {
         this.type = type;
     }
 
-    public AlarmClock(String name, String type, Boolean status, String time, String frequency, String song) {
+    public AlarmClock(String name, String type, Boolean status, String time, String song) {
         super(name, type, status);
         this.time = time;
-        this.frequency = frequency;
         this.song = song;
     }
 
@@ -44,14 +40,6 @@ public class AlarmClock extends Device {
 
     public String getTime() {
         return time;
-    }
-
-    public String getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
     }
 
     public String getSong() {
@@ -70,14 +58,13 @@ public class AlarmClock extends Device {
                 ", type='" + type + '\'' +
                 ", room=" + (Objects.nonNull(room) ? room.getName() : StringUtils.EMPTY) + '\'' +
                 ", time='" + time + '\'' +
-                ", frequency='" + frequency + '\'' +
                 ", song='" + song + '\'' +
                 '}';
     }
 
     @Override
     public Memento createMemento() {
-        return new MementoAlarmClock(id, label, name, status, type, room, time, frequency, song);
+        return new MementoAlarmClock(id, label, name, status, type, room, time, song);
     }
 
     @Override
@@ -89,20 +76,17 @@ public class AlarmClock extends Device {
         this.type = mementoAlarmClock.getType();
         this.room = mementoAlarmClock.getRoom();
         this.time = mementoAlarmClock.time;
-        this.frequency = mementoAlarmClock.frequency;
         this.song = mementoAlarmClock.song;
         return this;
     }
 
     static class MementoAlarmClock extends MementoDevice {
         private final String time;
-        private final String frequency;
         private final String song;
 
-        public MementoAlarmClock(String id, String label, String name, Boolean status, String type, Room room, String time, String frequency, String song) {
+        public MementoAlarmClock(String id, String label, String name, Boolean status, String type, Room room, String time, String song) {
             super(id, label, name, status, type, room);
             this.time = time;
-            this.frequency = frequency;
             this.song = song;
         }
     }

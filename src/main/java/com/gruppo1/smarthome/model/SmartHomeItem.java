@@ -21,12 +21,12 @@ public abstract class SmartHomeItem implements Serializable {
     @Column(nullable = false, updatable = false)
     protected String id;
 
-    @ApiModelProperty(value = "The name of the item",position = 1)
+    @ApiModelProperty(example = "ItemName", value = "The name of the item", position = 1)
     @Column
     protected String name;
 
     @JsonIgnore
-    @ApiModelProperty(value = "The name of the item",position = 2)
+    @ApiModelProperty(example = "Television",  value = "The label used to distinguish the elements", position = 2)
     protected String label;
 
     protected SmartHomeItem() {

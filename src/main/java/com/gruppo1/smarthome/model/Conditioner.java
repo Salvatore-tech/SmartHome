@@ -13,10 +13,10 @@ import java.util.Objects;
 @Table(name = "conditioner")
 public class Conditioner extends Device {
 
-    @ApiModelProperty(value = "15",position = 3)
+    @ApiModelProperty(example = "15", value = "Temperature value", position = 3)
     private Integer temperature;
 
-    @ApiModelProperty(value = "Aria fredda",position = 4)
+    @ApiModelProperty(example = "Aria fredda", value = "Settings of conditioner", position = 4)
     private String settings;
 
     public Conditioner() {

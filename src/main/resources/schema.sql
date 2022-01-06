@@ -62,7 +62,6 @@ CREATE TABLE alarmclock
 (
     id        VARCHAR(255) NOT NULL,
     time      VARCHAR(255),
-    frequency VARCHAR(255),
     song      VARCHAR(255),
     room_id   VARCHAR(255),
     CONSTRAINT pk_device PRIMARY KEY (id),
