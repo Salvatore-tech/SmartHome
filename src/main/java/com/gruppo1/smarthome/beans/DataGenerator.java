@@ -83,8 +83,7 @@ public class DataGenerator {
         CrudOperation addDeviceOperation = new AddOperationImpl(deviceRepo);
         CrudOperation getRoomOperation = new GetOperationImpl(roomRepo);
         final List<Room> rooms = (List<Room>) (List<?>) getRoomOperation.execute();
-        //TODO: How to manage the time (alarm clock)?
-        devices.add(new AlarmClock("Spongebob_clock", "Alarmclock", false, "7:00 AM", "Workday", "Rain drops"));
+        devices.add(new AlarmClock("Spongebob_clock", "Alarmclock", false, "7:00 AM", "Rain drops"));
         devices.add(new Conditioner("Samsung_air", "Conditioner", true, 20, "Default"));
         devices.add(new Conditioner("Dyson", "Conditioner", true, 30, "Sun"));
         devices.add(new LightBulb("Desk_lamp", "Lightbulb", false, 50, "Normal"));

@@ -13,11 +13,11 @@ import java.util.List;
 public abstract class Device extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false, updatable = false)
-    @ApiModelProperty(value = "Conditioner",position = 11)
+    @ApiModelProperty(example = "Conditioner", value = "Type of device", position = 11)
     protected String type;
 
     @Column
-    @ApiModelProperty(value = "true",position = 12)
+    @ApiModelProperty(example = "true", value = "Status of device", position = 12)
     protected Boolean status;
 
     @JsonIgnore

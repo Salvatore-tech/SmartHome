@@ -13,13 +13,13 @@ import java.util.Objects;
 @Table(name = "speaker")
 public class Speaker extends Device {
 
-    @ApiModelProperty(value = "100",position = 20)
+    @ApiModelProperty(example = "100",  value = "The power of the speaker", position = 20)
     private Integer power;
 
-    @ApiModelProperty(value = "Bose",position = 21)
+    @ApiModelProperty(example = "Bose", value = "The brand of the speaker", position = 21)
     private String brand;
 
-    @ApiModelProperty(value = "SCS-2021",position = 22)
+    @ApiModelProperty(example = "SCS-2021", value = "The model of the speaker", position = 22)
     private String model;
 
     public Speaker() {

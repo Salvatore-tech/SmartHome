@@ -13,10 +13,10 @@ import java.util.List;
 public class Scene extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "true",position = 18)
+    @ApiModelProperty(example = "true", value = "Status of scene", position = 18)
     private Boolean status;
 
-    @ApiModelProperty(value = "Daily",position = 19)
+    @ApiModelProperty(example = "Daily", value = "Period of activation", position = 19)
     private String period;
 
     @JsonIgnore

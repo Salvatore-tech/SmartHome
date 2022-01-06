@@ -13,10 +13,10 @@ import java.util.Objects;
 @Table(name = "lightbulb")
 public class LightBulb extends Device {
 
-    @ApiModelProperty(value = "50",position = 13)
+    @ApiModelProperty(example = "50", value = "Current brightness of lightbulb", position = 13)
     private Integer brightness;
 
-    @ApiModelProperty(value = "Normal",position = 14)
+    @ApiModelProperty(example = "Normal", value = "Current color temperature of lightbulb",position = 14)
     private String colorTemperature;
 
     public LightBulb() {

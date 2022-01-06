@@ -14,15 +14,15 @@ import java.io.Serializable;
 public class Profile extends SmartHomeItem implements Serializable {
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "harry@gmail.com",position = 15)
+    @ApiModelProperty(example = "harry@gmail.com", value = "Email of profile", position = 15)
     private String email;
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "Jacob",position = 16)
+    @ApiModelProperty(example = "Jacob", value = "Surname of profile",position = 16)
     private String surname;
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "abc",position = 17)
+    @ApiModelProperty(example = "abc", value = "Password of profile", position = 17)
     private String password;
 
     public Profile() {

@@ -13,16 +13,16 @@ import java.util.Objects;
 @Table(name = "television")
 public class Television extends Device {
 
-    @ApiModelProperty(value = "Samsung",position = 23)
+    @ApiModelProperty(example = "Samsung", value = "The brand of the television", position = 23)
     private String brand;
 
-    @ApiModelProperty(value = "TGKSLS09",position = 24)
+    @ApiModelProperty(example = "TGKSLS09", value = "The model of the television", position = 24)
     private String model;
 
-    @ApiModelProperty(value = "15",position = 25)
+    @ApiModelProperty(example = "15", value = "The volume of the television", position = 25)
     private Integer volume;
 
-    @ApiModelProperty(value = "0",position = 26)
+    @ApiModelProperty(example = "0", value = "The channel of the television", position = 26)
     private Integer channel;
 
     public Television() {

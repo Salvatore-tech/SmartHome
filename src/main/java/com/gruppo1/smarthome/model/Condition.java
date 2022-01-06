@@ -18,13 +18,13 @@ import java.util.Date;
 public class Condition extends SmartHomeItem implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    @ApiModelProperty(value = "28-11-2021 20:30:00",position = 8)
+    @ApiModelProperty(example = "28-11-2021 20:30:00", value = "Date of first activation", position = 8)
     private Date activationDate;
 
-    @ApiModelProperty(value = "30",position = 9)
+    @ApiModelProperty(example = "30", value = "Maximum allowed value", position = 9)
     private Integer threshold;
 
-    @ApiModelProperty(value = "POWER_ON",position = 10)
+    @ApiModelProperty(example = "POWER_ON", value = "Type of action to perform at activation", position = 10)
     private Actions action;
 
     @JsonIgnore
