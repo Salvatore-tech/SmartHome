@@ -122,8 +122,8 @@ public class Condition extends SmartHomeItem implements Serializable {
     @Override
     public SmartHomeItem restore(Memento memento) {
         MementoCondition mementoCondition = (MementoCondition) memento;
-        this.id = mementoCondition.getId(); // TODO
-        this.name = mementoCondition.getName(); // TODO
+        this.id = mementoCondition.getId();
+        this.name = mementoCondition.getName();
         this.scene = mementoCondition.scene;
         this.device = mementoCondition.device;
         this.action = mementoCondition.action;

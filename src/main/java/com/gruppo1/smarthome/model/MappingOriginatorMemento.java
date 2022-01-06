@@ -9,7 +9,7 @@ public class MappingOriginatorMemento {
     public MappingOriginatorMemento() {
         mappings.put(AlarmClock.MementoAlarmClock.class.toString(), new AlarmClock());
         mappings.put(Condition.MementoCondition.class.toString(), new Condition());
-        mappings.put(Conditioner.MementoConditioner.class.toString(), new Conditioner()); // TODO
+        mappings.put(Conditioner.MementoConditioner.class.toString(), new Conditioner());
         mappings.put(LightBulb.MementoLightBulb.class.toString(), new LightBulb());
         mappings.put(Profile.MementoProfile.class.toString(), new Profile());
         mappings.put(Room.MementoRoom.class.toString(), new Room());

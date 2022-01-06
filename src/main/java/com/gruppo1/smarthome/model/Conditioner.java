@@ -70,7 +70,7 @@ public class Conditioner extends Device {
     @Override
     public SmartHomeItem restore(Memento memento) {
         MementoConditioner mementoConditioner = (MementoConditioner) memento;
-        this.id = mementoConditioner.getId(); // TODO
+        this.id = mementoConditioner.getId();
         this.name = mementoConditioner.getName();
         this.status = mementoConditioner.getStatus();
         this.type = mementoConditioner.getType();
