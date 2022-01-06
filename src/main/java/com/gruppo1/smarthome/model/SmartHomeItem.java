@@ -25,6 +25,7 @@ public abstract class SmartHomeItem implements Serializable {
     @Column
     protected String name;
 
+    @JsonIgnore
     @ApiModelProperty(value = "The name of the item",position = 2)
     protected String label;
 
