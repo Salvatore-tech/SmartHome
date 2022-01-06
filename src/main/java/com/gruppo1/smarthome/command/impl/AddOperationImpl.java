@@ -17,7 +17,6 @@ public class AddOperationImpl extends CrudOperation {
     public SmartHomeItem execute(SmartHomeItem homeItem) {
         if (Objects.isNull(repository))
             return null;
-        return (Objects.nonNull(repository)) ?
-                (SmartHomeItem) repository.save(homeItem) : null;
+        return (SmartHomeItem) repository.save(homeItem);
     }
 }

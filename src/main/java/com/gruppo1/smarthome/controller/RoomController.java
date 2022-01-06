@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Room;
 import com.gruppo1.smarthome.service.RoomService;
@@ -28,7 +27,7 @@ public class RoomController {
     @ApiOperation(value = "List all rooms", tags = {"Room"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return rooms"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Room>> getAllRooms() throws JsonProcessingException {
+    public ResponseEntity<List<Room>> getAllRooms() {
         List<Room> rooms = roomService.findAllRoom();
         return !rooms.isEmpty() ? ResponseEntity.ok(rooms) : (ResponseEntity<List<Room>>) ResponseEntity.notFound();
     }
@@ -82,9 +81,9 @@ public class RoomController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return list devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<List<Device>> findDevices(@PathVariable("roomName") String roomName) throws JsonProcessingException {
+    public ResponseEntity<List<Device>> findDevices(@PathVariable("roomName") String roomName) {
         List<Device> devices = roomService.findDevicesInRoom(roomName);
-        return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
+        return !devices.isEmpty() ? new ResponseEntity<>(devices, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -107,8 +106,8 @@ public class RoomController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 405, message = "Method Not Allowed"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    public ResponseEntity.BodyBuilder deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
+    public ResponseEntity<?> deleteDevice(@PathVariable("roomName") String roomName, @PathVariable("deviceName") String deviceName) {
         return roomService.deleteDeviceFromRoom(roomName, deviceName) ?
-                ResponseEntity.ok() : ResponseEntity.badRequest();
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

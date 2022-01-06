@@ -2,7 +2,6 @@ package com.gruppo1.smarthome.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gruppo1.smarthome.memento.Memento;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -63,7 +62,7 @@ public class Room extends SmartHomeItem implements Serializable {
 
     static class MementoRoom extends Memento {
 
-        private List<Device> devices;
+        private final List<Device> devices;
 
         public MementoRoom(String id, String label, String name, List<Device> devices) {
             this.id = id;

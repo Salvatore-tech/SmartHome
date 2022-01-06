@@ -35,33 +35,35 @@ public class ConditionExecutor {
                 condition -> {
                     Scene scene = condition.getScene();
                     Device device = condition.getDevice();
-                    Date date = condition.getActivationDate();
-                    Integer threshold = condition.getThreshold();
                     String period = scene.getPeriod();
                     if (scene.getStatus() && device.getStatus()) {
-                        long currentMillisecond = System.currentTimeMillis();
-                        if(controlExecute(date, threshold, currentMillisecond)){
+                        if (isVerifiedActivationCondition(condition)) {
                             actionExecutor.execute(device, condition.getAction());
                             if (Objects.nonNull(period))
-                                setRoutine(condition, currentMillisecond, period);
+                                updateTemporalCondition(condition, period);
                         }
                     }
                 }
         );
     }
 
-    private Boolean controlExecute(Date date, Integer threshold, long currentMillisecond){
+    private Boolean isVerifiedActivationCondition(Condition condition) {
+        Date date = condition.getActivationDate();
+        Integer threshold = condition.getThreshold();
+        long currentMillisecond = System.currentTimeMillis();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        if(Objects.nonNull(date) && Objects.nonNull(threshold)){
+        if (Objects.nonNull(date) && Objects.nonNull(threshold)) {
             return threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond));
-        }else if(Objects.isNull(threshold)){
+        } else if (Objects.isNull(threshold)) {
+            assert date != null;
             return date.toString().contains(dateFormatter.format(currentMillisecond));
         } else {
             return threshold == rand.nextInt(30);
         }
     }
 
-    private void setRoutine(Condition condition, long currentMillisecond, String period) {
+    private void updateTemporalCondition(Condition condition, String period) {
+        long currentMillisecond = System.currentTimeMillis();
         if (period.equalsIgnoreCase("daily")) {
             long day = TimeUnit.DAYS.toMillis(1);
             condition.setActivationDate(new Date(currentMillisecond + day));

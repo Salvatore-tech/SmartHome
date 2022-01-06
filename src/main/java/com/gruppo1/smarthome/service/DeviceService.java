@@ -28,7 +28,6 @@ public class DeviceService {
 
     private final DeviceRepo deviceRepo;
     private final SceneRepo sceneRepo;
-    private final ConditionRepo conditionRepo;
     private final RoomRepo roomRepo;
 
     @Autowired
@@ -37,7 +36,6 @@ public class DeviceService {
         this.conditionService = conditionService;
         this.deviceRepo = deviceRepo;
         this.sceneRepo = sceneRepo;
-        this.conditionRepo = conditionRepo;
         this.roomRepo = roomRepo;
     }
 
@@ -52,6 +50,7 @@ public class DeviceService {
             ConverterFromJsonToDevice converter = FactoryConverterFromJsonToDevice.getInstance(typeDevice);
             converter.convert(deviceJson, newDevice);
             Room room = validateRoom(deviceJson);
+            assert newDevice != null;
             newDevice.setRoom(room);
             mementoCareTaker.push(operationToPerform, newDevice.createMemento());
             return operationToPerform.execute(newDevice);

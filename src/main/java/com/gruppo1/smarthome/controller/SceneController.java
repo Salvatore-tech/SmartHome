@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.model.Scene;
@@ -30,7 +29,7 @@ public class SceneController {
     @ApiOperation(value = "List all scenes", tags = {"Scene"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "List of scenes"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Scene>> getAllScenes() throws JsonProcessingException {
+    public ResponseEntity<List<Scene>> getAllScenes() {
         List<Scene> scenes = sceneService.findAllScene();
         return !scenes.isEmpty() ? ResponseEntity.ok(scenes) : (ResponseEntity<List<Scene>>) ResponseEntity.notFound();
     }
@@ -113,7 +112,7 @@ public class SceneController {
     @GetMapping("/findDevices/{sceneName}")
     public ResponseEntity<List<Device>> findDevices(@PathVariable("sceneName") String sceneName) {
         List<Device> devices = sceneService.findDevicesInScene(sceneName);
-        return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
+        return !devices.isEmpty() ? ResponseEntity.ok(devices) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/findConditions/{sceneName}")
@@ -121,9 +120,9 @@ public class SceneController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Condition>> getConditions(@ApiParam(value = "Scene name", required = true)
-                                                         @PathVariable("sceneName") String sceneName) throws JsonProcessingException {
+                                                         @PathVariable("sceneName") String sceneName) {
         List<Condition> conditions = sceneService.findConditionsInScene(sceneName);
-        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : (ResponseEntity<List<Condition>>) ResponseEntity.notFound();
+        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/deleteCondition/{sceneName}/{conditionName}")

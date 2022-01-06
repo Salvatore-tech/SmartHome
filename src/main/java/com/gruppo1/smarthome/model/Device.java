@@ -22,7 +22,7 @@ public abstract class Device extends SmartHomeItem implements Serializable {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = true)
+    @JoinColumn(name = "room_id")
     protected Room room;
 
     @JsonIgnore

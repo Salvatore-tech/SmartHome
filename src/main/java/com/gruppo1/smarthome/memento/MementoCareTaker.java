@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Component
 public class MementoCareTaker {
-    private List<ImmutablePair<CrudOperation, Memento>> mementoPairList = new ArrayList<>();
+    private final List<ImmutablePair<CrudOperation, Memento>> mementoPairList = new ArrayList<>();
 
 
     public void push(CrudOperation operation, Memento memento) {

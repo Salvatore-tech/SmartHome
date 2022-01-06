@@ -1,6 +1,5 @@
 package com.gruppo1.smarthome.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gruppo1.smarthome.model.Condition;
 import com.gruppo1.smarthome.model.Device;
 import com.gruppo1.smarthome.service.DeviceService;
@@ -33,7 +32,7 @@ public class DeviceController {
     @ApiOperation(value = "List all devices installed", tags = {"Device"})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return devices"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
-    public ResponseEntity<List<Device>> getAllDevices() throws JsonProcessingException {
+    public ResponseEntity<List<Device>> getAllDevices() {
         List<Device> devices = deviceService.findAllDevices();
         return !devices.isEmpty() ? ResponseEntity.ok(devices) : (ResponseEntity<List<Device>>) ResponseEntity.notFound();
     }
@@ -47,7 +46,7 @@ public class DeviceController {
     public ResponseEntity<Device> addDevice(@RequestBody String deviceString) throws JSONException {
         JSONObject deviceJson = new JSONObject(deviceString);
         Device newDevice = deviceService.addDevice(deviceJson);
-        return Objects.nonNull(newDevice) ? new ResponseEntity<>(newDevice, HttpStatus.CREATED) : new ResponseEntity<>(newDevice, HttpStatus.BAD_REQUEST);
+        return Objects.nonNull(newDevice) ? new ResponseEntity<>(newDevice, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/find/{name}")
@@ -103,9 +102,9 @@ public class DeviceController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Return condition"),
             @ApiResponse(code = 404, message = "Not Found - returned on resource not found")})
     public ResponseEntity<List<Condition>> getConditions(@ApiParam(value = "Name of a valid device", required = true)
-                                                         @PathVariable("deviceName") String deviceName) throws JsonProcessingException {
+                                                         @PathVariable("deviceName") String deviceName) {
         List<Condition> conditions = deviceService.findConditionsInDevice(deviceName);
-        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : (ResponseEntity<List<Condition>>) ResponseEntity.notFound();
+        return !conditions.isEmpty() ? ResponseEntity.ok(conditions) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/deleteCondition/{deviceName}/{conditionName}")
