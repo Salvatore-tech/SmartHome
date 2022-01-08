@@ -9,7 +9,6 @@ public class TelevisionStrategy extends ConverterFromJsonToDevice {
 
     @Override
     public void convert(JSONObject deviceJson, Device device) throws JSONException {
-
         Television television = (Television) device;
 
         super.convert(deviceJson, device);

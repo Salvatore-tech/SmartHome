@@ -47,7 +47,7 @@ public class ConditionService {
     public Condition findConditionByName(String name) {
         CrudOperation getConditionOperation = new GetByNameOperationImpl(conditionRepo);
         Condition result = getConditionOperation.execute(name);
-        mementoCareTaker.push(getConditionOperation, null); //TODO SS
+        mementoCareTaker.push(getConditionOperation, null);
         return result;
     }
 

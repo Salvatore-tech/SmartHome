@@ -21,7 +21,6 @@ public class ActionExecutor {
         if (Objects.isNull(action)) {
             return;
         }
-
         if (device instanceof Speaker) {
             executeSpeakerAction((Speaker) device, action);
         } else if (device instanceof Television) {
@@ -33,7 +32,6 @@ public class ActionExecutor {
         } else if (device instanceof AlarmClock) {
             executeAlarmClockAction((AlarmClock) device, action);
         }
-
         entityManager.merge(device);
     }
 

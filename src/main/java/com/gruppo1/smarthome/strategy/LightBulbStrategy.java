@@ -9,7 +9,6 @@ public class LightBulbStrategy extends ConverterFromJsonToDevice {
 
     @Override
     public void convert(JSONObject deviceJson, Device device) throws JSONException {
-
         LightBulb lightBulb = (LightBulb) device;
 
         super.convert(deviceJson, device);

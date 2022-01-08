@@ -9,7 +9,6 @@ public class SpeakerStrategy extends ConverterFromJsonToDevice {
 
     @Override
     public void convert(JSONObject deviceJson, Device device) throws JSONException {
-
         Speaker speaker = (Speaker) device;
 
         super.convert(deviceJson, device);

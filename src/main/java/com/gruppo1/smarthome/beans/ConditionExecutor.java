@@ -16,6 +16,15 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class ConditionExecutor {
+    private static final String DAILY = "daily";
+    private static final String WEEKLY = "weekly";
+    private static final String MONTHLY = "monthly";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    private static final int ONE_DAY = 1;
+    private static final int SEVEN_DAYS = 7;
+    private static final int THIRTY_DAYS = 30;
+    private static final int ONE_MINUTE = 60000;
+
     private final ConditionRepo conditionRepo;
     private final ActionExecutor actionExecutor;
     private final Random rand;
@@ -27,10 +36,9 @@ public class ConditionExecutor {
         this.rand = new Random();
     }
 
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = ONE_MINUTE)
     public void run() {
         Iterable<Condition> conditionList = conditionRepo.findAll();
-
         conditionList.forEach(
                 condition -> {
                     Scene scene = condition.getScene();
@@ -51,7 +59,7 @@ public class ConditionExecutor {
         Date date = condition.getActivationDate();
         Integer threshold = condition.getThreshold();
         long currentMillisecond = System.currentTimeMillis();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
         if (Objects.nonNull(date) && Objects.nonNull(threshold)) {
             return threshold == rand.nextInt(30) || date.toString().contains(dateFormatter.format(currentMillisecond));
         } else if (Objects.isNull(threshold)) {
@@ -64,16 +72,16 @@ public class ConditionExecutor {
 
     private void updateTemporalCondition(Condition condition, String period) {
         long currentMillisecond = System.currentTimeMillis();
-        if (period.equalsIgnoreCase("daily")) {
-            long day = TimeUnit.DAYS.toMillis(1);
+        if (period.equalsIgnoreCase(DAILY)) {
+            long day = TimeUnit.DAYS.toMillis(ONE_DAY);
             condition.setActivationDate(new Date(currentMillisecond + day));
             conditionRepo.save(condition);
-        } else if (period.equalsIgnoreCase("weekly")) {
-            long week = TimeUnit.DAYS.toMillis(7);
+        } else if (period.equalsIgnoreCase(WEEKLY)) {
+            long week = TimeUnit.DAYS.toMillis(SEVEN_DAYS);
             condition.setActivationDate(new Date(currentMillisecond + week));
             conditionRepo.save(condition);
-        } else if (period.equalsIgnoreCase("monthly")) {
-            long month = TimeUnit.DAYS.toMillis(30);
+        } else if (period.equalsIgnoreCase(MONTHLY)) {
+            long month = TimeUnit.DAYS.toMillis(THIRTY_DAYS);
             condition.setActivationDate(new Date(currentMillisecond + month));
             conditionRepo.save(condition);
         }
