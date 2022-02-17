@@ -10,7 +10,9 @@ Each action is saved into a history and it is also possible to revert the last a
 
 ## Architecture  
 The architecture can be illustrated by initially analyzing the subsystems and packages present. We can see a layered architecture, where it has tried to maintain high cohesion between the classes of a package and reduce coupling between packages of different subsystems.
-<img src="https://github.com/Salvatore-tech/SmartHome/blob/master/resources/architecture.png" width="60%" height="50%">
+<p align="center" width="100%">
+    <img width="60%" height="50%" src="https://github.com/Salvatore-tech/SmartHome/blob/master/resources/architecture.png">
+</p>
 
 - Application: The first subsystem contains mainly Controller classes, capable of receiving a request from the user, delegate the execution and return an output. 
 
